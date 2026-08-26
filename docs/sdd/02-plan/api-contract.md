@@ -1,15 +1,4 @@
 # API Contract
 
-> Template — API design has not started. Changes require explicit user approval after approval.
-
-## Conventions
-
-_TBD._
-
-## Endpoints
-
-_TBD._
-
-## Schemas and errors
-
-_TBD._
+> Status: NOT STARTED
+> This artifact will be completed during the corresponding SDD stage.

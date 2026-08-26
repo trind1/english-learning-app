@@ -1,41 +1,60 @@
-# Repository Operating Rules
+# English Learning App — Repository Instructions
 
-This repository follows Spec-Driven Development (SDD). These rules apply to every human and agent working in the repository.
+## Project mission
+Build a real, beginner-friendly full-stack English-learning application with a React frontend, REST API, persistent database, tests, and auditable SDD traceability.
 
-## Mandatory flow
+## User knowledge level
+Assume the user is new to AI-assisted and database development. Keep every repository action and written artifact in English. Explain database work in beginner-friendly English: plain meaning, a small example, file location, verification method, then the technical term. Preserve user-provided domain data in its original language.
 
-`Spec → Verify → Plan → Verify → Tasks → Verify → Implementation → Verify → Review → Verify → Unit Test → Verify`
+## Language policy
+- All repository documents, source code, comments, tests, UI text, errors, logs, reports, and suggested Git messages must be in English.
+- User-provided domain data may remain in its original language.
 
-- Stop at the end of every stage and wait for explicit user approval.
-- Do not enter the next stage until the current verification is `PASS` and the user has approved it.
-- Verification status values are limited to `PASS`, `FAIL`, and `BLOCKED`.
-- Do not generate implementation before Spec, Plan, and Tasks are verified and approved.
-- Never claim success for a check that was not actually run.
+## SDD stage order
+`Specification → Specification Verification → Planning → Planning Verification → Task Decomposition → Task Verification → Code Generation → Implementation Verification → Code Review → Review Verification → Unit Testing and Coverage → Testing Verification → Final Acceptance`
 
-## Traceability and change control
+Bootstrap creates governance and placeholder artifacts before this sequence begins. It does not authorize Specification work.
 
-- Give every requirement a stable ID, such as `REQ-001`.
-- Link every task to one or more requirement IDs.
-- Link every code change and commit to a task ID.
-- Do not change a requirement or API contract without explicit user approval. Record approved changes in the relevant artifact and traceability matrix.
-- Every verification entry must include the exact command and concrete evidence. If a command cannot run, use `BLOCKED` and explain why.
-- Keep `docs/sdd/status.md` and `docs/sdd/traceability.md` current.
+## Stage-gate policy
+- A stage starts only when the previous verification is `PASS` and explicitly user-approved.
+- Stop after every stage. Never treat “mostly complete” as `PASS`.
+- Gate statuses are `PASS`, `FAIL`, and `BLOCKED`; templates may use `NOT STARTED`.
+- Do not implement before Specification, Plan, and Tasks are verified and approved.
 
-## Quality gates
+## Approval policy
+Only an explicit user instruction grants approval. Never infer approval or change `Pending` automatically. Never silently change an approved requirement or API contract; record approved changes.
 
-- Frontend and backend unit-test coverage must each be at least 80%; measure and report them separately.
-- Review correctness, security, maintainability, and regression risk before testing acceptance.
-- Explain technical concepts in language suitable for a beginner.
-- For every database task, explain where data is stored, what changed in the schema, what the migration does, and how to inspect or verify the data.
+## Traceability policy
+- Requirements use stable IDs (`FR-`, `NFR-`, `BR-`); tasks use `TASK-`; tests use `TEST-`.
+- Every task references requirements; every code change references a task; every test references a requirement, rule, or task.
+- Keep [traceability](docs/sdd/traceability.md) current.
+
+## Verification and evidence policy
+Use [the verification template](docs/sdd/templates/verification-template.md). Record exact commands, working directory, exit codes, output evidence, and limitations. Label unexecuted commands `NOT RUN`. Never invent output, results, dates, or coverage.
+
+## Engineering constraints
+The proposed stack is npm workspaces, React/Vite/TypeScript, Express/TypeScript, SQLite, Prisma, Zod, Vitest, React Testing Library, and Supertest; it remains unapproved until Plan. Frontend must not access the database directly. Validate inputs and do not expose raw database errors.
+
+Use clean architecture and clean-code practices. Keep responsibilities separated and dependencies directed through explicit boundaries.
+
+## Database explanation policy
+For every database task explain in beginner-friendly English where data is stored, schema changes, what the migration does, committed versus ignored files, and how to inspect data safely. Change schemas through migrations, never through undocumented manual database edits.
+
+## Testing and coverage policy
+Measure frontend and backend unit-test coverage separately. Each must independently reach at least 95% statements, 95% branches, 95% functions, and 95% lines. Never combine results to conceal a shortfall. Exclusions require documented technical justification and must never be used only to raise a percentage. Any metric below 95%, or any failing test, fails the testing gate.
+
+## Documentation policy
+Follow the [documentation style guide](docs/sdd/documentation-style-guide.md). Use concise beginner-friendly language, relative links, stable IDs, and evidence-backed statements.
 
 ## Role boundaries
+- BA owns requirements, scope, business rules, acceptance criteria, ambiguity detection, and requirement verification; no application code or undocumented architecture decisions.
+- FE Dev owns UI, accessibility, client validation, API integration, and frontend tests; no database access, contract changes, or backend logic in UI.
+- BE Dev owns API, validation, persistence, backend tests, and CSV import; no requirement changes, raw database errors, or validation bypasses.
+- QA owns cases, traceability, evidence, and separate coverage; no estimated coverage or acceptance of failures.
+- Reviewer reviews read-only first for correctness, security, maintainability, regression, architecture, tests, and requirements. Record findings before fixes; no open Critical or High finding may remain at `PASS`.
 
-- **BA:** writes requirements, acceptance criteria, and scope; does not write application code.
-- **FE Dev:** implements frontend and frontend tests; does not modify the API contract independently.
-- **BE Dev:** implements backend, database, and backend tests; does not modify requirements independently.
-- **QA:** designs test cases and edge cases, executes tests, and reports separate coverage.
-- **Reviewer:** reviews correctness, security, maintainability, and regression risk; does not silently change approved scope.
+## Completion report contract
+End each stage with: `STAGE`, `STATUS`, `FILES_CREATED`, `FILES_MODIFIED`, `VERIFICATION_COMMANDS`, `VERIFICATION_RESULTS`, `EVIDENCE`, `OPEN_QUESTIONS`, `NEXT_ALLOWED_ACTION`, and `USER_APPROVAL_REQUIRED`. Update [status](docs/sdd/status.md) and traceability.
 
-## Stage reporting
-
-At the end of each stage, report: `STAGE`, `STATUS`, `FILES_CREATED`, `FILES_MODIFIED`, `VERIFICATION_COMMANDS`, `VERIFICATION_RESULTS`, `EVIDENCE`, `OPEN_QUESTIONS`, `NEXT_ALLOWED_ACTION`, and `USER_APPROVAL_REQUIRED`.
+## Prohibited behavior
+Do not skip gates, invent evidence, claim unrun checks, silently change scope/contracts, generate premature implementation, create fake migrations, install dependencies without stage authorization, commit secrets, or continue after a failed gate or without approval. Preserve unrelated user changes.

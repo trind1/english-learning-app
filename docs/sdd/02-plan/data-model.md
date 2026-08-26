@@ -1,15 +1,4 @@
 # Data Model
 
-> Template — Data modeling has not started.
-
-## Entities
-
-_TBD._
-
-## Relationships and constraints
-
-_TBD._
-
-## Requirement mapping
-
-_TBD._
+> Status: NOT STARTED
+> This artifact will be completed during the corresponding SDD stage.
