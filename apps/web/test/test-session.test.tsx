@@ -17,6 +17,7 @@ const questions = [
 ];
 describe("TEST-017 multiple choice", () => {
   it("selects once and shows results", async () => {
+    const onNavigate = vi.fn();
     const api = {
       submit: vi.fn().mockResolvedValue({
         correctCount: 1,
@@ -24,13 +25,19 @@ describe("TEST-017 multiple choice", () => {
         totalCount: 1,
       }),
     };
-    render(<TestSession questions={questions} api={api} />);
+    render(
+      <TestSession questions={questions} api={api} onNavigate={onNavigate} />,
+    );
     fireEvent.click(screen.getByRole("button", { name: "greeting" }));
     fireEvent.click(screen.getByRole("button", { name: "Submit answer" }));
     await waitFor(() =>
       expect(screen.getByText("1 correct of 1")).toBeInTheDocument(),
     );
     expect(api.submit).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByRole("button", { name: "Back to folder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Dashboard" }));
+    expect(onNavigate).toHaveBeenCalledWith("folder");
+    expect(onNavigate).toHaveBeenCalledWith("dashboard");
   });
   it("shows ineligible and failure states", async () => {
     render(<TestSession questions={[]} api={{ submit: vi.fn() }} />);

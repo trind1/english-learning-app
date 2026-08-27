@@ -4,7 +4,9 @@ export default defineConfig({
   test: {
     coverage: {
       all: true,
-      exclude: ["**/*.d.ts"],
+      // main.tsx only mounts App into the browser-owned root element. Product
+      // behavior is covered through App and the feature components.
+      exclude: ["**/*.d.ts", "src/main.tsx"],
       include: ["src/**/*.{ts,tsx}"],
       provider: "v8",
       reporter: ["text", "json", "html"],

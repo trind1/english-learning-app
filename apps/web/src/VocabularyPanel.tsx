@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { PronunciationButton } from "./PronunciationButton";
 
 export type VocabularyItem = {
   id: string;
@@ -52,11 +53,9 @@ export const VocabularyPanel = ({
         meaning: meaning.trim(),
         ipa: ipa.trim() || null,
       });
-      setItems((current) => {
-        const next = [...(current ?? []), item];
-        onChanged?.(next);
-        return next;
-      });
+      const next = [...(items ?? []), item];
+      setItems(next);
+      onChanged?.(next);
       setWord("");
       setMeaning("");
       setIpa("");
@@ -114,6 +113,7 @@ export const VocabularyPanel = ({
             <li key={item.id}>
               <strong>{item.word}</strong>{" "}
               <span>{item.ipa || "IPA unavailable"}</span> — {item.meaning}
+              <PronunciationButton word={item.word} />
             </li>
           ))}
         </ul>

@@ -20,7 +20,15 @@ describe("TEST-016 flashcards", () => {
       populatedView.getByRole("button", { name: "Reveal meaning" }),
     );
     expect(populatedView.getByText("greeting")).toBeInTheDocument();
+    expect(
+      populatedView.getByLabelText("Flashcard progress"),
+    ).toHaveTextContent("1 / 1");
+    expect(
+      populatedView.getByRole("button", { name: "Pronounce hello" }),
+    ).toBeInTheDocument();
+    fireEvent.click(populatedView.getByRole("button", { name: "Previous" }));
     fireEvent.click(populatedView.getByRole("button", { name: "Next" }));
+    fireEvent.click(populatedView.getByRole("button", { name: "Shuffle" }));
     fireEvent.click(populatedView.getByRole("button", { name: "Restart" }));
   });
 });

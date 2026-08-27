@@ -23,12 +23,13 @@
     "setup": "node scripts/setup.mjs",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "eslint . --max-warnings=0",
-    "format:check": "prettier --check package.json tsconfig.base.json eslint.config.mjs apps packages",
+    "format:check": "prettier --check package.json tsconfig.base.json eslint.config.mjs apps packages scripts",
     "test": "npm run test --workspaces --if-present",
     "test:web": "npm run test --workspace @english-learning/web",
     "test:api": "npm run test --workspace @english-learning/api",
     "coverage:web": "npm run coverage --workspace @english-learning/web",
-    "coverage:api": "npm run coverage --workspace @english-learning/api"
+    "coverage:api": "npm run coverage --workspace @english-learning/api",
+    "browser:acceptance": "node scripts/browser-acceptance.mjs"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

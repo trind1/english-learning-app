@@ -21,6 +21,17 @@ describe("TEST-019 AI UI", () => {
     fireEvent.click(screen.getByRole("button", { name: "Generate text" }));
     expect(screen.getByRole("alert")).toHaveTextContent("unavailable");
   });
+  it("shows a recoverable provider failure", async () => {
+    const generate = vi.fn().mockRejectedValue(new Error("offline"));
+    render(<AiPanel words={words} generate={generate} />);
+    fireEvent.click(screen.getByLabelText("journey"));
+    fireEvent.click(screen.getByRole("button", { name: "Generate text" }));
+    await waitFor(() =>
+      expect(screen.getByRole("alert")).toHaveTextContent(
+        "AI generation failed",
+      ),
+    );
+  });
   it("toggles selections and caps selection at ten", () => {
     const many = Array.from({ length: 11 }, (_, i) => ({
       id: String(i),

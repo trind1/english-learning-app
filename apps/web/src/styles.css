@@ -348,12 +348,7 @@ input:not([type="checkbox"]):not([type="file"]) {
   margin-top: 7px !important;
   font: 800 1.7rem Manrope;
 }
-.metrics-grid dt:nth-of-type(6),
-.metrics-grid dd:nth-of-type(6) {
-  display: none;
-}
-.metrics-grid > dt,
-.metrics-grid > dd {
+.metrics-grid > div {
   padding: 0;
 }
 .accuracy-ring {

@@ -1,5 +1,42 @@
 # Code Generation Implementation Report
 
+## Final Acceptance remediation — 2026-08-28
+
+STAGE: Code Generation remediation
+
+STATUS: PASS for implementation; Final Acceptance remains BLOCKED
+
+FILES_CREATED: `.prettierrc.json`, `scripts/browser-acceptance.mjs`, `scripts/tsx-windows-shim.mjs`, `docs/sdd/evidence/browser-desktop.png`
+
+FILES_MODIFIED: frontend dashboard, flashcards, vocabulary UI and tests; frontend coverage configuration; API/root scripts; lint/format configuration; SDD governance reports.
+
+VERIFICATION_COMMANDS: `npm.cmd run setup`; `npm.cmd run coverage:web`; `npm.cmd run coverage:api`; `npm.cmd test`; `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `npm.cmd ls --all`; `git diff --check`; runtime `npm.cmd run dev`; attempted `npm.cmd run browser:acceptance -- http://localhost:5175`; attempted `npm.cmd audit --audit-level=low`.
+
+VERIFICATION_RESULTS: implementation and automated quality commands pass when migration-heavy backend suites run sequentially. Browser acceptance is incomplete. The current npm audit attempt failed because registry DNS was unavailable.
+
+EVIDENCE: EVID-503–EVID-513.
+
+OPEN_QUESTIONS: Will the user authorize the corrected headless Chrome workflow so desktop/mobile runtime acceptance can complete?
+
+NEXT_ALLOWED_ACTION: Start the app, authorize the browser acceptance command, inspect both generated screenshots, and update Final Acceptance.
+
+USER_APPROVAL_REQUIRED: Yes, for the browser launch and Final Acceptance.
+
+### Implemented remediation
+
+- Added meaningful integrated frontend tests for navigation, folder/vocabulary, CSV, AI, flashcards, quiz/results, dashboard actions, and safe error branches.
+- Excluded only `src/main.tsx`, the browser mount entry point with no product logic, from frontend unit coverage; `App` and feature behavior remain measured.
+- Fixed a React cross-component update caused by invoking `onChanged` inside a child state updater.
+- Rendered the approved pronunciation abstraction in real vocabulary and flashcard screens.
+- Added flashcard progress, Previous, Next, Shuffle, and Restart controls.
+- Grouped dashboard metric labels with their values after screenshot inspection found an ambiguous layout.
+- Added a Node 26 Windows preload shim so `tsx` no longer fails in `os.userInfo()` before the API loads.
+- Added a reusable Chrome DevTools Protocol acceptance script without adding a dependency.
+
+### Database explanation
+
+Plain meaning: no database structure changed. Existing folders, words, and completed quizzes continue to live in the local SQLite file at `apps/api/prisma/dev.db`. Example: adding `hello` still creates a vocabulary row linked to its folder. The committed schema and migration were not edited, and the local `.db` file remains ignored. Verify safely with `npm.cmd run db:studio --workspace @english-learning/api` after setup, or inspect the documented API; do not edit rows manually. The technical term is **no schema migration**.
+
 ## Integrated UI/UX redesign — 2026-08-27
 
 The redesigned React shell makes the approved dashboard, library, folder detail, manual vocabulary, CSV import, flashcards, quiz/results, and optional AI panels reachable through one responsive navigation flow. It uses the existing REST API and migrated SQLite schema; no backend contract or schema changed.

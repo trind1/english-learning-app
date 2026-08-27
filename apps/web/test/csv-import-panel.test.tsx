@@ -31,5 +31,14 @@ describe("TEST-014 CSV import UI", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "Import" }));
     expect(screen.getByRole("alert")).toHaveTextContent("Choose a CSV");
+    fireEvent.change(screen.getByLabelText("CSV file"), {
+      target: { files: [new File(["word,meaning"], "x.csv")] },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Import" }));
+    await waitFor(() =>
+      expect(screen.getByRole("alert")).toHaveTextContent("server"),
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 });

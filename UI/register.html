@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LinguistPro - Registration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed": "#001a42",
+                      "on-primary-fixed-variant": "#004395",
+                      "on-tertiary": "#ffffff",
+                      "secondary-container": "#6cf8bb",
+                      "on-primary": "#ffffff",
+                      "surface": "#f7f9fb",
+                      "brand-navy": "#4076A9",
+                      "error": "#ba1a1a",
+                      "surface-white": "#FFFFFF",
+                      "tertiary-container": "#a36700",
+                      "tertiary": "#825100",
+                      "inverse-primary": "#adc6ff",
+                      "on-background": "#191c1e",
+                      "primary": "#0058be",
+                      "on-secondary-fixed": "#002113",
+                      "on-tertiary-fixed": "#2a1700",
+                      "inverse-on-surface": "#eff1f3",
+                      "surface-bright": "#f7f9fb",
+                      "primary-fixed": "#d8e2ff",
+                      "on-error": "#ffffff",
+                      "on-primary-container": "#fefcff",
+                      "surface-container-low": "#f2f4f6",
+                      "on-secondary-container": "#00714d",
+                      "on-secondary": "#ffffff",
+                      "surface-container-highest": "#e0e3e5",
+                      "background": "#f7f9fb",
+                      "primary-fixed-dim": "#adc6ff",
+                      "surface-variant": "#e0e3e5",
+                      "tertiary-fixed-dim": "#ffb95f",
+                      "on-tertiary-container": "#fffbff",
+                      "on-surface-variant": "#424754",
+                      "inverse-surface": "#2d3133",
+                      "surface-container": "#eceef0",
+                      "on-surface": "#191c1e",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "surface-container-high": "#e6e8ea",
+                      "text-main": "#1E293B",
+                      "text-muted": "#64748B",
+                      "surface-tint": "#005ac2",
+                      "primary-container": "#2170e4",
+                      "on-secondary-fixed-variant": "#005236",
+                      "secondary-fixed-dim": "#4edea3",
+                      "outline-variant": "#c2c6d6",
+                      "secondary": "#006c49",
+                      "surface-dim": "#d8dadc",
+                      "on-error-container": "#93000a",
+                      "outline": "#727785",
+                      "error-container": "#ffdad6",
+                      "secondary-fixed": "#6ffbbe",
+                      "tertiary-fixed": "#ffddb8",
+                      "surface-container-lowest": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "base": "4px",
+                      "sm": "12px",
+                      "lg": "24px",
+                      "md": "16px",
+                      "container-max": "1280px",
+                      "xs": "8px",
+                      "gutter": "24px",
+                      "xl": "32px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "Be Vietnam Pro"
+                      ],
+                      "headline-lg-mobile": [
+                              "Be Vietnam Pro"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "ipa-display": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Be Vietnam Pro"
+                      ],
+                      "display-lg": [
+                              "Be Vietnam Pro"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "ipa-display": [
+                              "15px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+          .input-glow:focus {
+              box-shadow: 0 0 0 4px rgba(0, 88, 190, 0.15);
+          }
+      </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex items-center justify-center p-md md:p-lg antialiased font-body-md">
+<!-- Main Container -->
+<div class="w-full max-w-5xl bg-surface-white rounded-2xl shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col md:flex-row min-h-[600px]">
+<!-- Left Side: Branding / Visual (Hidden on mobile) -->
+<div class="hidden md:flex md:w-1/2 relative flex-col justify-between p-xl bg-primary-container text-on-primary-container overflow-hidden">
+<!-- Background Image -->
+<div class="absolute inset-0 z-0">
+<div class="bg-cover bg-center w-full h-full opacity-90 mix-blend-multiply" data-alt="A bright, modern, and abstract representation of language learning and global connectivity. The composition features overlapping, translucent geographic shapes and glowing nodes connected by sweeping, dynamic lines in shades of deep primary blue and soft white. The scene is illuminated by clean, high-key ambient lighting, conveying a sense of academic clarity, focus, and modern educational technology." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB2xon7DQDKKCD64fe8DQux3nHa3gwA3cWTVJosEC129VlkPoCDKPFzUuyKQIsz0F8Y477OIehU8sBDR6YtQkcZNFWlCtOzR9YxMOG9xiKWJNxOe9hdKfBn35IiSjnwXK5gnR-PGwI-5QaBMPkg-LQzfhE3_IxgwkqIhNZTe-qJ6k4FeoPVIyzdLYfIklGcb2vnTJbW9bDYFt73Nz9pM3RMbSVeC68y4W--Pzbvx1zv7kgkMxdcKfrE')"></div>
+</div>
+<!-- Content overlay -->
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-8">
+<span class="material-symbols-outlined text-3xl font-bold" data-icon="school" data-weight="fill" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-headline-lg text-headline-lg">LinguistPro</span>
+</div>
+<h1 class="font-display-lg text-display-lg mb-6 max-w-md">Start your journey to language mastery.</h1>
+<p class="font-body-lg text-body-lg text-primary-fixed max-w-md opacity-90">Join thousands of learners achieving fluency with our methodical, distraction-free approach.</p>
+</div>
+<div class="relative z-10 flex gap-4 mt-12">
+<!-- Decorative elements -->
+<div class="w-12 h-1 bg-secondary-container rounded-full"></div>
+<div class="w-4 h-1 bg-surface-white/30 rounded-full"></div>
+<div class="w-4 h-1 bg-surface-white/30 rounded-full"></div>
+</div>
+</div>
+<!-- Right Side: Registration Form -->
+<div class="w-full md:w-1/2 p-lg md:p-xl flex flex-col justify-center bg-surface-white">
+<!-- Mobile Header (Visible only on mobile) -->
+<div class="md:hidden flex flex-col items-center mb-8">
+<div class="flex items-center gap-2 mb-2 text-primary">
+<span class="material-symbols-outlined text-2xl font-bold" data-icon="school" data-weight="fill" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-headline-md text-headline-md">LinguistPro</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-center">Create an Account</h2>
+</div>
+<!-- Desktop Header -->
+<div class="hidden md:block mb-8">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Create an Account</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Sign up to start learning with LinguistPro.</p>
+</div>
+<!-- Form -->
+<form class="space-y-5" onsubmit="event.preventDefault();">
+<!-- Full Name -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1" for="fullName">Full Name</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="person">person</span>
+</div>
+<input class="w-full pl-10 pr-4 py-3 bg-surface border border-outline-variant rounded-[12px] font-body-md text-body-md text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:ring-0 transition-all input-glow outline-none" id="fullName" name="fullName" placeholder="Jane Doe" required="" type="text"/>
+</div>
+</div>
+<!-- Email -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1" for="email">Email</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="mail">mail</span>
+</div>
+<input class="w-full pl-10 pr-4 py-3 bg-surface border border-outline-variant rounded-[12px] font-body-md text-body-md text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:ring-0 transition-all input-glow outline-none" id="email" name="email" placeholder="jane@example.com" required="" type="email"/>
+</div>
+</div>
+<!-- Password -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1" for="password">Password</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="lock">lock</span>
+</div>
+<input class="w-full pl-10 pr-4 py-3 bg-surface border border-outline-variant rounded-[12px] font-body-md text-body-md text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:ring-0 transition-all input-glow outline-none" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+</div>
+</div>
+<!-- Confirm Password -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1" for="confirmPassword">Confirm Password</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="lock">lock</span>
+</div>
+<input class="w-full pl-10 pr-4 py-3 bg-surface border border-outline-variant rounded-[12px] font-body-md text-body-md text-on-surface placeholder-on-surface-variant/60 focus:border-primary focus:ring-0 transition-all input-glow outline-none" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required="" type="password"/>
+</div>
+</div>
+<!-- Terms and Privacy -->
+<div class="flex items-start mt-2">
+<div class="flex items-center h-5">
+<input class="w-5 h-5 bg-surface border-outline-variant rounded focus:ring-primary text-primary transition-colors cursor-pointer" id="terms" name="terms" required="" type="checkbox"/>
+</div>
+<div class="ml-3 text-sm">
+<label class="font-body-md text-body-md text-on-surface-variant cursor-pointer" for="terms">
+                            I agree to the <a class="text-primary hover:underline font-medium" href="#">Terms</a> and <a class="text-primary hover:underline font-medium" href="#">Privacy Policy</a>
+</label>
+</div>
+</div>
+<!-- Submit Button -->
+<button class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-[12px] shadow-sm font-label-md text-label-md font-bold text-on-primary bg-primary hover:bg-on-primary-fixed-variant focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all active:scale-[0.98] mt-6" style="border-bottom: 2px solid #004395;" type="submit">
+                    Create Account
+                </button>
+</form>
+<!-- Divider -->
+<div class="mt-8 relative">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-surface-container-high"></div>
+</div>
+<div class="relative flex justify-center text-sm">
+<span class="px-2 bg-surface-white text-on-surface-variant font-label-md text-label-md">Or sign up with</span>
+</div>
+</div>
+<!-- Social Logins -->
+<div class="mt-6 grid grid-cols-2 gap-4">
+<button class="w-full inline-flex justify-center items-center py-2.5 px-4 border border-outline-variant rounded-[12px] shadow-sm bg-surface-white font-label-md text-label-md text-on-surface hover:bg-surface-container-low transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" type="button">
+<img alt="Google logo" class="h-5 w-5 mr-2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuL0NlaqVWvhh1YQvLhjTj5TE3msgf3GdEiC0Ps6D7xlonZZZL_pH3WzwC9KtUhOBe9yOMinZftWfUCex5x5B8ULeaQHOeGRNm0bzjDCion8gwzHdqc7tO6nCEKlzuhoAMZKss9L6ZL2tikt2lSDhVc0591xtCYmfN4_FvShrgl51cT2E-508Yb_0um_uDgXTMxi5XcT5SqA10Y_y4dFlUFn1QnmetJEksGFRcvwjkul0txotXTk_u"/>
+                    Google
+                </button>
+<button class="w-full inline-flex justify-center items-center py-2.5 px-4 border border-outline-variant rounded-[12px] shadow-sm bg-surface-white font-label-md text-label-md text-on-surface hover:bg-surface-container-low transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" type="button">
+<img alt="Apple logo" class="h-5 w-5 mr-2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDY84R-pKZLmohgdbKNtW-m004MwdUaPupEPBRAldPae0NDx96v1gHIPulJEs2g00tVYdMN3q5EMX9CTEfvyl2Hhn6kV6mzoe61A6wuhLbfCqCXfuLvLwLz9WsfOLZGJOvUjH_LVPbZzm6os-Vv1Lh31be99TxbKSwSPUdKgerm7Z8IYlPeF6Ix8t1QO9o1rUHiY0umpwtwbEnx0zD-6rFBYjEpRQTURsSTIo0DrONPmyGWkmE9Jyz6"/>
+                    Apple
+                </button>
+</div>
+<!-- Login Link -->
+<p class="mt-8 text-center font-body-md text-body-md text-on-surface-variant">
+                Already have an account? 
+                <a class="font-medium text-primary hover:text-on-primary-fixed-variant hover:underline transition-colors" href="#">Log In</a>
+</p>
+</div>
+</div>
+</body></html>

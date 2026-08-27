@@ -1,5 +1,21 @@
 # SDD Project Status
 
+## Current authoritative status — 2026-08-28
+
+| Field | Value |
+| --- | --- |
+| Current stage | Final Acceptance remediation verification |
+| Gate status | **BLOCKED** |
+| Completed remediation | Frontend coverage, reachable pronunciation, flashcard controls, dashboard metric grouping, React state-update defect, Node 26 Windows startup |
+| Current blockers | Complete browser workflow/mobile evidence was not authorized to rerun |
+| Current limitation | npm registry DNS prevented a fresh security audit; package lock is unchanged |
+| Next allowed action | Rerun the browser acceptance command with user authorization |
+| User approval status | Final Acceptance not approved; handoff **NOT READY** |
+
+Testing Verification is **PASS**: frontend 99.57/95.41/100/99.57 and backend 95.01/95.00/97.22/95.01 for statements/branches/functions/lines. The sequential full suite passes 127/127. Implementation remediation is verified by EVID-503–EVID-509. Browser evidence EVID-512 is incomplete, so it cannot satisfy Final Acceptance.
+
+This section supersedes inconsistent historical current-state language below without rewriting historical evidence.
+
 ## Current authoritative redesign status
 
 The 2026-08-27 integrated UI/UX redesign review is **FAIL**. All 28 frontend tests pass and backend coverage passes, but frontend branch coverage is 89.71% and function coverage is 65.21%, below the repository's independent 95% thresholds. Real-browser workflow and responsive viewport review were not available. The next allowed action is coverage remediation followed by browser verification. Handoff is **NOT READY**. This section supersedes inconsistent historical summaries below without rewriting their evidence.

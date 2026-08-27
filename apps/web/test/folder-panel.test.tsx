@@ -32,6 +32,7 @@ describe("TEST-012 folder UI", () => {
     render(<FolderPanel api={api} />);
     await waitFor(() => expect(screen.getByRole("alert")).toBeInTheDocument());
     fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+    await waitFor(() => expect(api.list).toHaveBeenCalledTimes(2));
     fireEvent.click(screen.getByRole("button", { name: "Create folder" }));
     expect(screen.getByRole("alert")).toHaveTextContent("1 to 50");
   });

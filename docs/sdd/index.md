@@ -1,5 +1,15 @@
 # SDD Project Dashboard
 
+## Current authoritative gate — 2026-08-28
+
+Final Acceptance is **BLOCKED**. The frontend coverage defect is closed: EVID-504 reports 99.57% statements, 95.41% branches, 100% functions, and 99.57% lines. Backend coverage remains passing at 95.01% statements, 95.00% branches, 97.22% functions, and 95.01% lines (EVID-506). The complete 127-test regression passes sequentially (EVID-507), and typecheck, lint, formatting, production build, dependency-tree inspection, and whitespace checks pass (EVID-508–EVID-509).
+
+The remaining gate blocker is the required complete real-browser workflow and mobile screenshot. Headless Chrome reached and captured the real dashboard, but the workflow did not pass before the browser rerun was denied (EVID-511–EVID-512). The npm registry was also unreachable during the current audit attempt; the lockfile is unchanged and historical zero-vulnerability evidence remains EVID-493, but the current audit attempt is recorded as a limitation in EVID-510.
+
+Next allowed action: authorize and rerun `npm.cmd run browser:acceptance -- http://localhost:5173` while `npm.cmd run dev` is running on the default port, then inspect the desktop/mobile screenshots and make the Final Acceptance decision.
+
+This section supersedes older current-state summaries below without changing their historical evidence.
+
 ## Current authoritative gate
 
 Post-acceptance UI/UX Redesign Review: **FAIL**. Blockers are frontend coverage below 95% and missing real-browser verification. TASK-001 through TASK-022 remain historically complete, but the redesigned handoff is **NOT READY**. Next allowed action: remediate coverage and execute the browser workflow. Evidence: EVID-493–EVID-501.

@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx src/server.ts",
-    "start": "tsx src/server.ts",
+    "dev": "node --import ../../scripts/tsx-windows-shim.mjs --import tsx src/server.ts",
+    "start": "node --import ../../scripts/tsx-windows-shim.mjs --import tsx src/server.ts",
     "db:generate": "prisma generate --schema prisma/schema.prisma",
     "db:migrate:deploy": "prisma migrate deploy --schema prisma/schema.prisma",
     "db:studio": "prisma studio --schema prisma/schema.prisma",

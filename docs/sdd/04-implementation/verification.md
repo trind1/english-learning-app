@@ -1,5 +1,29 @@
 # TASK-001 through TASK-009 Implementation Verification
 
+## Final Acceptance remediation verification — 2026-08-28
+
+STATUS: **PASS** for implementation remediation; downstream Final Acceptance **BLOCKED**
+
+| Evidence | Command or source | Exit code | Result |
+| --- | --- | ---: | --- |
+| EVID-503 | Initial `npm.cmd run coverage:web` | 1 | Baseline failed at 89.81% statements, 89.71% branches, 65.21% functions, and 89.81% lines. |
+| EVID-504 | Final `npm.cmd run coverage:web` | 0 | 32 tests pass; 99.57% statements, 95.41% branches, 100% functions, 99.57% lines. |
+| EVID-505 | Final `npm.cmd run test:web` | 0 | 11 files and 32 tests pass without React `act` warnings. |
+| EVID-506 | Sequential `npm.cmd run coverage:api` | 0 | 12 files and 95 tests pass; 95.01% statements, 95.00% branches, 97.22% functions, 95.01% lines. |
+| EVID-507 | Sequential `npm.cmd test` | 0 | Backend 95/95 and frontend 32/32 pass; 127 total tests. A prior parallel run timed out one migration hook and is retained as failed attempt evidence. |
+| EVID-508 | `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `git diff --check` | 0 | All pass; production assets emitted. |
+| EVID-509 | `npm.cmd ls --all` | 0 | Installed dependency tree resolves; platform-specific unmet optional packages are expected. |
+| EVID-510 | `npm.cmd audit --audit-level=low` inside and outside sandbox | 1 | Registry request failed; escalated attempt reported `ENOTFOUND registry.npmjs.org`. No vulnerability result was produced. |
+| EVID-511 | Three `npm.cmd run dev` attempts | 1, 1, then running | First two exposed Node 26/Windows `tsx` `uv_os_get_passwd` ENOMEM; the preload shim allowed API port 3000 and Vite port 5175 to start. Processes were stopped after verification. |
+| EVID-512 | Headless Chrome workflow attempts and user authorization boundary | 1 / denied | Chrome rendered the real dashboard and produced a desktop screenshot. Two script defects were diagnosed; authorization for the corrected rerun was denied. No complete workflow or mobile evidence exists. |
+| EVID-513 | `npm.cmd run setup` | 0 | Prisma Client generated; the single committed migration was found; no pending migration existed; setup completed. |
+
+Limitations: EVID-512 does not verify the full browser journey. The desktop screenshot predates the dashboard metric-grouping correction and is retained as failed-review evidence. EVID-510 is not a successful current security audit; historical EVID-493 remains applicable only because `package-lock.json` is unchanged.
+
+NEXT_ALLOWED_ACTION: authorize the browser acceptance rerun and inspect desktop/mobile output.
+
+USER_APPROVAL_REQUIRED: Yes.
+
 ## Integrated UI/UX redesign verification — 2026-08-27
 
 STATUS: **FAIL**

@@ -1,5 +1,18 @@
 # Specification Traceability Matrix
 
+## Current remediation traceability — 2026-08-28
+
+| Change | Requirements / rules | Tasks | Tests / evidence | Status |
+| --- | --- | --- | --- | --- |
+| Reachable pronunciation in vocabulary and flashcards | FR-005, BR-007, BR-022, AC-005, AC-025 | TASK-013, TASK-015, TASK-016 | TEST-013, TEST-015, TEST-016, EVID-504–EVID-507 | PASS |
+| Flashcard progress, previous, next, shuffle, and restart controls | FR-006, BR-008, BR-023, AC-006 | TASK-016 | TEST-016, EVID-504–EVID-507 | PASS |
+| Integrated navigation/API journeys and error branches | FR-001–FR-016, NFR-011–NFR-017 | TASK-011–TASK-021 | TEST-011, TEST-021, EVID-504–EVID-507 | PASS |
+| Dashboard metric label/value grouping | FR-012, AC-009, NFR-011–NFR-013 | TASK-018, TASK-021 | TEST-018, EVID-505, EVID-507–EVID-508 | PASS |
+| Node 26 Windows runtime compatibility | NFR-016–NFR-017 | TASK-001, TASK-021 | EVID-511 | PASS |
+| Full real-browser and responsive workflow | AC-022 and Final Acceptance runtime workflow | TASK-021–TASK-022 | EVID-512 | BLOCKED |
+
+No database schema, migration, REST contract, or approved requirement changed. The local SQLite data remains in the ignored `apps/api/prisma/dev.db` file configured by `DATABASE_URL`; the committed migration remains unchanged.
+
 ## Current redesign traceability state
 
 The integrated redesign remains mapped to TASK-011–TASK-021 and FR-001–FR-016/NFR-001–NFR-013. Its review status is **FAIL** and handoff is **NOT READY** because frontend coverage and browser evidence are incomplete. EVID-493–EVID-501 record the current result; historical PASS evidence remains unchanged.

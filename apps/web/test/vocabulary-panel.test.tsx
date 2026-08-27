@@ -13,6 +13,9 @@ describe("TEST-013 vocabulary and IPA UI", () => {
     await waitFor(() =>
       expect(screen.getByText("IPA unavailable")).toBeInTheDocument(),
     );
+    expect(
+      screen.getByRole("button", { name: "Pronounce journey" }),
+    ).toBeInTheDocument();
     fireEvent.change(screen.getByLabelText("Word"), {
       target: { value: "road" },
     });

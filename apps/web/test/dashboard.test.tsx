@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { Dashboard } from "../src/Dashboard";
 describe("TEST-018 dashboard UI", () => {
   it("renders all metrics", async () => {
+    const onAction = vi.fn();
     const load = vi.fn().mockResolvedValue({
       folderCount: 1,
       vocabularyCount: 2,
@@ -12,9 +13,15 @@ describe("TEST-018 dashboard UI", () => {
       incorrectAnswerCount: 1,
       accuracyPercent: 80,
     });
-    render(<Dashboard load={load} />);
+    render(<Dashboard load={load} onAction={onAction} />);
     await waitFor(() => expect(screen.getByText("80%")).toBeInTheDocument());
     expect(screen.getByText("Completed sessions")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Create folder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Add vocabulary" }));
+    fireEvent.click(screen.getByRole("button", { name: "Import CSV" }));
+    fireEvent.click(screen.getByRole("button", { name: "Start study" }));
+    expect(onAction).toHaveBeenCalledWith("library");
+    expect(onAction).toHaveBeenCalledWith("flashcards");
   });
   it("shows loading, error, and retry", async () => {
     const load = vi

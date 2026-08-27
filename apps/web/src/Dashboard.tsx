@@ -55,16 +55,26 @@ export const Dashboard = ({
         </div>
       </div>
       <dl className="metrics-grid">
-        <dt>Folders</dt>
-        <dd>{data.folderCount}</dd>
-        <dt>Vocabulary</dt>
-        <dd>{data.vocabularyCount}</dd>
-        <dt>Completed sessions</dt>
-        <dd>{data.completedSessionCount}</dd>
-        <dt>Correct answers</dt>
-        <dd>{data.correctAnswerCount}</dd>
-        <dt>Incorrect answers</dt>
-        <dd>{data.incorrectAnswerCount}</dd>
+        <div>
+          <dt>Folders</dt>
+          <dd>{data.folderCount}</dd>
+        </div>
+        <div>
+          <dt>Vocabulary</dt>
+          <dd>{data.vocabularyCount}</dd>
+        </div>
+        <div>
+          <dt>Completed sessions</dt>
+          <dd>{data.completedSessionCount}</dd>
+        </div>
+        <div>
+          <dt>Correct answers</dt>
+          <dd>{data.correctAnswerCount}</dd>
+        </div>
+        <div>
+          <dt>Incorrect answers</dt>
+          <dd>{data.incorrectAnswerCount}</dd>
+        </div>
       </dl>
       <div className="quick-actions">
         <h2>Quick actions</h2>
