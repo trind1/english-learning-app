@@ -1,10 +1,10 @@
-# TASK-001 through TASK-003 Implementation Verification
+# TASK-001 through TASK-005 Implementation Verification
 
 | Field | Value |
 |---|---|
 | Stage | Code Generation |
-| Current task | TASK-003 — Prisma schema and initial migration |
-| Task decision | TASK-001–TASK-003 PASS |
+| Current task | TASK-005 — Vocabulary backend |
+| Task decision | TASK-001–TASK-005 PASS |
 | Overall Implementation gate | IN PROGRESS; not eligible for PASS |
 | Working directory | `/home/trind1/hoi_nhap_ky_thuat/english-learning-app` |
 | Verified | 2026-08-27 |
@@ -13,7 +13,7 @@
 
 TASK-001 passes. The corrected repository state installs reproducibly, typechecks, lints, formats, runs TEST-001, measures frontend and backend coverage separately, rejects an impossible threshold in both configurations, reports no known audit vulnerability, and passes the whitespace check.
 
-TASK-001 and TASK-002 were approved by the user, who authorized TASK-003. The current decision applies only through TASK-003. It does not pass the complete Implementation stage and does not authorize TASK-004.
+TASK-001 through TASK-004 were approved by the user, who authorized TASK-005. The current decision applies only through TASK-005. It does not pass the complete Implementation stage and does not authorize TASK-006.
 
 ## Final verification evidence
 
@@ -83,7 +83,7 @@ These commands explain the corrected state; failed checks were not treated as fi
 
 `IMPLEMENTATION STAGE: IN PROGRESS`
 
-Next allowed action: user review of TASK-003. User approval is required before TASK-004.
+Next allowed action: user review of TASK-004. User approval is required before TASK-005.
 
 ## TASK-002 verification
 
@@ -251,4 +251,144 @@ All commands used `/home/trind1/hoi_nhap_ky_thuat/english-learning-app` as the w
 
 `TASK-003: PASS`
 
-`IMPLEMENTATION STAGE: IN PROGRESS (3/22)`
+`TASK-003 CHECKPOINT: IMPLEMENTATION IN PROGRESS (3/22)`
+
+## TASK-004 verification
+
+### Gate decision
+
+**Status:** ✅ PASS
+
+**Decision owner:** Backend Lead and QA
+
+**Decision reason:** All folder contracts, boundary behavior, persistence, safe errors, regressions, quality checks, separate coverage, audit, and repository-state checks pass with actual evidence.
+
+**Next allowed action:** User review of TASK-004; TASK-005 remains locked.
+
+### Verification checklist
+
+| ID | Criterion | Result | Evidence |
+|---|---|---|---|
+| VER-429 | TASK-003 is approved and all TASK-004 requirement/criterion identifiers exist. | ✅ PASS | EVID-429 |
+| VER-430 | Folder names enforce trimming, strict fields, and 1–50 boundaries. | ✅ PASS | EVID-430 |
+| VER-431 | Empty list, persistence, detail, and vocabulary-count responses match the contract. | ✅ PASS | EVID-430 |
+| VER-432 | Normalized case-insensitive duplicates return safe `FOLDER_DUPLICATE`. | ✅ PASS | EVID-430 |
+| VER-433 | Invalid/missing IDs and unexpected repository failures use safe envelopes. | ✅ PASS | EVID-430 |
+| VER-434 | Full regressions, typecheck, lint, formatting, and separate coverage pass. | ✅ PASS | EVID-431–EVID-436 |
+| VER-435 | Audit, diff, no-database, TASK-005 boundary, and governance synchronization pass. | ✅ PASS | EVID-437–EVID-438 |
+
+### Commands and actual exit codes
+
+All commands used `/home/trind1/hoi_nhap_ky_thuat/english-learning-app` as the working directory.
+
+| Command | Exit code | Actual result |
+|---|---:|---|
+| TASK-004 scope/dependency/identifier and worktree inspection | 0 | Dependency and exact scope confirmed; unrelated changes preserved. |
+| First `npm run typecheck` | 1 | One unused test import; corrected. |
+| First `npm run lint` | 1 | Two unused test identifiers; corrected. |
+| TASK-004 Prettier write | 0 | Authored folder files formatted. |
+| `npm run test:api -- --run test/folders.test.ts` | 0 | TEST-004: 14/14 tests passed. |
+| Final `npm run coverage:api` | 0 | 36 tests passed; 99.39% statements, 98.66% branches, 100% functions, 99.39% lines. |
+| Final `npm run typecheck` | 0 | API, web, and contracts passed. |
+| Final `npm run lint` | 0 | Passed with zero warnings. |
+| Pre-correction `npm run format:check` | 1 | Router wrapping differed from canonical Prettier output. |
+| Final router Prettier write plus `npm run format:check` | 0 | All configured files matched Prettier. |
+| Final `npm test` | 0 | 36 backend and 4 frontend tests passed. |
+| Final `npm run coverage:web` | 0 | 100% statements, branches, functions, and lines. |
+| Final `npm audit --json` | 0 | Zero vulnerabilities at every severity. |
+| Final `git diff --check` | 0 | No whitespace errors. |
+| Final no-database, TASK-005 boundary, and governance synchronization audit | 0 | No disposable database or TASK-005 module; five control documents agree. |
+
+### Requirement and test mapping
+
+| Scope | Implementation/test evidence | Result |
+|---|---|---|
+| FR-001 / AC-001 | Folder list/create/detail routes with persistence | ✅ PASS |
+| FR-014 / AC-010 | Empty, validation, duplicate, not-found, and safe unexpected-failure states | ✅ PASS within backend boundary |
+| BR-003 | Folder detail exposes vocabulary count without implementing vocabulary mutation | ✅ PASS within TASK-004 boundary |
+| BR-016 / AC-001 | Trimmed folder names enforce 1–50 characters | ✅ PASS |
+| PC-002 | Service/repository port/Prisma adapter/HTTP separation | ✅ PASS |
+| TEST-004 | EVID-429–EVID-438 | ✅ PASS |
+
+### Findings and limitations
+
+- Initial test-only unused identifiers and one final formatting mismatch were corrected and rerun.
+- The backend coverage report includes the type-only repository port as a zero-runtime uncovered file; every metric still exceeds 95%, and no exclusion was added.
+- No persistent database file or TASK-005 source exists.
+
+`TASK-004: PASS`
+
+`IMPLEMENTATION STAGE: IN PROGRESS (4/22)`
+
+## TASK-005 verification
+
+### Gate decision
+
+**Status:** ✅ PASS
+
+**Decision owner:** Backend Lead and QA
+
+**Decision reason:** Vocabulary contracts, validation, persistence/reload behavior, duplicate rules, safe errors, regressions, independent coverage, dependency checks, security audit, and repository-state checks pass with actual evidence.
+
+**Next allowed action:** User review of TASK-005; TASK-006 remains locked.
+
+### Verification checklist
+
+| ID | Criterion | Result | Evidence |
+|---|---|---|---|
+| VER-436 | TASK-004 is approved and all TASK-005 requirement, rule, and criterion identifiers exist. | ✅ PASS | EVID-439 |
+| VER-437 | Strict vocabulary fields enforce trimming and approved word, meaning, and IPA boundaries. | ✅ PASS | EVID-440 |
+| VER-438 | Omitted/blank IPA becomes null, while provided IPA and Unicode vocabulary are preserved. | ✅ PASS | EVID-440 |
+| VER-439 | Same-folder normalized duplicates fail, cross-folder vocabulary succeeds, and missing folders are safe. | ✅ PASS | EVID-440 |
+| VER-440 | Empty lists and data persisted across a new Prisma client connection match the approved contracts. | ✅ PASS | EVID-440 |
+| VER-441 | Full regressions, typecheck, lint, formatting, and independent coverage pass. | ✅ PASS | EVID-441–EVID-445 |
+| VER-442 | Dependency inspection, audit, diff, scope, database-file, and synchronization checks pass. | ✅ PASS | EVID-446–EVID-448 |
+
+### Commands and actual exit codes
+
+All commands used `/home/trind1/hoi_nhap_ky_thuat/english-learning-app` as the working directory.
+
+| Command | Exit code | Actual result |
+|---|---:|---|
+| TASK-005 governance, dependency, identifier, task/test, contract, and worktree inspection commands | 0 | Approved dependencies and exact boundary confirmed; unrelated changes preserved. |
+| `npm exec prettier -- --write` with the nine TASK-005 source/test files | 0 | TASK-005 authored files formatted. |
+| First `npm run typecheck` | 0 | API, web, and contracts passed. |
+| Restricted `npm run test:api -- --run test/vocabulary.test.ts` | 1 | Sandbox denied Prisma child-process creation and Supertest listener binding (`EPERM`); repeated with the required local-test permissions. |
+| Final `npm run test:api -- --run test/vocabulary.test.ts` | 0 | TEST-005: 20/20 tests passed. |
+| Initial combined `npm run lint && npm run format:check` | 0 | ESLint and Prettier checks passed. |
+| `npm test` | 0 | 56 backend and 4 frontend tests passed. |
+| `npm run coverage:api` | 0 | 98.94% statements, 97.16% branches, 100% functions, 98.94% lines. |
+| `npm run coverage:web` | 0 | 100% statements, branches, functions, and lines. |
+| `npm ls --all` | 0 | Dependency tree valid; unmet entries are optional platform/feature packages. |
+| Restricted `npm audit --audit-level=low` | 1 | Registry lookup failed with `EAI_AGAIN`; repeated with approved registry access. |
+| Final `npm audit --audit-level=low` | 0 | Found zero vulnerabilities. |
+| Final `npm run typecheck` | 0 | API, web, and contracts passed. |
+| Final `npm run lint` | 0 | Passed with zero warnings. |
+| Final `npm run format:check` | 0 | All configured files matched Prettier. |
+| Final TASK-005 scope, no-database-file, and synchronization audit | 0 | No TASK-006 module or local SQLite file; five control documents agree. |
+| Final `git diff --check` | 0 | No whitespace errors. |
+
+### Requirement and test mapping
+
+| Scope | Implementation/test evidence | Result |
+|---|---|---|
+| FR-002 / AC-002 | Manual vocabulary create/list contracts, validation, persistence, and duplicate handling | ✅ PASS within backend boundary |
+| FR-004 / AC-004 | Optional IPA stored and returned as provided or null; no fabricated value | ✅ PASS within backend boundary |
+| FR-013 / AC-009 | Vocabulary persists in SQLite and survives a new Prisma client connection | ✅ PASS |
+| FR-014 / AC-010 / AC-023 | Empty, validation, duplicate, not-found, and safe unexpected-failure envelopes | ✅ PASS within backend boundary |
+| BR-001–BR-003 | Required word/meaning, optional IPA, and required Folder relationship | ✅ PASS |
+| BR-016–BR-018 | Exact limits and folder-scoped lowercase duplicate normalization | ✅ PASS |
+| BR-021 | Blank/omitted IPA becomes null without fabrication | ✅ PASS |
+| PC-002 | HTTP, service, repository port, and Prisma adapter remain separated | ✅ PASS |
+| TEST-005 | EVID-439–EVID-448 | ✅ PASS |
+
+### Findings and limitations
+
+- The initial focused-test and audit failures were environment restrictions, not product defects; identical final commands passed with the permissions needed for local processes/network access.
+- No dependency or lockfile change was required for TASK-005.
+- No migration was needed because TASK-003 already committed the approved Vocabulary table, relationship, and unique constraint.
+- CSV import, audio playback, vocabulary UI, and all TASK-006+ behavior remain unimplemented.
+
+`TASK-005: PASS`
+
+`IMPLEMENTATION STAGE: IN PROGRESS (5/22)`

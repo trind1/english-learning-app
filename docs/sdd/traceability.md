@@ -6,14 +6,14 @@
 | Stage | Code Generation |
 | Owner | Business Analyst |
 | Status | 🟡 IN PROGRESS |
-| Version | 1.2 |
+| Version | 1.4 |
 | Last updated | 2026-08-27 |
 | Depends on | [Product specification](01-spec/spec.md), [Technical plan](02-plan/plan.md), [Tasks](03-tasks/tasks.md) |
-| Next review | User review of verified TASK-003 |
+| Next review | User review of verified TASK-005 |
 
 > **Executive summary**
 >
-> Every requirement maps to approved acceptance criteria, planned components, and implementation tasks. TASK-001 through TASK-003 map implemented foundations to TEST-001–TEST-003 and EVID-401–EVID-428. Later tasks remain not started.
+> Every requirement maps to approved acceptance criteria, planned components, and implementation tasks. TASK-001 through TASK-005 map implemented code to TEST-001–TEST-005 and EVID-401–EVID-448. Later tasks remain not started.
 
 ## Governance state
 
@@ -22,7 +22,7 @@
 | Specification | ✅ PASS | Approved by the request authorizing Planning | Planning authorized |
 | Planning | ✅ PASS | Approved by current Task Decomposition request | Task Decomposition authorized |
 | Task Decomposition | ✅ PASS | Approved | TASK-001 authorized |
-| Code Generation | 🟡 IN PROGRESS | TASK-001–TASK-002 approved; TASK-003 pending review | TASK-004+ locked |
+| Code Generation | 🟡 IN PROGRESS | TASK-001–TASK-004 approved; TASK-005 pending review | TASK-006+ locked |
 
 ## Original request coverage
 
@@ -91,16 +91,16 @@
 
 | Requirement | Task coverage | Planned test coverage | Downstream state |
 |---|---|---|---|
-| FR-001 | TASK-004, TASK-012 | TEST-004, TEST-012 | Code locked |
-| FR-002 | TASK-005, TASK-013 | TEST-005, TEST-013 | Code locked |
+| FR-001 | TASK-004, TASK-012 | TEST-004, TEST-012 | TASK-004 PASS; frontend remainder locked |
+| FR-002 | TASK-005, TASK-013 | TEST-005, TEST-013 | TASK-005 PASS; frontend remainder locked |
 | FR-003 | TASK-006, TASK-014 | TEST-006, TEST-014 | Code locked |
-| FR-004 | TASK-005, TASK-013 | TEST-005, TEST-013 | Code locked |
+| FR-004 | TASK-005, TASK-013 | TEST-005, TEST-013 | TASK-005 PASS; frontend remainder locked |
 | FR-005 | TASK-015 | TEST-015 | Code locked |
 | FR-006 | TASK-016 | TEST-016 | Code locked |
 | FR-007–FR-009 | TASK-007, TASK-017 | TEST-007, TEST-017 | Code locked |
 | FR-010–FR-011 | TASK-008, TASK-017 | TEST-008, TEST-017 | Code locked |
-| FR-012–FR-013 | TASK-003, TASK-005, TASK-008, TASK-009, TASK-018 | TEST-003, TEST-005, TEST-008, TEST-009, TEST-018 | TASK-003 PASS for FR-013 persistence foundation; remainder locked |
-| FR-014 | TASK-002, TASK-004–TASK-019 | TEST-002, TEST-004–TEST-019 | TASK-002 PASS; remainder locked |
+| FR-012–FR-013 | TASK-003, TASK-005, TASK-008, TASK-009, TASK-018 | TEST-003, TEST-005, TEST-008, TEST-009, TEST-018 | TASK-003 and TASK-005 PASS for persistence; remainder locked |
+| FR-014 | TASK-002, TASK-004–TASK-019 | TEST-002, TEST-004–TEST-019 | TASK-002, TASK-004, and TASK-005 PASS; remainder locked |
 | FR-015–FR-016 | TASK-010, TASK-019 | TEST-010, TEST-019 | Code locked |
 | NFR-001–NFR-004 | TASK-001, TASK-021 | TEST-001, TEST-021 | Code locked |
 | NFR-005–NFR-008 | TASK-001, TASK-020 | TEST-001, TEST-020 | Code locked |
@@ -150,7 +150,37 @@
 | BR-025 | Schema represents completed sessions only; no draft persistence model exists | Completion workflow begins in TASK-008 |
 | AC-025 / ADR-003 / ADR-005 | Real migration replay and failed-answer transaction rollback preserve consistency | Feature-specific failure consistency continues in later tasks |
 
-TASK-004 through TASK-022 remain `NOT STARTED`; no code or test evidence is claimed for them.
+## TASK-004 implementation mapping
+
+| Task | Requirements and rules | Acceptance | Component | Code | Test | Evidence | Status |
+|---|---|---|---|---|---|---|---|
+| TASK-004 | FR-001, FR-014, BR-003, BR-016 | AC-001, AC-010 | PC-002 | Shared schemas; folder service/repository port/Prisma adapter/router | TEST-004 | EVID-429–EVID-438 | ✅ PASS |
+
+| Trace item | TASK-004 evidence | Remaining coverage |
+|---|---|---|
+| FR-001 / AC-001 | Folder list/create/detail persist and return approved data | Folder UI remains TASK-012 |
+| FR-014 / AC-010 | Empty, validation, duplicate, not-found, and unexpected error responses verified | Feature-specific states continue in later tasks |
+| BR-003 | Detail returns vocabulary count through the approved Folder relation | Vocabulary behavior remains TASK-005 |
+| BR-016 | Strict trimmed 1–50 folder-name boundaries verified | Other field limits remain TASK-005 and later tasks |
+| PC-002 | HTTP, application service, repository port, and Prisma adapter are separated | Vocabulary/import modules remain TASK-005–TASK-006 |
+
+## TASK-005 implementation mapping
+
+| Task | Requirements and rules | Acceptance | Component | Code | Test | Evidence | Status |
+|---|---|---|---|---|---|---|---|
+| TASK-005 | FR-002, FR-004, FR-013–FR-014, BR-001–BR-003, BR-016–BR-018, BR-021 | AC-002, AC-004, AC-009, AC-010, AC-023 | PC-002, PC-010 | Shared schemas; vocabulary service/repository port/Prisma adapter/router; application composition | TEST-005 | EVID-439–EVID-448 | ✅ PASS |
+
+| Trace item | TASK-005 evidence | Remaining coverage |
+|---|---|---|
+| FR-002 / AC-002 | Strict manual vocabulary creation, list, persistence, and duplicate responses verified | Vocabulary UI remains TASK-013 |
+| FR-004 / AC-004 / BR-002 / BR-021 | IPA is preserved when supplied and null when omitted/blank; no value is fabricated | Display and audio behavior remain TASK-013 and TASK-015 |
+| FR-013 / AC-009 | Vocabulary survives a fresh Prisma client connection against migrated SQLite storage | Session and dashboard persistence remain TASK-008–TASK-009 |
+| FR-014 / AC-010 / AC-023 | Empty, validation, missing-folder, duplicate, and unexpected-error responses are safe | UI states and later feature errors remain later tasks |
+| BR-001, BR-016 | Word/meaning trimming and exact 1–100/1–500 limits verified | CSV row validation remains TASK-006 |
+| BR-003, BR-017–BR-018 | Required Folder relation and folder-scoped lowercase duplicate behavior verified | CSV duplicate workflow remains TASK-006 |
+| PC-002 / PC-010 | Contract, service, repository port, Prisma adapter, and safe router boundaries remain separated | CSV/API services continue in TASK-006 |
+
+TASK-006 through TASK-022 remain `NOT STARTED`; no code or test evidence is claimed for them.
 
 ## Business-rule mapping
 

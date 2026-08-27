@@ -3,20 +3,20 @@
 | Field | Value |
 |---|---|
 | Stage | Code Generation |
-| Current task | TASK-003 — Prisma schema and initial migration |
-| Verified tasks | TASK-001, TASK-002, TASK-003 |
+| Current task | TASK-005 — Vocabulary backend |
+| Verified tasks | TASK-001–TASK-005 |
 | Overall stage status | IN PROGRESS |
 | Owner | Frontend and Backend Leads |
 | Last updated | 2026-08-27 |
-| Current requirements | FR-013, BR-003, BR-010, BR-017–BR-018, BR-025 |
-| Current components | PC-002, PC-007 |
-| Current test | TEST-003 |
+| Current requirements | FR-002, FR-004, FR-013–FR-014, BR-001–BR-003, BR-016–BR-018, BR-021 |
+| Current component | PC-002 |
+| Current test | TEST-005 |
 
 ## Outcome
 
 TASK-001 establishes the approved npm workspace and strict TypeScript quality foundation. Frontend and backend tests and coverage remain independently configured. No product feature, database schema, migration, REST endpoint, or TASK-002 work was introduced.
 
-TASK-001 through TASK-003 pass their verification. The complete Implementation stage does not pass: 3 of 22 tasks are implemented, and TASK-004 through TASK-022 remain not started.
+TASK-001 through TASK-005 pass their verification. The complete Implementation stage does not pass: 5 of 22 tasks are implemented, and TASK-006 through TASK-022 remain not started.
 
 ## Pre-implementation checks
 
@@ -97,7 +97,7 @@ The first audit identified 12 vulnerabilities. Dependencies were moved to patche
 
 ## Next allowed action
 
-User review and approval of TASK-003 only. TASK-004 requires separate explicit authorization.
+User review and approval of TASK-005 only. TASK-006 requires separate explicit authorization.
 
 ## TASK-002 implementation
 
@@ -233,4 +233,145 @@ The migration was verified by applying it to fresh disposable databases and then
 - Prisma schema/configuration and generated client code are not counted as authored runtime source coverage. TEST-003 verifies them through real migration and constraint behavior instead.
 - In this restricted execution environment, the Prisma schema engine requires an empty SQLite file to exist before migration. The test utility creates that disposable file and then uses the real committed migration; it does not create schema manually.
 - Prisma 6.19.3 was rejected after its CLI dependency produced three high-severity audit findings. Final Prisma CLI and client versions are aligned at audit-clean, Node-18-compatible `6.12.0`.
-- TASK-004 through TASK-022 remain not started.
+- At the TASK-003 checkpoint, TASK-004 through TASK-022 were not started; current TASK-004 evidence is recorded below.
+
+## TASK-004 implementation
+
+### Dependency and scope evidence
+
+- The user explicitly approved TASK-003 and authorized TASK-004 on 2026-08-27.
+- TASK-003, the only dependency, is `PASS` and user-approved.
+- FR-001, FR-014, BR-003, BR-016, AC-001, and AC-010 exist in the approved Specification.
+- Existing unrelated working-tree changes were inspected and preserved.
+- No vocabulary endpoint, vocabulary service, CSV behavior, or TASK-005 artifact was created.
+
+### Files created
+
+- `packages/contracts/src/folders.ts`
+- `apps/api/src/app.ts`
+- `apps/api/src/modules/folders/folder-errors.ts`
+- `apps/api/src/modules/folders/folder-repository.ts`
+- `apps/api/src/modules/folders/folder-service.ts`
+- `apps/api/src/modules/folders/prisma-folder-repository.ts`
+- `apps/api/src/modules/folders/folder-router.ts`
+- `apps/api/test/folders.test.ts`
+
+### Files modified
+
+- `packages/contracts/src/index.ts`
+- The five synchronized SDD implementation/governance documents.
+
+### Delivered behavior
+
+- `GET /api/v1/folders` returns `{ data: { folders: [] } }` for an empty database and typed folder summaries otherwise.
+- `POST /api/v1/folders` strictly accepts only `name`, trims it, enforces 1–50 characters, derives the lowercase normalized key, persists it, and returns `201`.
+- Case-insensitive duplicates return safe `409 FOLDER_DUPLICATE` responses without Prisma details.
+- `GET /api/v1/folders/:folderId` returns folder metadata plus an accurate vocabulary count or safe validation/not-found responses.
+- The application service depends on a repository port. The Prisma adapter owns persistence details and translates its unique-key conflict into an application error.
+- Unexpected repository failures reach the existing safe generic `500 INTERNAL_ERROR` boundary without exposing raw database information.
+
+### TEST-004 coverage
+
+- Empty folder list.
+- Name boundaries at 0/blank, 1, 50, and 51 characters, including trimming and unknown-field rejection.
+- Case-insensitive duplicate rejection.
+- List/detail persistence and vocabulary count.
+- Invalid and missing folder identifiers.
+- Safe unexpected repository failure handling.
+- Transport mapping and unexpected Prisma adapter error propagation.
+
+### TASK-004 evidence
+
+| Evidence ID | Result |
+|---|---|
+| EVID-429 | TASK-003 dependency, approved identifiers, file boundary, and dirty worktree were verified. |
+| EVID-430 | TEST-004 passed: 14/14 focused tests. |
+| EVID-431 | Full regressions passed: 36 backend and 4 frontend tests. |
+| EVID-432 | Workspace typecheck passed. |
+| EVID-433 | Lint passed with zero warnings. |
+| EVID-434 | Final formatting check passed. |
+| EVID-435 | Backend coverage passed: 99.39% statements, 98.66% branches, 100% functions, 99.39% lines. |
+| EVID-436 | Frontend coverage passed at 100% for all four metrics. |
+| EVID-437 | Dependency audit passed with zero vulnerabilities. |
+| EVID-438 | Final `git diff --check`, no-database, TASK-005 boundary, and synchronization checks passed. |
+
+### Risks and limitations
+
+- The folder router is implemented as an injectable module but is not attached to a long-running process entry point; application startup belongs to a later authorized composition task.
+- The repository port file contains only TypeScript types. V8 reports it as an uncovered zero-runtime file, but it remains included in the backend report; no exclusion was added to raise coverage.
+- Folder deletion is not an approved endpoint.
+- At the TASK-004 checkpoint, TASK-005 through TASK-022 were not started; current TASK-005 evidence is recorded below.
+
+## TASK-005 implementation
+
+### Dependency and scope evidence
+
+- The user explicitly approved TASK-004 and authorized TASK-005 on 2026-08-27.
+- TASK-003 and TASK-004 provide the approved migrated schema, Folder service, and application composition required by TASK-005.
+- FR-002, FR-004, FR-013–FR-014, BR-001–BR-003, BR-016–BR-018, BR-021, AC-002, AC-004, AC-009, AC-010, and AC-023 exist in the approved Specification.
+- Existing unrelated TASK-001–TASK-004 and SDD working-tree changes were inspected and preserved.
+- CSV import, audio playback, flashcards, tests/sessions, dashboard, AI behavior, frontend vocabulary UI, and TASK-006+ behavior remain outside this task.
+
+### Files created
+
+- `packages/contracts/src/vocabulary.ts`
+- `apps/api/src/modules/vocabulary/vocabulary-errors.ts`
+- `apps/api/src/modules/vocabulary/vocabulary-repository.ts`
+- `apps/api/src/modules/vocabulary/vocabulary-service.ts`
+- `apps/api/src/modules/vocabulary/prisma-vocabulary-repository.ts`
+- `apps/api/src/modules/vocabulary/vocabulary-router.ts`
+- `apps/api/test/vocabulary.test.ts`
+
+### Files modified
+
+- `packages/contracts/src/index.ts`
+- `apps/api/src/app.ts`
+- The five synchronized SDD implementation/governance documents.
+
+### Delivered behavior
+
+- `GET /api/v1/folders/:folderId/vocabulary` returns the existing folder summary and its ordered vocabulary list, including an explicit empty list.
+- `POST /api/v1/folders/:folderId/vocabulary` strictly validates and trims word, meaning, and optional IPA fields before persistence.
+- Word length is 1–100 characters, meaning length is 1–500, and IPA is null or at most 100 characters. Blank or omitted IPA is stored and returned as `null`; no IPA is fabricated.
+- The service derives a lowercase normalized word. The database-backed repository rejects a normalized duplicate in the same folder while allowing it in another folder.
+- Missing folders, validation failures, duplicates, and unexpected persistence failures use safe error envelopes without raw Prisma details.
+- The application service depends on repository and Folder-service boundaries; Prisma remains confined to the persistence adapter.
+
+### Database explanation
+
+Vocabulary rows are stored in the local SQLite file configured by `DATABASE_URL`, normally `apps/api/prisma/dev.db`. Each row points to one Folder, so a word cannot be stored under a folder that does not exist. The existing committed migration already created this relationship and the `(folderId, normalizedWord)` unique constraint; TASK-005 did not change the schema or create a migration. In plain terms, that pair acts like a folder-specific duplicate label: `Journey` and ` journey ` conflict inside one folder but can exist in different folders.
+
+TEST-005 verified persistence using disposable SQLite files created from the committed migration. It also disconnected and opened a new Prisma client to prove data survives a connection reload. Local database files remain ignored and were not committed. A developer can inspect local data with Prisma Studio after confirming `DATABASE_URL`; schema changes must still be made through a documented migration, not through Studio.
+
+### TEST-005 coverage
+
+- Empty vocabulary list for an existing folder.
+- Strict fields; trimmed and Unicode values; word, meaning, and IPA minimum/maximum boundaries.
+- Omitted, explicit-null, blank, and maximum-length IPA behavior.
+- Same-folder normalized duplicate rejection and cross-folder allowance.
+- Missing-folder list/create responses and safe unexpected repository failure handling.
+- Persistence across a newly opened Prisma client connection.
+- Service/repository separation, normalization ownership, and shared request-schema behavior.
+
+### TASK-005 evidence
+
+| Evidence ID | Result |
+|---|---|
+| EVID-439 | TASK-004 approval, dependencies, identifiers, exact file boundary, and dirty worktree were verified. |
+| EVID-440 | TEST-005 passed: 20/20 focused tests. |
+| EVID-441 | Full regressions passed: 56 backend and 4 frontend tests. |
+| EVID-442 | Workspace typecheck passed. |
+| EVID-443 | Lint and formatting checks passed. |
+| EVID-444 | Backend coverage passed: 98.94% statements, 97.16% branches, 100% functions, 98.94% lines. |
+| EVID-445 | Frontend coverage passed at 100% for all four metrics. |
+| EVID-446 | Dependency graph inspection passed; optional platform packages were correctly unmet. |
+| EVID-447 | Final security audit reported zero vulnerabilities. |
+| EVID-448 | Final `git diff --check`, scope, database-file, and synchronization checks passed. |
+
+### Risks and limitations
+
+- Vocabulary edit/delete operations are not approved endpoints.
+- IPA is stored and returned only; browser speech behavior belongs to TASK-015.
+- CSV import and its row-level duplicate handling belong to TASK-006.
+- V8 includes type-only repository-port files as zero-runtime files; no exclusion was added, and all backend metrics remain above 95%.
+- TASK-006 through TASK-022 remain not started.
