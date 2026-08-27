@@ -1,15 +1,15 @@
 # System Architecture and Decisions
 
-| Field | Value |
-|---|---|
-| Document | Architecture and ADR register |
-| Stage | Planning |
-| Owner | Software Architect |
-| Status | ✅ PASS |
-| Version | 0.1 |
-| Last updated | 2026-08-26 |
-| Depends on | [Technical plan](plan.md), [Specification](../01-spec/spec.md) |
-| Next review | Explicit user approval of Planning |
+| Field        | Value                                                          |
+| ------------ | -------------------------------------------------------------- |
+| Document     | Architecture and ADR register                                  |
+| Stage        | Planning                                                       |
+| Owner        | Software Architect                                             |
+| Status       | ✅ PASS                                                        |
+| Version      | 0.1                                                            |
+| Last updated | 2026-08-26                                                     |
+| Depends on   | [Technical plan](plan.md), [Specification](../01-spec/spec.md) |
+| Next review  | Explicit user approval of Planning                             |
 
 > **Executive summary**
 >
@@ -17,14 +17,14 @@
 
 ## Component boundaries
 
-| Layer | Responsibility | Must not do |
-|---|---|---|
-| React presentation | Routes, accessible UI, local interaction state | Access Prisma/database; decide authoritative correctness |
-| Frontend feature/service | API calls, DTO parsing, speech adapter, view models | Store secrets; duplicate backend business policy as authority |
-| Express HTTP | Routing, request parsing, Zod boundary validation, response mapping | Contain repository queries or raw provider errors |
-| Application/domain | Use cases, normalization, imports, question generation, scoring, dashboard math | Depend on Express, Prisma, browser APIs |
-| Ports | Repository, clock, RNG, signer, AI-provider interfaces | Implement infrastructure |
-| Adapters | Prisma, HMAC signer, AI provider, browser speech | Leak adapter errors across boundaries |
+| Layer                    | Responsibility                                                                  | Must not do                                                   |
+| ------------------------ | ------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| React presentation       | Routes, accessible UI, local interaction state                                  | Access Prisma/database; decide authoritative correctness      |
+| Frontend feature/service | API calls, DTO parsing, speech adapter, view models                             | Store secrets; duplicate backend business policy as authority |
+| Express HTTP             | Routing, request parsing, Zod boundary validation, response mapping             | Contain repository queries or raw provider errors             |
+| Application/domain       | Use cases, normalization, imports, question generation, scoring, dashboard math | Depend on Express, Prisma, browser APIs                       |
+| Ports                    | Repository, clock, RNG, signer, AI-provider interfaces                          | Implement infrastructure                                      |
+| Adapters                 | Prisma, HMAC signer, AI provider, browser speech                                | Leak adapter errors across boundaries                         |
 
 ## Frontend architecture
 
@@ -95,6 +95,10 @@ Each module (`folders`, `vocabulary`, `imports`, `tests`, `dashboard`, `ai`) con
 **Decision:** The API returns questions plus a signed, expiring snapshot token. Completion verifies the signature/snapshot, recomputes outcomes, and atomically inserts one completed session and all answers.
 
 **Consequences:** Requires `TEST_TOKEN_SECRET`; expired/changed snapshots return safe conflicts; no abandoned database rows require cleanup.
+
+### TASK-007 cryptographic and deterministic boundaries
+
+The token adapter signs canonical `v1` payloads with Node's built-in HMAC-SHA256 and compares signatures in constant time. A minimal `Clock` port exposes `now(): Date`; production uses the system clock and tests use a fixed clock. A minimal `RandomSource` port supplies deterministic values in tests and cryptographically suitable runtime randomness in production. These ports remain outside the business service.
 
 ## ADR-006: Optional AI provider boundary
 

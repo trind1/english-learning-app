@@ -1,19 +1,19 @@
 # Task Verification
 
-| Field | Value |
-|---|---|
-| Document | Task verification |
-| Stage | Task Verification |
-| Owner | Technical Leads and QA |
-| Status | ✅ PASS |
-| Version | 0.1 |
-| Last updated | 2026-08-26 |
-| Depends on | [Tasks](tasks.md), [Specification](../01-spec/spec.md), [Plan](../02-plan/plan.md), [Traceability](../traceability.md) |
-| Next review | Explicit user approval of Task Decomposition |
+| Field        | Value                                                                                                                  |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| Document     | Task verification                                                                                                      |
+| Stage        | Task Verification                                                                                                      |
+| Owner        | Technical Leads and QA                                                                                                 |
+| Status       | ✅ PASS                                                                                                                |
+| Version      | 0.2                                                                                                                    |
+| Last updated | 2026-08-26                                                                                                             |
+| Depends on   | [Tasks](tasks.md), [Specification](../01-spec/spec.md), [Plan](../02-plan/plan.md), [Traceability](../traceability.md) |
+| Next review  | TASK-006 implementation pre-check                                                                                      |
 
 > **Executive summary**
 >
-> Twenty-two ordered tasks and twenty-two planned test IDs cover all approved FR/NFR groups and twelve planned components. Dependencies, database guidance, exact separate coverage gates, and the no-code boundary pass verification. Task Verification is `PASS`; Code Generation remains locked pending explicit user approval.
+> Twenty-two ordered tasks and twenty-two planned test IDs cover all approved FR/NFR groups and twelve planned components. TEST-006 and TEST-007 now have executable, traceable contracts derived from approved behavior and explicit user decisions. Task Verification remains `PASS`; Code Generation is authorized only for the explicitly approved task.
 
 ## Gate status
 
@@ -42,48 +42,48 @@
 
 ## Verification checklist
 
-| ID | Verification criterion | Result | Evidence | Notes |
-|---|---|---|---|---|
-| VER-301 | TASK IDs are sequential and unique. | ✅ PASS | EVID-301 | 22 overview rows and 22 task headings. |
-| VER-302 | Every task has a planned TEST ID. | ✅ PASS | EVID-301 | 22 unique TEST IDs. |
-| VER-303 | Every FR and NFR is covered by tasks. | ✅ PASS | EVID-302 | Corrected range-expansion check passed. |
-| VER-304 | Every planned component maps to tasks. | ✅ PASS | EVID-303 | Twelve component rows contain TASK mappings. |
-| VER-305 | Dependency order is valid and contains no forward/self dependency. | ✅ PASS | EVID-304 | Dependency parser passed. |
-| VER-306 | Feature tasks include tests and boundary/error expectations. | ✅ PASS | EVID-301 | Feature-local TEST IDs and verification descriptions exist. |
-| VER-307 | Frontend and backend each have four explicit 95% gates. | ✅ PASS | EVID-305 | Each metric appears twice explicitly. |
-| VER-308 | Database task explains storage, schema, migration, Git policy, and inspection. | ✅ PASS | EVID-305 | TASK-003 includes all required beginner topics. |
-| VER-309 | Data-model replay field matches the approved API/ADR. | ✅ PASS | EVID-305 | `completionKeyHash` is correctly placed on TestSession. |
-| VER-310 | No implementation artifact or executed task exists. | ✅ PASS | EVID-306 | Source/migration/database search returned none; Code locked. |
-| VER-311 | Governance controls are synchronized. | ✅ PASS | EVID-307 | Dashboard/status/traceability agree after final check. |
+| ID      | Verification criterion                                                         | Result  | Evidence           | Notes                                                                                    |
+| ------- | ------------------------------------------------------------------------------ | ------- | ------------------ | ---------------------------------------------------------------------------------------- |
+| VER-301 | TASK IDs are sequential and unique.                                            | ✅ PASS | EVID-301           | 22 overview rows and 22 task headings.                                                   |
+| VER-302 | Every task has a planned TEST ID.                                              | ✅ PASS | EVID-301           | 22 unique TEST IDs.                                                                      |
+| VER-303 | Every FR and NFR is covered by tasks.                                          | ✅ PASS | EVID-302           | Corrected range-expansion check passed.                                                  |
+| VER-304 | Every planned component maps to tasks.                                         | ✅ PASS | EVID-303           | Twelve component rows contain TASK mappings.                                             |
+| VER-305 | Dependency order is valid and contains no forward/self dependency.             | ✅ PASS | EVID-304           | Dependency parser passed.                                                                |
+| VER-306 | Feature tasks include tests and boundary/error expectations.                   | ✅ PASS | EVID-301, EVID-450 | Feature-local TEST IDs and verification descriptions exist; TEST-006 cases are explicit. |
+| VER-307 | Frontend and backend each have four explicit 95% gates.                        | ✅ PASS | EVID-305           | Each metric appears twice explicitly.                                                    |
+| VER-308 | Database task explains storage, schema, migration, Git policy, and inspection. | ✅ PASS | EVID-305           | TASK-003 includes all required beginner topics.                                          |
+| VER-309 | Data-model replay field matches the approved API/ADR.                          | ✅ PASS | EVID-305           | `completionKeyHash` is correctly placed on TestSession.                                  |
+| VER-310 | No implementation artifact or executed task exists.                            | ✅ PASS | EVID-306           | Source/migration/database search returned none; Code locked.                             |
+| VER-311 | Governance controls are synchronized.                                          | ✅ PASS | EVID-307           | Dashboard/status/traceability agree after final check.                                   |
 
 ## Requirement or artifact coverage
 
-| Item | Covered by | Result |
-|---|---|---|
-| FR-001–FR-016 | TASK-002–TASK-019 | ✅ PASS |
-| NFR-001–NFR-010 | TASK-001, TASK-020–TASK-022 | ✅ PASS |
-| NFR-011–NFR-013 | TASK-011–TASK-019, TASK-021 | ✅ PASS |
+| Item            | Covered by                            | Result  |
+| --------------- | ------------------------------------- | ------- |
+| FR-001–FR-016   | TASK-002–TASK-019                     | ✅ PASS |
+| NFR-001–NFR-010 | TASK-001, TASK-020–TASK-022           | ✅ PASS |
+| NFR-011–NFR-013 | TASK-011–TASK-019, TASK-021           | ✅ PASS |
 | NFR-014–NFR-017 | TASK-002–TASK-010, TASK-020, TASK-022 | ✅ PASS |
-| PC-001–PC-012 | TASK-001–TASK-022 | ✅ PASS |
-| TEST planning | TEST-001–TEST-022 | ✅ PASS |
+| PC-001–PC-012   | TASK-001–TASK-022                     | ✅ PASS |
+| TEST planning   | TEST-001–TEST-022                     | ✅ PASS |
 
 ## Commands executed
 
 Every command used `/home/trind1/hoi_nhap_ky_thuat/english-learning-app` as its working directory.
 
-| Command ID | Command | Exit code | Result | Evidence |
-|---|---|---:|---|---|
-| CMD-301 | Perl Markdown trailing-whitespace normalization on `tasks.md` | 0 | ✅ PASS | EVID-307 |
-| CMD-302 | Planning precondition and task-file check | 0 | ✅ PASS | EVID-301 |
-| CMD-303 | TASK/TEST count, uniqueness, and sequence check | 0 | ✅ PASS | EVID-301 |
-| CMD-304 | Initial combined Perl range-expansion and component check | 0 overall; Perl subcommand failed | ⚠️ WARNING | EVID-302 |
-| CMD-305 | Corrected standalone FR/NFR range-expansion check | 0 | ✅ PASS | EVID-302 |
-| CMD-306 | Component-to-task and requirement code-lock counts | 0 | ✅ PASS | EVID-303 |
-| CMD-307 | Dependency-order parser | 0 | ✅ PASS | EVID-304 |
-| CMD-308 | Initial explicit coverage/database check | 1 | ❌ FAIL | EVID-305 |
-| CMD-309 | Corrected coverage wording/database check | 0 | ✅ PASS | EVID-305 |
-| CMD-310 | Prohibited source/migration/database and Code-lock check | 0 | ✅ PASS | EVID-306 |
-| CMD-311 | Final links, H1, verification structure, synchronized PASS/lock, source absence, and whitespace check | 0 | ✅ PASS | EVID-308 |
+| Command ID | Command                                                                                               |                         Exit code | Result     | Evidence |
+| ---------- | ----------------------------------------------------------------------------------------------------- | --------------------------------: | ---------- | -------- |
+| CMD-301    | Perl Markdown trailing-whitespace normalization on `tasks.md`                                         |                                 0 | ✅ PASS    | EVID-307 |
+| CMD-302    | Planning precondition and task-file check                                                             |                                 0 | ✅ PASS    | EVID-301 |
+| CMD-303    | TASK/TEST count, uniqueness, and sequence check                                                       |                                 0 | ✅ PASS    | EVID-301 |
+| CMD-304    | Initial combined Perl range-expansion and component check                                             | 0 overall; Perl subcommand failed | ⚠️ WARNING | EVID-302 |
+| CMD-305    | Corrected standalone FR/NFR range-expansion check                                                     |                                 0 | ✅ PASS    | EVID-302 |
+| CMD-306    | Component-to-task and requirement code-lock counts                                                    |                                 0 | ✅ PASS    | EVID-303 |
+| CMD-307    | Dependency-order parser                                                                               |                                 0 | ✅ PASS    | EVID-304 |
+| CMD-308    | Initial explicit coverage/database check                                                              |                                 1 | ❌ FAIL    | EVID-305 |
+| CMD-309    | Corrected coverage wording/database check                                                             |                                 0 | ✅ PASS    | EVID-305 |
+| CMD-310    | Prohibited source/migration/database and Code-lock check                                              |                                 0 | ✅ PASS    | EVID-306 |
+| CMD-311    | Final links, H1, verification structure, synchronized PASS/lock, source absence, and whitespace check |                                 0 | ✅ PASS    | EVID-308 |
 
 ### Actual output
 
@@ -102,24 +102,32 @@ CMD-311: task_relative_links=PASS; final_task_sync=PASS.
 
 ## Evidence register
 
-| Evidence ID | Type | Source | What it proves | Reliability |
-|---|---|---|---|---|
-| EVID-301 | Command/file inspection | CMD-302–CMD-303 | Preconditions and complete TASK/TEST sequences pass. | High |
-| EVID-302 | Command output | CMD-304–CMD-305 | Requirement coverage passes after disclosing checker syntax failure. | High |
-| EVID-303 | Command output | CMD-306 | All components map to tasks and requirement rows keep Code locked. | High |
-| EVID-304 | Command output | CMD-307 | Task dependency order is valid. | High |
-| EVID-305 | Command/file inspection | CMD-308–CMD-309, `tasks.md`, corrected `data-model.md` | Exact coverage gates and database task/model consistency pass. | High |
-| EVID-306 | Command output | CMD-310 | No implementation artifacts exist and Code Generation is locked. | High |
-| EVID-307 | Command/file inspection | CMD-301 and final synchronization check | Markdown and governance synchronization pass. | High |
-| EVID-308 | Command output | CMD-311 | Final Task artifacts and governance controls are linked, formatted, synchronized, and source-free. | High |
+| Evidence ID | Type                    | Source                                                 | What it proves                                                                                     | Reliability |
+| ----------- | ----------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------- | ----------- |
+| EVID-301    | Command/file inspection | CMD-302–CMD-303                                        | Preconditions and complete TASK/TEST sequences pass.                                               | High        |
+| EVID-302    | Command output          | CMD-304–CMD-305                                        | Requirement coverage passes after disclosing checker syntax failure.                               | High        |
+| EVID-303    | Command output          | CMD-306                                                | All components map to tasks and requirement rows keep Code locked.                                 | High        |
+| EVID-304    | Command output          | CMD-307                                                | Task dependency order is valid.                                                                    | High        |
+| EVID-305    | Command/file inspection | CMD-308–CMD-309, `tasks.md`, corrected `data-model.md` | Exact coverage gates and database task/model consistency pass.                                     | High        |
+| EVID-306    | Command output          | CMD-310                                                | No implementation artifacts exist and Code Generation is locked.                                   | High        |
+| EVID-307    | Command/file inspection | CMD-301 and final synchronization check                | Markdown and governance synchronization pass.                                                      | High        |
+| EVID-308    | Command output          | CMD-311                                                | Final Task artifacts and governance controls are linked, formatted, synchronized, and source-free. | High        |
+
+## TEST-006 contract maintenance
+
+The historical TASK-006 blocker is resolved without changing product behavior. The approved CSV endpoint, BR-004–BR-006, BR-017, BR-019–BR-020, AC-003, AC-010, and AC-025 support twelve deterministic cases (`TEST-006-01` through `TEST-006-12`) covering valid import, headers/BOM, file/header rejection, empty/header-only input, row validation, quoted commas, within-file and database duplicates, missing folders, rollback, and safe unexpected failures. Maximum row count is recorded as unspecified and is not asserted.
+
+| Evidence ID | Verification                                       | Result                                                                                                                                   |
+| ----------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| EVID-450    | Documentation-only traceability and contract audit | Every TEST-006 case maps to approved requirements or contracts; no source, tests, dependencies, migrations, or runtime behavior changed. |
 
 ## Findings
 
-| Finding ID | Severity | Description | Evidence | Required action | Status |
-|---|---|---|---|---|---|
-| FIND-301 | High | `completionKeyHash` was mistakenly placed under Vocabulary although API/ADR/index expected TestSession. | EVID-305 | Move the field to TestSession without changing the approved contract. | Closed |
-| FIND-302 | Low | Initial requirement-range checker contained invalid Perl postfix syntax. | EVID-302 | Rerun as corrected standalone command. | Closed |
-| FIND-303 | Medium | Quality tasks grouped metrics instead of explicitly repeating 95% for every metric. | EVID-305 | State all eight application metrics explicitly. | Closed |
+| Finding ID | Severity | Description                                                                                             | Evidence | Required action                                                       | Status |
+| ---------- | -------- | ------------------------------------------------------------------------------------------------------- | -------- | --------------------------------------------------------------------- | ------ |
+| FIND-301   | High     | `completionKeyHash` was mistakenly placed under Vocabulary although API/ADR/index expected TestSession. | EVID-305 | Move the field to TestSession without changing the approved contract. | Closed |
+| FIND-302   | Low      | Initial requirement-range checker contained invalid Perl postfix syntax.                                | EVID-302 | Rerun as corrected standalone command.                                | Closed |
+| FIND-303   | Medium   | Quality tasks grouped metrics instead of explicitly repeating 95% for every metric.                     | EVID-305 | State all eight application metrics explicitly.                       | Closed |
 
 ## Risks
 
@@ -130,18 +138,22 @@ CMD-311: task_relative_links=PASS; final_task_sync=PASS.
 
 ## Required corrections
 
-None remain. All findings are closed; no task ambiguity or traceability gap remains.
+None remain. The prior TEST-006 incompleteness blocker is closed by EVID-450; no task ambiguity or traceability gap remains.
+
+## TEST-007 contract maintenance
+
+The user-approved token, HMAC-SHA256, canonical payload order, 30-minute expiry (`now < expiresAt`), clock/RNG ports, and safe error semantics were synchronized into the Specification, Planning, and TASK-007 contract. Seven deterministic cases cover eligibility, generation invariants, deterministic signing, expiry boundaries, tampering, and infrastructure failure. No application code was changed.
 
 ## Recommended next action
 
-Explicitly approve the verified Task Decomposition if satisfied. Do not generate source code before approval.
+Proceed to the TASK-007 implementation pre-check after user review of this contract maintenance. Do not begin TASK-008.
 
 ## User approval
 
-| Field | Value |
-|---|---|
-| Approval required | Yes |
-| Decision | Pending |
-| Approved by | Pending |
-| Approval note | Task Verification passed; Code Generation remains locked. |
-| Approved artifacts | Pending |
+| Field              | Value                                                                   |
+| ------------------ | ----------------------------------------------------------------------- |
+| Approval required  | Yes                                                                     |
+| Decision           | Approved; TEST-006 contract maintenance READY                           |
+| Approved by        | User approval recorded in the TASK-006 continuation request             |
+| Approval note      | TASK-006 may return to Code Generation; implementation has not started. |
+| Approved artifacts | Specification, Planning, Task Decomposition, and formalized TEST-006    |

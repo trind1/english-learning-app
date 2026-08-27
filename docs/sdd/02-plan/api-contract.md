@@ -1,15 +1,15 @@
 # REST API Contract
 
-| Field | Value |
-|---|---|
-| Document | REST API contract |
-| Stage | Planning |
-| Owner | Backend Lead |
-| Status | ✅ PASS |
-| Version | 0.1 |
-| Last updated | 2026-08-26 |
-| Depends on | [Specification](../01-spec/spec.md), [Data model](data-model.md) |
-| Next review | Explicit user approval of Planning |
+| Field        | Value                                                            |
+| ------------ | ---------------------------------------------------------------- |
+| Document     | REST API contract                                                |
+| Stage        | Planning                                                         |
+| Owner        | Backend Lead                                                     |
+| Status       | ✅ PASS                                                          |
+| Version      | 0.1                                                              |
+| Last updated | 2026-08-26                                                       |
+| Depends on   | [Specification](../01-spec/spec.md), [Data model](data-model.md) |
+| Next review  | Explicit user approval of Planning                               |
 
 > **Executive summary**
 >
@@ -40,15 +40,15 @@
 }
 ```
 
-| Status | Code examples | Meaning |
-|---:|---|---|
-| 400 | `VALIDATION_ERROR`, `CSV_HEADER_INVALID`, `CSV_FILE_INVALID` | Request cannot be processed as supplied |
-| 404 | `FOLDER_NOT_FOUND`, `VOCABULARY_NOT_FOUND` | Resource does not exist |
-| 409 | `FOLDER_DUPLICATE`, `VOCABULARY_DUPLICATE`, `TEST_INELIGIBLE`, `TEST_SNAPSHOT_STALE` | Valid shape conflicts with current state |
-| 413 | `CSV_TOO_LARGE` | Upload exceeds configured limit |
-| 422 | `TEST_SUBMISSION_INVALID` | Well-formed completion violates test invariants |
-| 503 | `AI_UNAVAILABLE` | Optional AI is disabled or temporarily unavailable |
-| 500 | `INTERNAL_ERROR` | Safe generic unexpected error |
+| Status | Code examples                                                                        | Meaning                                            |
+| -----: | ------------------------------------------------------------------------------------ | -------------------------------------------------- |
+|    400 | `VALIDATION_ERROR`, `CSV_HEADER_INVALID`, `CSV_FILE_INVALID`                         | Request cannot be processed as supplied            |
+|    404 | `FOLDER_NOT_FOUND`, `VOCABULARY_NOT_FOUND`                                           | Resource does not exist                            |
+|    409 | `FOLDER_DUPLICATE`, `VOCABULARY_DUPLICATE`, `TEST_INELIGIBLE`, `TEST_SNAPSHOT_STALE` | Valid shape conflicts with current state           |
+|    413 | `CSV_TOO_LARGE`                                                                      | Upload exceeds configured limit                    |
+|    422 | `TEST_SUBMISSION_INVALID`                                                            | Well-formed completion violates test invariants    |
+|    503 | `AI_UNAVAILABLE`                                                                     | Optional AI is disabled or temporarily unavailable |
+|    500 | `INTERNAL_ERROR`                                                                     | Safe generic unexpected error                      |
 
 Raw Zod, Prisma, stack, provider, token, and secret details never appear in responses.
 
@@ -101,7 +101,13 @@ Response `200`:
     "importedCount": 2,
     "skippedCount": 1,
     "imported": [{ "row": 2, "vocabularyId": "id" }],
-    "skipped": [{ "row": 3, "code": "VOCABULARY_DUPLICATE", "message": "The word already exists in this folder." }]
+    "skipped": [
+      {
+        "row": 3,
+        "code": "VOCABULARY_DUPLICATE",
+        "message": "The word already exists in this folder."
+      }
+    ]
   }
 }
 ```
@@ -121,18 +127,29 @@ Response `201`:
   "data": {
     "testToken": "signed-opaque-token",
     "expiresAt": "2026-08-26T12:00:00.000Z",
-    "questions": [{ "vocabularyId": "id", "word": "journey", "ipa": "/.../", "choices": ["a trip", "...", "...", "..."] }]
+    "questions": [
+      {
+        "vocabularyId": "id",
+        "word": "journey",
+        "ipa": "/.../",
+        "choices": ["a trip", "...", "...", "..."]
+      }
+    ]
   }
 }
 ```
 
-The signed token contains version, folder ID, expiry, vocabulary IDs/word/meaning snapshots, and question choices. It is not persisted. Ineligible folders return `409 TEST_INELIGIBLE` with safe details such as required/actual counts.
+The signed token uses `v1.<payload-base64url>.<signature-base64url>`, where payload is canonical UTF-8 JSON and signature is HMAC-SHA256 over the versioned encoded payload, both Base64URL encoded. The canonical payload property order is `version`, `folderId`, `issuedAt`, `expiresAt`, `questions`; each question contains `vocabularyId`, `word`, `ipa`, `correctMeaning`, and `choices` in that order. `issuedAt` and `expiresAt` are ISO UTC strings; expiry is exactly 30 minutes after issuance and valid only while `now < expiresAt`. `TEST_TOKEN_SECRET` signs and verifies with constant-time comparison; it is never in the payload or response. The token is not persisted. Ineligible folders return `409 TEST_INELIGIBLE` with safe details such as required/actual counts.
+
+Malformed, unsupported-version, or tampered tokens return `400 INVALID_TEST_TOKEN`; validly signed expired tokens return `400 TEST_TOKEN_EXPIRED`. Signing/verifying failures use the existing safe `INTERNAL_ERROR` envelope with HTTP `500`.
 
 ### `POST /test-sessions`
 
 Request: `{ "testToken": "...", "answers": [{ "vocabularyId": "id", "selectedMeaning": "a trip" }] }`.
 
 Backend verifies signature/expiry, exact question coverage, one answer per vocabulary, and that each selected meaning was an issued choice. It recomputes correctness and atomically persists one completed session and all answer snapshots. Reusing the same token is prevented by a signed unique completion ID recorded on TestSession; duplicate completion returns `409`. Success returns `201` with session ID, total, correct, incorrect, accuracy, and per-answer feedback.
+
+Completion rejects a validly signed snapshot when any referenced vocabulary record no longer matches its signed `vocabularyId`, `word`, `meaning`, or `ipa`, or no longer belongs to the signed folder; this is `409 TEST_SNAPSHOT_STALE`. Submission invariant failures are `400 TEST_SUBMISSION_INVALID`; replay is `409 TEST_ALREADY_COMPLETED`. A successful response contains `{ data: { sessionId, folderId, correctCount, incorrectCount, totalCount, completedAt, answers } }`, where each answer contains `vocabularyId`, `selectedMeaning`, `correctMeaning`, and `isCorrect` in signed-question order.
 
 ### `GET /test-sessions/:sessionId`
 

@@ -5,6 +5,7 @@ import {
   createMigratedTestDatabase,
   type TestDatabase,
 } from "./support/database";
+import { PrismaVocabularyRepository } from "../src/modules/vocabulary/prisma-vocabulary-repository";
 
 describe("TEST-003 Prisma migration and relational constraints", () => {
   let database: TestDatabase;
@@ -64,6 +65,37 @@ describe("TEST-003 Prisma migration and relational constraints", () => {
       folderId: secondFolder.id,
       normalizedWord: "journey",
     });
+  });
+
+  it("exercises vocabulary repository create, list, import, and safe constraint mappings", async () => {
+    const folder = await database.client.folder.create({
+      data: { name: "Travel", normalizedName: "travel" },
+    });
+    const repository = new PrismaVocabularyRepository(database.client);
+    const input = {
+      folderId: folder.id,
+      meaning: "a trip",
+      normalizedWord: "journey",
+      word: "Journey",
+      ipa: null,
+    };
+    await expect(repository.create(input)).resolves.toMatchObject({
+      word: "Journey",
+    });
+    await expect(repository.listByFolderId(folder.id)).resolves.toHaveLength(1);
+    await expect(
+      repository.importRows([
+        { ...input, normalizedWord: "voyage", word: "Voyage" },
+      ]),
+    ).resolves.toHaveLength(1);
+    await expect(repository.create(input)).rejects.toThrow("already exists");
+    await expect(
+      repository.create({
+        ...input,
+        folderId: "00000000-0000-4000-8000-000000000001",
+        normalizedWord: "missing",
+      }),
+    ).rejects.toThrow("folder was not found");
   });
 
   it("enforces replay-key uniqueness for completed sessions", async () => {

@@ -1,0 +1,107 @@
+import { useEffect, useState } from "react";
+
+export type VocabularyItem = {
+  id: string;
+  word: string;
+  meaning: string;
+  ipa: string | null;
+};
+export type VocabularyApi = {
+  list: () => Promise<VocabularyItem[]>;
+  create: (input: {
+    word: string;
+    meaning: string;
+    ipa?: string | null;
+  }) => Promise<VocabularyItem>;
+};
+export const VocabularyPanel = ({ api }: { api: VocabularyApi }) => {
+  const [items, setItems] = useState<VocabularyItem[] | null>(null);
+  const [word, setWord] = useState("");
+  const [meaning, setMeaning] = useState("");
+  const [ipa, setIpa] = useState("");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+  useEffect(() => {
+    void api
+      .list()
+      .then(setItems)
+      .catch(() => setError("Unable to load vocabulary. Try again."));
+  }, [api]);
+  const submit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (
+      !word.trim() ||
+      !meaning.trim() ||
+      word.trim().length > 100 ||
+      meaning.trim().length > 500
+    ) {
+      setError("Word and meaning are required within the allowed limits.");
+      return;
+    }
+    setBusy(true);
+    setError("");
+    try {
+      const item = await api.create({
+        word: word.trim(),
+        meaning: meaning.trim(),
+        ipa: ipa.trim() || null,
+      });
+      setItems((current) => [...(current ?? []), item]);
+      setWord("");
+      setMeaning("");
+      setIpa("");
+    } catch (e) {
+      setError(
+        e instanceof Error
+          ? e.message
+          : "Unable to save vocabulary. Try again.",
+      );
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <section aria-labelledby="vocabulary-title">
+      <h2 id="vocabulary-title">Vocabulary</h2>
+      <form onSubmit={submit}>
+        <label htmlFor="word">Word</label>
+        <input
+          id="word"
+          value={word}
+          onChange={(e) => setWord(e.target.value)}
+          disabled={busy}
+        />
+        <label htmlFor="meaning">Meaning</label>
+        <input
+          id="meaning"
+          value={meaning}
+          onChange={(e) => setMeaning(e.target.value)}
+          disabled={busy}
+        />
+        <label htmlFor="ipa">IPA (optional)</label>
+        <input
+          id="ipa"
+          value={ipa}
+          onChange={(e) => setIpa(e.target.value)}
+          disabled={busy}
+        />
+        <button type="submit" disabled={busy}>
+          {busy ? "Saving…" : "Add vocabulary"}
+        </button>
+      </form>
+      {error && <p role="alert">{error}</p>}
+      {items === null && !error && <p role="status">Loading vocabulary…</p>}
+      {items?.length === 0 && <p role="status">No vocabulary yet.</p>}
+      {items && items.length > 0 && (
+        <ul aria-label="Vocabulary list">
+          {items.map((item) => (
+            <li key={item.id}>
+              <strong>{item.word}</strong>{" "}
+              <span>{item.ipa || "IPA unavailable"}</span> — {item.meaning}
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+};

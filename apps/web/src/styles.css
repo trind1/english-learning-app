@@ -1,0 +1,60 @@
+:root {
+  color: #17202a;
+  background: #f7f9fb;
+  font-family: system-ui, sans-serif;
+}
+body {
+  margin: 0;
+}
+.app-shell {
+  min-height: 100vh;
+}
+.app-header {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  padding: 1rem;
+  background: #12355b;
+  color: white;
+}
+.app-header nav {
+  display: flex;
+  gap: 1rem;
+}
+.app-header a {
+  color: white;
+}
+main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+button {
+  padding: 0.6rem 1rem;
+  border-radius: 0.35rem;
+  border: 2px solid #12355b;
+  background: #f5b700;
+  color: #17202a;
+  font-weight: 600;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #f05d5e;
+  outline-offset: 3px;
+}
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  background: white;
+  color: #12355b;
+  padding: 0.5rem;
+}
+@media (max-width: 20rem) {
+  .app-header {
+    flex-wrap: wrap;
+  }
+}

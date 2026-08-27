@@ -23,6 +23,10 @@ export class VocabularyService {
     private readonly folderService: FolderService,
   ) {}
 
+  public async getFolder(folderId: string) {
+    return this.folderService.getById(folderId);
+  }
+
   public async create(
     input: Omit<CreateVocabularyRecord, "normalizedWord">,
   ): Promise<VocabularyItem> {
