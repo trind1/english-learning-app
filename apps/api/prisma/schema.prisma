@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Folder {
+  id             String        @id @default(uuid())
+  name           String
+  normalizedName String        @unique
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  vocabulary     Vocabulary[]
+  testSessions   TestSession[]
+}
+
+model Vocabulary {
+  id             String       @id @default(uuid())
+  folderId       String
+  word           String
+  normalizedWord String
+  meaning        String
+  ipa            String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  folder         Folder       @relation(fields: [folderId], references: [id], onDelete: Restrict)
+  testAnswers    TestAnswer[]
+
+  @@unique([folderId, normalizedWord])
+  @@index([folderId, createdAt])
+}
+
+model TestSession {
+  id                String       @id @default(uuid())
+  folderId          String
+  completionKeyHash String       @unique
+  totalQuestions    Int
+  correctCount      Int
+  incorrectCount    Int
+  completedAt       DateTime
+  folder            Folder       @relation(fields: [folderId], references: [id], onDelete: Restrict)
+  answers           TestAnswer[]
+
+  @@index([folderId, completedAt])
+}
+
+model TestAnswer {
+  id              String      @id @default(uuid())
+  sessionId       String
+  vocabularyId    String
+  questionWord    String
+  selectedMeaning String
+  correctMeaning  String
+  isCorrect       Boolean
+  answeredAt      DateTime    @default(now())
+  session         TestSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  vocabulary      Vocabulary  @relation(fields: [vocabularyId], references: [id], onDelete: Restrict)
+
+  @@unique([sessionId, vocabularyId])
+  @@index([sessionId])
+  @@index([vocabularyId])
+}

@@ -5,149 +5,124 @@
 | Document | Specification verification |
 | Stage | Specification Verification |
 | Owner | Business Analyst |
-| Status | ⛔ BLOCKED |
-| Version | 0.1 |
+| Status | ✅ PASS |
+| Version | 0.3 |
 | Last updated | 2026-08-26 |
-| Depends on | [Specification](spec.md), [Traceability](../traceability.md) |
-| Next review | After DEC-001–DEC-008 confirmation |
+| Depends on | [Product specification](spec.md), [Traceability](../traceability.md), [Project status](../status.md) |
+| Next review | Planning |
 
 > **Executive summary**
 >
-> Cấu trúc yêu cầu, acceptance criteria, boundary/error states và traceability đã được kiểm tra. Gate vẫn `BLOCKED` vì tám quyết định mặc định chưa được người dùng xác nhận; Plan không được bắt đầu.
+> OQ-001–OQ-008 were explicitly confirmed and incorporated into BR-015–BR-028 and affected requirements, criteria, and traceability mappings. Fresh structural and boundary checks passed with actual exit code `0`. The user subsequently approved the Specification gate by explicitly authorizing Planning.
 
-## Table of contents
+## Gate status
 
-- [Gate decision](#gate-decision)
-- [Scope verified](#scope-verified)
-- [Preconditions](#preconditions)
-- [Verification checklist](#verification-checklist)
-- [Requirement or artifact coverage](#requirement-or-artifact-coverage)
-- [Commands executed](#commands-executed)
-- [Evidence register](#evidence-register)
-- [Findings](#findings)
-- [Risks and limitations](#risks-and-limitations)
-- [Decision explanation](#decision-explanation)
-- [Required fixes or next action](#required-fixes-or-next-action)
-- [User approval](#user-approval)
+**Status:** ✅ PASS
 
-## Gate decision
+**Decision owner:** Business Analyst
 
-**Status:** ⛔ BLOCKED  
-**Decision owner:** Business Analyst  
-**Decision reason:** DEC-001–DEC-008 ảnh hưởng scope và hành vi kiểm thử nhưng vẫn Pending confirmation.  
-**Next allowed stage:** None
+**Decision reason:** All original requirements are traceable, approved decisions are testable rules, no unresolved product ambiguity remains, and executed checks passed.
+
+**Next allowed stage:** Planning; approval was subsequently granted
 
 ## Scope verified
 
-[Specification](spec.md), [traceability matrix](../traceability.md), status/dashboard consistency, và giới hạn không tạo code/dependency/database.
+- [Product specification](spec.md): vision, users, scope, journeys, FR/NFR/BR/AC, detailed behavior, approved decisions, risks, and definition of done.
+- [Traceability](../traceability.md): fourteen original expectations, requirement mappings, approved-decision mappings, and downstream stage locks.
+- [Project status](../status.md): verified gate and pending approval state.
+- Boundary: no Planning, Tasks, dependencies, database, tests, coverage measurement, or source code were created or executed.
 
 ## Preconditions
 
-Bootstrap đã PASS và yêu cầu rõ ràng “Perform SDD Stage 1” cho phép bắt đầu Specification. User approval của Specification chưa có.
+- Bootstrap was previously approved.
+- The user authorized Specification work.
+- The user explicitly confirmed OQ-001–OQ-008 as proposed in the current request.
+- The current request explicitly prohibits starting Planning.
 
 ## Verification checklist
 
 | ID | Verification criterion | Result | Evidence | Notes |
 |---|---|---|---|---|
-| VER-001 | Requirement completeness | ✅ PASS | EVID-001, EVID-002 | Vision, scope, FR/NFR/BR, states, persistence và DoD có mặt. |
-| VER-002 | Requirement ID uniqueness | ✅ PASS | EVID-002 | Không có ID định nghĩa trùng. |
-| VER-003 | Acceptance-criteria coverage | ✅ PASS | EVID-002 | FR-001–014 và NFR-001–010 đều được AC cover. |
-| VER-004 | Business-rule consistency | ✅ PASS | EVID-001 | Rule cụ thể và không phát hiện xung đột nội bộ; approval vẫn pending. |
-| VER-005 | Boundary-case coverage | ✅ PASS | EVID-001 | Folder, vocabulary, CSV, test, dashboard, AI, UI có boundary table. |
-| VER-006 | Error/empty/loading coverage | ✅ PASS | EVID-001 | Các state và recovery behavior được mô tả. |
-| VER-007 | Traceability initialized | ✅ PASS | EVID-002 | Requirement-to-AC mappings tồn tại; downstream locked rõ ràng. |
-| VER-008 | Five-day feasibility | ⛔ BLOCKED | EVID-001 | Chỉ khả thi có điều kiện; cần quyết định và Plan estimate. |
-| VER-009 | Unresolved questions | ⛔ BLOCKED | EVID-001 | Q-001–Q-006/DEC-001–008 chưa được xác nhận. |
-| VER-010 | No prohibited implementation work | ✅ PASS | EVID-004 | Không có app/dependency/database artifact. |
-| VER-011 | Relative links | ✅ PASS | EVID-003 | Link checker không phát hiện link hỏng. |
-| VER-012 | Markdown H1 consistency | ✅ PASS | EVID-005 | Mỗi Markdown artifact có đúng một H1. |
+| VER-001 | All required product and behavior sections exist. | ✅ PASS | EVID-001 | Required H2/H3 headings were returned. |
+| VER-002 | OQ-001–OQ-008 are resolved and mapped to approved rules. | ✅ PASS | EVID-001, EVID-005 | Eight resolved rows exist in both Specification and Traceability. |
+| VER-003 | Stable requirement and criterion definitions are complete and unique. | ✅ PASS | EVID-002 | 16 FR, 17 NFR, 28 BR, and 25 AC definitions; no duplicate output. |
+| VER-004 | All eight coverage thresholds have corresponding acceptance criteria. | ✅ PASS | EVID-003 | Eight NFR and eight AC rows require 95%. |
+| VER-005 | Every original project expectation remains mapped. | ✅ PASS | EVID-003 | Fourteen original requirements are covered. |
+| VER-006 | No stale unresolved-decision language remains in verified artifacts. | ✅ PASS | EVID-003 | Targeted search returned no matches. |
+| VER-007 | Relative links resolve and each verified artifact has one H1. | ✅ PASS | EVID-004 | Perl link check and H1 counts passed. |
+| VER-008 | No prohibited implementation artifact exists. | ✅ PASS | EVID-004 | No matching package, source, Prisma schema, or database file found. |
+| VER-009 | Planning was stage-locked until explicit approval. | ✅ PASS | EVID-005 | Approval was subsequently granted by the request authorizing Planning. |
 
 ## Requirement or artifact coverage
 
 | Item | Covered by | Result |
 |---|---|---|
-| FR-001–FR-014 | AC-001–AC-014 | ✅ PASS |
-| NFR-001–NFR-010 | AC-015–AC-020 | ✅ PASS |
-| BR-001–BR-020 | AC-001–AC-012 | ✅ PASS |
-| DEC-001–DEC-008 | Q-001–Q-006 | ⛔ BLOCKED |
+| Original product capabilities | FR-001–FR-016, AC-001–AC-012 | ✅ PASS |
+| Quality and coverage requirements | NFR-001–NFR-017, AC-013–AC-025 | ✅ PASS |
+| Core and approved product rules | BR-001–BR-028 | ✅ PASS |
+| OQ-001–OQ-008 | BR-015–BR-028 | ✅ PASS |
+| Planning, Tasks, Code, Tests | Explicit stage locks | ✅ PASS |
 
 ## Commands executed
 
-| Command ID | Working directory | Command | Exit code | Result | Evidence |
-|---|---|---|---:|---|---|
-| CMD-001 | Repository root | `rg -n '^## (Vision and users|Goals and scope|Pending decisions|Functional requirements|Non-functional requirements|Business rules|Acceptance criteria|Experience requirements|Data persistence|Definition of Done|Open questions)$' docs/sdd/01-spec/spec.md` | `0` | ✅ PASS | EVID-001 |
-| CMD-002 | Repository root | See exact command below | `0` | ✅ PASS | EVID-002 |
-| CMD-003 | Repository root | See exact command below | `0` | ✅ PASS | EVID-003 |
-| CMD-004 | Repository root | See exact command below | `0` | ✅ PASS | EVID-004 |
-| CMD-005 | Repository root | See exact command below | `0` | ✅ PASS | EVID-005 |
+Every command used `/home/trind1/hoi_nhap_ky_thuat/english-learning-app` as its working directory.
 
-Exact commands and relevant output:
+| Command ID | Command | Exit code | Result | Evidence |
+|---|---|---:|---|---|
+| CMD-001 | `rg` required-section and eight resolved-decision count check | 0 | ✅ PASS | EVID-001 |
+| CMD-002 | `awk`, `rg`, and `seq` stable-ID duplicate, count, and sequence check | 0 | ✅ PASS | EVID-002 |
+| CMD-003 | `rg` coverage-row, original-requirement-row, and stale-unresolved-language check | 0 | ✅ PASS | EVID-003 |
+| CMD-004 | Perl relative-link check, `rg` H1 counts, and `find` prohibited-artifact check | 0 | ✅ PASS | EVID-004 |
+| CMD-005 | Final H1, verification-structure, stale-blocker, and `git diff --check` consistency check | 0 | ✅ PASS | EVID-006 |
 
-```bash
-python3 -c 'from pathlib import Path; import re,sys,collections
-s=Path("docs/sdd/01-spec/spec.md").read_text(); defs=re.findall(r"^\| ((?:FR|NFR|BR|AC)-\d{3}) \|",s,re.M); dup=[x for x,n in collections.Counter(defs).items() if n>1]; fr={f"FR-{i:03d}" for i in range(1,15)}; nfr={f"NFR-{i:03d}" for i in range(1,11)}; rows="\n".join(line for line in Path("docs/sdd/traceability.md").read_text().splitlines() if line.startswith("| ")); missing_defs=(fr|nfr)-set(defs); missing_map=[x for x in sorted(fr|nfr) if not re.search(rf"^\| {x} \| AC-",rows,re.M)]; print(f"defined={len(defs)} duplicates={dup} missing_definitions={sorted(missing_defs)} missing_ac_mappings={missing_map}"); sys.exit(bool(dup or missing_defs or missing_map))'
-# defined=64 duplicates=[] missing_definitions=[] missing_ac_mappings=[]
-```
+### Actual command output
 
-```bash
-python3 -c 'from pathlib import Path; import re,sys
-files=[Path("AGENTS.md"),*Path("docs/sdd").rglob("*.md")]; bad=[]
-for f in files:
- for link in re.findall(r"\[[^]]+\]\(([^)]+)\)",f.read_text()):
-  if link.startswith(("http://","https://","#")): continue
-  target=link.split("#",1)[0]
-  if target and not (f.parent/target).resolve().exists(): bad.append(f"{f} -> {link}")
-print("relative_links=PASS" if not bad else "\n".join(bad)); sys.exit(bool(bad))'
-# relative_links=PASS
-```
-
-```bash
-found=$(find . -path './.git' -prune -o -type f \( -name 'package.json' -o -name 'package-lock.json' -o -name 'vite.config.*' -o -name 'schema.prisma' -o -name '*.db' -o -path './src/*' -o -path './apps/*' \) -print); if test -n "$found"; then printf '%s\n' "$found"; exit 1; else echo 'prohibited_artifacts=NONE'; fi
-# prohibited_artifacts=NONE
-```
-
-```bash
-heading_fail=0; while IFS= read -r f; do count=$(rg -c '^# ' "$f" || true); test "$count" = 1 || { echo "H1_FAIL $f count=$count"; heading_fail=1; }; done < <(find docs/sdd -type f -name '*.md' -print | sort); echo "heading_fail=$heading_fail"; exit "$heading_fail"
-# heading_fail=0
+```text
+CMD-001: required headings returned; resolved_spec=8 resolved_traceability=8.
+CMD-002: FR expected=16 actual=16; NFR expected=17 actual=17; BR expected=28 actual=28; AC expected=25 actual=25; id_definitions=PASS.
+CMD-003: coverage_nfr_rows=8 coverage_ac_rows=8 original_requirement_rows=14; no stale unresolved-language output.
+CMD-004: relative_links=PASS; spec.md H1=1; traceability.md H1=1; status.md H1=1; prohibited_artifacts=NONE.
+CMD-005: all four authorized files H1=1; final_consistency=PASS; no stale blocker or diff-check output.
 ```
 
 ## Evidence register
 
 | Evidence ID | Type | Source | What it proves | Reliability |
 |---|---|---|---|---|
-| EVID-001 | File inspection | CMD-001 and `spec.md` | Required sections/rules/states are present | High |
-| EVID-002 | Command output | CMD-002 | IDs unique and mandatory FR/NFR have AC mapping | High |
-| EVID-003 | Command output | CMD-003 | Relative Markdown links resolve | High |
-| EVID-004 | Command output | CMD-004 | No implementation/dependency/database artifacts | High |
-| EVID-005 | Command output | CMD-005 | Mỗi Markdown file có đúng một H1 | High |
+| EVID-001 | Command output | CMD-001 | Required content exists and all eight decisions are resolved in both mappings. | High |
+| EVID-002 | Command output | CMD-002 | Stable definitions are complete and unique. | High |
+| EVID-003 | Command output | CMD-003 | Coverage/original mappings are complete and stale ambiguity language is absent. | High |
+| EVID-004 | Command output | CMD-004 | Links, H1 structure, and no-implementation boundary pass. | High |
+| EVID-005 | User instruction and file inspection | Current user confirmation; `spec.md`; `traceability.md` | OQ-001–OQ-008 are approved rules and later stages remain locked. | High |
+| EVID-006 | Command output | CMD-005 | Final versions are structurally consistent and contain no stale blocked-decision language or whitespace errors. | High |
 
 ## Findings
 
 | Finding ID | Severity | Description | Evidence | Required action | Status |
 |---|---|---|---|---|---|
-| FIND-001 | High | DEC-001–DEC-008 chưa được user xác nhận | EVID-001 | User xác nhận hoặc sửa các quyết định | Open |
-| FIND-002 | Medium | Five-day feasibility chưa có technical estimate | EVID-001 | Đánh giá chi tiết ở Plan sau khi Spec PASS/approved | Open |
+| None | — | No open Specification finding remains. | EVID-001–EVID-005 | None | Closed |
 
-## Risks and limitations
+## Risks
 
-- `RISK-001`: Deadline năm ngày có thể không đạt nếu approval chậm hoặc scope tăng.
-- Chưa chạy implementation/test/coverage vì bị cấm ở Specification.
-- SQLite, Prisma và AI provider chưa được phê duyệt; Plan mới được đánh giá kiến trúc.
+- Browser speech synthesis support and voice quality may vary; BR-022 requires an accessible fallback.
+- Repeated meanings can make a folder test-ineligible; BR-024 and AC-007 define the required behavior.
+- AI provider privacy, cost, latency, and prompt design must be evaluated during Planning without changing BR-012, BR-013, BR-027, or BR-028.
+- Eight independent 95% coverage thresholds require testable architecture and separate evidence later; no coverage was measured at Specification.
 
-## Decision explanation
+## Required corrections
 
-Các requirement có thể kiểm thử và mapping đầy đủ, nhưng một report `PASS` không được chứa unresolved blocker. Vì các default assumption được yêu cầu phải xác nhận, gate hợp lệ duy nhất hiện tại là `BLOCKED`.
+None for Specification. Any later change to approved requirements or BR-015–BR-028 requires explicit user approval and traceability updates.
 
-## Required fixes or next action
+## Recommended next action
 
-User xác nhận hoặc sửa DEC-001–DEC-008. BA sau đó cập nhật Spec, chạy lại verification và mới yêu cầu approval cho gate.
+Historical gate action completed: the user explicitly approved the Specification gate in the request authorizing Planning.
 
 ## User approval
 
 | Field | Value |
 |---|---|
-| Approval required | Yes |
-| Decision | Pending |
-| Approved by | Pending |
-| Approval note | Pending |
-| Approved artifacts | Pending |
+| Approval required | No; completed |
+| Decision | Approved |
+| Approved by | User |
+| Approval note | “The Specification gate has been approved” in the request authorizing Planning. |
+| Approved artifacts | `spec.md`, `verification.md`, and Specification traceability mappings |

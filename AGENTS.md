@@ -56,5 +56,15 @@ Follow the [documentation style guide](docs/sdd/documentation-style-guide.md). U
 ## Completion report contract
 End each stage with: `STAGE`, `STATUS`, `FILES_CREATED`, `FILES_MODIFIED`, `VERIFICATION_COMMANDS`, `VERIFICATION_RESULTS`, `EVIDENCE`, `OPEN_QUESTIONS`, `NEXT_ALLOWED_ACTION`, and `USER_APPROVAL_REQUIRED`. Update [status](docs/sdd/status.md) and traceability.
 
+## Durable governance synchronization
+At the end of every stage execution, stage verification, gate decision, or material project-status transition, synchronize:
+- [SDD dashboard](docs/sdd/index.md)
+- [Project status](docs/sdd/status.md)
+- [Traceability](docs/sdd/traceability.md) when traceability is affected
+- The current stage report
+- The current verification report
+
+These artifacts must agree on the current stage, gate status, blockers, approval state, and next allowed action. Do not fabricate commands, exit codes, evidence, or completion status.
+
 ## Prohibited behavior
 Do not skip gates, invent evidence, claim unrun checks, silently change scope/contracts, generate premature implementation, create fake migrations, install dependencies without stage authorization, commit secrets, or continue after a failed gate or without approval. Preserve unrelated user changes.
