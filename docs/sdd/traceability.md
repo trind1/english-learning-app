@@ -1,5 +1,11 @@
 # Specification Traceability Matrix
 
+## Current redesign traceability state
+
+The integrated redesign remains mapped to TASK-011–TASK-021 and FR-001–FR-016/NFR-001–NFR-013. Its review status is **FAIL** and handoff is **NOT READY** because frontend coverage and browser evidence are incomplete. EVID-493–EVID-501 record the current result; historical PASS evidence remains unchanged.
+
+EVID-502 maps the cross-platform setup remediation to TASK-022 and NFR-009–NFR-010/NFR-016. Operational setup now passes on Windows PowerShell.
+
 | Field        | Value                                                                                                   |
 | ------------ | ------------------------------------------------------------------------------------------------------- |
 | Document     | Traceability matrix                                                                                     |

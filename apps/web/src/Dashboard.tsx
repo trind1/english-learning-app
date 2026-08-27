@@ -7,7 +7,13 @@ export type DashboardData = {
   incorrectAnswerCount: number;
   accuracyPercent: number;
 };
-export const Dashboard = ({ load }: { load: () => Promise<DashboardData> }) => {
+export const Dashboard = ({
+  load,
+  onAction,
+}: {
+  load: () => Promise<DashboardData>;
+  onAction?: (view: "library" | "flashcards") => void;
+}) => {
   const [data, setData] = useState<DashboardData>();
   const [error, setError] = useState("");
   const refresh = () => {
@@ -34,8 +40,21 @@ export const Dashboard = ({ load }: { load: () => Promise<DashboardData> }) => {
     );
   return (
     <section aria-label="Dashboard">
-      <h2>Dashboard</h2>
-      <dl>
+      <div className="dashboard-top">
+        <h2>Learning progress</h2>
+        <div
+          className="accuracy-ring"
+          style={
+            {
+              "--progress": `${data.accuracyPercent * 3.6}deg`,
+            } as React.CSSProperties
+          }
+        >
+          <strong>{data.accuracyPercent}%</strong>
+          <span>accuracy</span>
+        </div>
+      </div>
+      <dl className="metrics-grid">
         <dt>Folders</dt>
         <dd>{data.folderCount}</dd>
         <dt>Vocabulary</dt>
@@ -46,9 +65,25 @@ export const Dashboard = ({ load }: { load: () => Promise<DashboardData> }) => {
         <dd>{data.correctAnswerCount}</dd>
         <dt>Incorrect answers</dt>
         <dd>{data.incorrectAnswerCount}</dd>
-        <dt>Accuracy</dt>
-        <dd>{data.accuracyPercent}%</dd>
       </dl>
+      <div className="quick-actions">
+        <h2>Quick actions</h2>
+        <div>
+          <button onClick={() => onAction?.("library")}>Create folder</button>
+          <button className="secondary" onClick={() => onAction?.("library")}>
+            Add vocabulary
+          </button>
+          <button className="secondary" onClick={() => onAction?.("library")}>
+            Import CSV
+          </button>
+          <button
+            className="secondary"
+            onClick={() => onAction?.("flashcards")}
+          >
+            Start study
+          </button>
+        </div>
+      </div>
     </section>
   );
 };

@@ -1,5 +1,11 @@
 # SDD Project Status
 
+## Current authoritative redesign status
+
+The 2026-08-27 integrated UI/UX redesign review is **FAIL**. All 28 frontend tests pass and backend coverage passes, but frontend branch coverage is 89.71% and function coverage is 65.21%, below the repository's independent 95% thresholds. Real-browser workflow and responsive viewport review were not available. The next allowed action is coverage remediation followed by browser verification. Handoff is **NOT READY**. This section supersedes inconsistent historical summaries below without rewriting their evidence.
+
+Windows setup remediation EVID-502 is PASS: `npm.cmd run setup` is now cross-platform, the existing migration applies successfully, `npm.cmd run dev` starts on ports 3000/5173, and the verification processes shut down cleanly. The redesign gate remains FAIL for the independent coverage and browser-evidence blockers above.
+
 ## Final gate synchronization
 
 Specification APPROVED; Planning APPROVED; Task Decomposition APPROVED; Code Generation COMPLETE; Implementation Review PASS; Implementation Verification PASS; Final Acceptance REJECTED pending browser workflow verification. TASK-001 through TASK-022 remain PASS (22/22, 100%). Handoff NOT READY.

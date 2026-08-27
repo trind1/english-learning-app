@@ -14,7 +14,13 @@ export type VocabularyApi = {
     ipa?: string | null;
   }) => Promise<VocabularyItem>;
 };
-export const VocabularyPanel = ({ api }: { api: VocabularyApi }) => {
+export const VocabularyPanel = ({
+  api,
+  onChanged,
+}: {
+  api: VocabularyApi;
+  onChanged?: (items: VocabularyItem[]) => void;
+}) => {
   const [items, setItems] = useState<VocabularyItem[] | null>(null);
   const [word, setWord] = useState("");
   const [meaning, setMeaning] = useState("");
@@ -46,7 +52,11 @@ export const VocabularyPanel = ({ api }: { api: VocabularyApi }) => {
         meaning: meaning.trim(),
         ipa: ipa.trim() || null,
       });
-      setItems((current) => [...(current ?? []), item]);
+      setItems((current) => {
+        const next = [...(current ?? []), item];
+        onChanged?.(next);
+        return next;
+      });
       setWord("");
       setMeaning("");
       setIpa("");
@@ -62,8 +72,14 @@ export const VocabularyPanel = ({ api }: { api: VocabularyApi }) => {
   };
   return (
     <section aria-labelledby="vocabulary-title">
-      <h2 id="vocabulary-title">Vocabulary</h2>
-      <form onSubmit={submit}>
+      <div className="section-title">
+        <div>
+          <span className="eyebrow">Words</span>
+          <h2 id="vocabulary-title">Vocabulary</h2>
+        </div>
+        <span>{items?.length ?? 0} total</span>
+      </div>
+      <form className="vocabulary-form" onSubmit={submit}>
         <label htmlFor="word">Word</label>
         <input
           id="word"
@@ -93,7 +109,7 @@ export const VocabularyPanel = ({ api }: { api: VocabularyApi }) => {
       {items === null && !error && <p role="status">Loading vocabulary…</p>}
       {items?.length === 0 && <p role="status">No vocabulary yet.</p>}
       {items && items.length > 0 && (
-        <ul aria-label="Vocabulary list">
+        <ul className="vocabulary-list" aria-label="Vocabulary list">
           {items.map((item) => (
             <li key={item.id}>
               <strong>{item.word}</strong>{" "}

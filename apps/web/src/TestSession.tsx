@@ -16,9 +16,11 @@ export type TestApi = {
 export const TestSession = ({
   questions,
   api,
+  onNavigate,
 }: {
   questions: readonly Question[];
   api: TestApi;
+  onNavigate?: (target: "dashboard" | "folder") => void;
 }) => {
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<string>();
@@ -37,9 +39,41 @@ export const TestSession = ({
     return (
       <section aria-label="Test results">
         <h2>Results</h2>
+        <div className="result-score">
+          <strong>
+            {Math.round((result.correctCount / result.totalCount) * 100)}%
+          </strong>
+          <span>accuracy</span>
+        </div>
+        <dl>
+          <div>
+            <dt>Correct</dt>
+            <dd>{result.correctCount}</dd>
+          </div>
+          <div>
+            <dt>Incorrect</dt>
+            <dd>{result.incorrectCount}</dd>
+          </div>
+          <div>
+            <dt>Total</dt>
+            <dd>{result.totalCount}</dd>
+          </div>
+        </dl>
         <p>
           {result.correctCount} correct of {result.totalCount}
         </p>
+        <div className="action-row">
+          <button type="button" onClick={() => onNavigate?.("folder")}>
+            Back to folder
+          </button>
+          <button
+            className="secondary"
+            type="button"
+            onClick={() => onNavigate?.("dashboard")}
+          >
+            Dashboard
+          </button>
+        </div>
       </section>
     );
   const q = questions[index]!;
@@ -68,9 +102,14 @@ export const TestSession = ({
   return (
     <section aria-label="Multiple-choice test">
       <h2>{q.word}</h2>
-      <p>
+      <p className="quiz-progress">
         Question {index + 1} of {questions.length}
       </p>
+      <progress
+        value={index + 1}
+        max={questions.length}
+        aria-label="Quiz progress"
+      />
       {q.choices.map((choice) => (
         <button
           key={choice}

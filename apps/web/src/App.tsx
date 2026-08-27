@@ -1,108 +1,363 @@
-import { useState } from "react";
-import { FolderPanel } from "./FolderPanel";
-import { createApiClient } from "./api/client";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { z } from "zod";
 import {
   folderListResponseSchema,
   folderResponseSchema,
+  vocabularyListResponseSchema,
+  vocabularyResponseSchema,
+  type FolderSummary,
 } from "@english-learning/contracts";
+import { createApiClient } from "./api/client";
+import { Dashboard, type DashboardData } from "./Dashboard";
+import { FolderPanel } from "./FolderPanel";
+import { VocabularyPanel } from "./VocabularyPanel";
+import type { VocabularyItem } from "./VocabularyPanel";
+import { CsvImportPanel } from "./CsvImportPanel";
+import { Flashcards } from "./Flashcards";
+import { TestSession, type Question } from "./TestSession";
+import { AiPanel } from "./AiPanel";
+
+type View = "dashboard" | "library" | "folder" | "flashcards" | "quiz";
+type TestPayload = { testToken: string; questions: Question[] };
+const dashboardSchema = z.object({
+  data: z.object({
+    folderCount: z.number(),
+    vocabularyCount: z.number(),
+    completedSessionCount: z.number(),
+    correctAnswerCount: z.number(),
+    incorrectAnswerCount: z.number(),
+    accuracyPercent: z.number(),
+  }),
+});
+const importSchema = z.object({
+  data: z.object({
+    importedCount: z.number(),
+    skippedCount: z.number(),
+    skipped: z.array(z.object({ row: z.number(), message: z.string() })),
+  }),
+});
+const testSchema = z.object({
+  data: z.object({
+    testToken: z.string(),
+    questions: z.array(
+      z.object({
+        vocabularyId: z.string(),
+        word: z.string(),
+        choices: z.array(z.string()),
+      }),
+    ),
+  }),
+});
+const resultSchema = z.object({
+  data: z.object({
+    correctCount: z.number(),
+    incorrectCount: z.number(),
+    totalCount: z.number(),
+  }),
+});
+const aiSchema = z.object({ data: z.object({ text: z.string() }) });
 
 export const App = () => {
-  const [notice, setNotice] = useState("Ready to learn.");
+  const client = useMemo(
+    () => createApiClient(`${window.location.origin}/api/v1`),
+    [],
+  );
+  const [view, setView] = useState<View>("dashboard");
+  const [folder, setFolder] = useState<FolderSummary | null>(null);
+  const [words, setWords] = useState<VocabularyItem[]>([]);
+  const [test, setTest] = useState<TestPayload | null>(null);
+  const [studyError, setStudyError] = useState("");
+  const loadDashboard = useCallback(
+    async (): Promise<DashboardData> =>
+      (await client.request("dashboard", dashboardSchema)).data,
+    [client],
+  );
+  const loadWords = useCallback(async () => {
+    if (!folder) return [];
+    const data = (
+      await client.request(
+        `folders/${folder.id}/vocabulary`,
+        vocabularyListResponseSchema,
+      )
+    ).data.vocabulary;
+    setWords(data);
+    return data;
+  }, [client, folder]);
+  useEffect(() => {
+    if (folder) void loadWords();
+  }, [folder, loadWords]);
+  const navigate = (next: View) => {
+    setStudyError("");
+    setView(next);
+  };
+  const startQuiz = async () => {
+    if (!folder) return;
+    setStudyError("");
+    try {
+      const data = (
+        await client.request(`folders/${folder.id}/tests`, testSchema, {
+          method: "POST",
+        })
+      ).data;
+      setTest(data);
+      setView("quiz");
+    } catch (error) {
+      setStudyError(
+        error instanceof Error ? error.message : "Unable to start the quiz.",
+      );
+    }
+  };
+  const folderApi = {
+    list: async () =>
+      (await client.request("folders", folderListResponseSchema)).data.folders,
+    create: async (name: string) =>
+      (
+        await client.request("folders", folderResponseSchema, {
+          method: "POST",
+          body: JSON.stringify({ name }),
+        })
+      ).data,
+  };
+  const vocabularyApi = useMemo(
+    () =>
+      folder
+        ? {
+            list: loadWords,
+            create: async (input: {
+              word: string;
+              meaning: string;
+              ipa?: string | null;
+            }) =>
+              (
+                await client.request(
+                  `folders/${folder.id}/vocabulary`,
+                  vocabularyResponseSchema,
+                  { method: "POST", body: JSON.stringify(input) },
+                )
+              ).data,
+          }
+        : null,
+    [client, folder, loadWords],
+  );
+
   return (
     <div className="app-shell">
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
       <header className="app-header">
-        <a href="#main" className="skip-link">
-          Skip to content
-        </a>
         <div className="header-inner">
-          <a className="brand" href="#main" aria-label="English Learning home">
+          <button
+            className="brand"
+            type="button"
+            onClick={() => navigate("dashboard")}
+            aria-label="English Learning home"
+          >
             <span className="brand-mark" aria-hidden="true">
               Aa
             </span>
             <span>
-              <h1 className="brand-title">English Learning</h1>
-              <small>Learn a little every day</small>
+              <strong>English Learning</strong>
+              <small>Learn with clarity</small>
             </span>
-          </a>
+          </button>
           <nav aria-label="Primary navigation">
-            <a className="nav-link nav-link-active" href="#folders">
-              Folders
-            </a>
-            <a className="nav-link" href="#dashboard">
+            <button
+              className={view === "dashboard" ? "nav-link active" : "nav-link"}
+              onClick={() => navigate("dashboard")}
+            >
               Dashboard
-            </a>
+            </button>
+            <button
+              className={
+                view === "library" || view === "folder"
+                  ? "nav-link active"
+                  : "nav-link"
+              }
+              onClick={() => navigate("library")}
+            >
+              Library
+            </button>
+            <button
+              className={
+                view === "flashcards" || view === "quiz"
+                  ? "nav-link active"
+                  : "nav-link"
+              }
+              onClick={() =>
+                folder ? navigate("flashcards") : navigate("library")
+              }
+            >
+              Study
+            </button>
           </nav>
+          <button className="header-cta" onClick={() => navigate("library")}>
+            + Add vocabulary
+          </button>
         </div>
       </header>
       <main id="main" tabIndex={-1}>
-        <section className="hero" aria-labelledby="welcome-title">
-          <div className="hero-copy">
-            <span className="eyebrow">Your learning space</span>
-            <h1 id="welcome-title">Build vocabulary that stays with you.</h1>
-            <p>
-              Organize new words, practice with flashcards, and turn every study
-              session into visible progress.
-            </p>
-            <div className="hero-actions">
-              <a className="button-link" href="#folders">
-                Explore folders
-              </a>
-              <button
-                className="button-secondary"
-                type="button"
-                onClick={() => setNotice("Your folders are ready.")}
-              >
-                View folders
-              </button>
+        {view === "dashboard" && (
+          <>
+            <PageHeader
+              eyebrow="Overview"
+              title="Welcome back"
+              text="Keep your vocabulary growing, one focused session at a time."
+              action={
+                <button onClick={() => navigate("library")}>
+                  Start learning
+                </button>
+              }
+            />
+            <Dashboard load={loadDashboard} onAction={navigate} />
+          </>
+        )}
+        {view === "library" && (
+          <>
+            <PageHeader
+              eyebrow="Library"
+              title="Your vocabulary topics"
+              text="Create a topic, add useful words, then study when you are ready."
+            />
+            <FolderPanel
+              api={folderApi}
+              onOpen={(selected) => {
+                setFolder(selected);
+                setView("folder");
+              }}
+            />
+          </>
+        )}
+        {view === "folder" && folder && vocabularyApi && (
+          <>
+            <button className="back-link" onClick={() => navigate("library")}>
+              ← Back to library
+            </button>
+            <PageHeader
+              eyebrow="Topic"
+              title={folder.name}
+              text={`${words.length} ${words.length === 1 ? "word" : "words"} in this topic`}
+              action={
+                <div className="action-row">
+                  <button onClick={() => navigate("flashcards")}>
+                    Flashcards
+                  </button>
+                  <button
+                    className="secondary"
+                    onClick={() => void startQuiz()}
+                  >
+                    Quiz
+                  </button>
+                </div>
+              }
+            />
+            {studyError && <p role="alert">{studyError}</p>}
+            <div className="folder-layout">
+              <VocabularyPanel api={vocabularyApi} onChanged={setWords} />
+              <aside>
+                <CsvImportPanel
+                  api={{
+                    import: async (file) => {
+                      const form = new FormData();
+                      form.append("csv", file);
+                      const report = (
+                        await client.request(
+                          `folders/${folder.id}/vocabulary/import`,
+                          importSchema,
+                          { method: "POST", body: form },
+                        )
+                      ).data;
+                      await loadWords();
+                      return {
+                        imported: report.importedCount,
+                        skipped: report.skippedCount,
+                        rows: report.skipped.map((row) => ({
+                          rowNumber: row.row,
+                          reason: row.message,
+                        })),
+                      };
+                    },
+                  }}
+                />
+                <AiPanel
+                  words={words}
+                  generate={async (ids) =>
+                    (
+                      await client.request("ai/text", aiSchema, {
+                        method: "POST",
+                        body: JSON.stringify({ vocabularyIds: ids }),
+                      })
+                    ).data.text
+                  }
+                />
+              </aside>
             </div>
-            <p className="hero-status" role="status" aria-live="polite">
-              <span aria-hidden="true" />
-              {notice}
-            </p>
-          </div>
-          <div className="hero-visual" aria-hidden="true">
-            <div className="word-card word-card-back">
-              <span>Practice</span>
-              <strong>confidence</strong>
-            </div>
-            <div className="word-card word-card-front">
-              <span>Word of the day</span>
-              <strong>curiosity</strong>
-              <em>/ˌkjʊəriˈɒsəti/</em>
-              <p>A strong desire to learn or know something.</p>
-            </div>
-          </div>
-        </section>
-        <div className="section-heading">
-          <div>
-            <span className="eyebrow">Library</span>
-            <h2>Your vocabulary folders</h2>
-          </div>
-          <p>Create a folder for every topic, course, or learning goal.</p>
-        </div>
-        <FolderPanel api={createFolderApi()} />
+          </>
+        )}
+        {view === "flashcards" && folder && (
+          <>
+            <button className="back-link" onClick={() => navigate("folder")}>
+              ← Back to {folder.name}
+            </button>
+            <PageHeader eyebrow="Study" title="Flashcards" text={folder.name} />
+            <Flashcards items={words} />
+          </>
+        )}
+        {view === "quiz" && folder && test && (
+          <>
+            <button className="back-link" onClick={() => navigate("folder")}>
+              ← Back to {folder.name}
+            </button>
+            <PageHeader
+              eyebrow="Quiz"
+              title="Test your knowledge"
+              text={folder.name}
+            />
+            <TestSession
+              questions={test.questions}
+              api={{
+                submit: async (answers) =>
+                  (
+                    await client.request("test-sessions", resultSchema, {
+                      method: "POST",
+                      body: JSON.stringify({
+                        testToken: test.testToken,
+                        answers,
+                      }),
+                    })
+                  ).data,
+              }}
+              onNavigate={(target) =>
+                navigate(target === "dashboard" ? "dashboard" : "folder")
+              }
+            />
+          </>
+        )}
       </main>
       <footer className="app-footer">
-        <p>English Learning</p>
-        <span>Small steps. Lasting progress.</span>
+        <strong>English Learning</strong>
+        <span>Simple tools for steady progress.</span>
       </footer>
     </div>
   );
 };
-
-/* c8 ignore start -- browser wiring is exercised by integration smoke tests. */
-const createFolderApi = () => {
-  const client = createApiClient(`${window.location.origin}/api/v1`);
-  return {
-    list: async () =>
-      (await client.request("folders", folderListResponseSchema)).data.folders,
-    create: async (name: string) => {
-      const response = await client.request("folders", folderResponseSchema, {
-        method: "POST",
-        body: JSON.stringify({ name }),
-      });
-      return response.data;
-    },
-  };
-};
-/* c8 ignore stop */
+const PageHeader = ({
+  eyebrow,
+  title,
+  text,
+  action,
+}: {
+  eyebrow: string;
+  title: string;
+  text: string;
+  action?: React.ReactNode;
+}) => (
+  <section className="page-header">
+    <div>
+      <span className="eyebrow">{eyebrow}</span>
+      <h1>{title}</h1>
+      <p>{text}</p>
+    </div>
+    {action}
+  </section>
+);

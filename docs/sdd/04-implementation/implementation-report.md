@@ -1,5 +1,26 @@
 # Code Generation Implementation Report
 
+## Integrated UI/UX redesign — 2026-08-27
+
+The redesigned React shell makes the approved dashboard, library, folder detail, manual vocabulary, CSV import, flashcards, quiz/results, and optional AI panels reachable through one responsive navigation flow. It uses the existing REST API and migrated SQLite schema; no backend contract or schema changed.
+
+Database note: development data is stored in the ignored `apps/api/prisma/dev.db` SQLite file. The existing migration creates the tables; it does not invent sample data. Stop the API and use Prisma Studio to inspect it safely. No raw database edits were made.
+
+The implementation review is **FAIL** pending frontend coverage remediation and real-browser viewport/workflow verification. Existing TASK-011–TASK-021 identifiers cover this maintenance scope; no historical task evidence was rewritten.
+
+| Evidence ID | Result |
+| --- | --- |
+| EVID-493 | Dependency installation completed; audit reported zero vulnerabilities. |
+| EVID-494 | Existing Prisma client generated and existing migration applied to the ignored local SQLite database. |
+| EVID-495 | Frontend regression passed: 11 files, 28 tests. |
+| EVID-496 | Backend coverage passed: 95.01% statements, 95.00% branches, 97.22% functions, 95.01% lines. |
+| EVID-497 | Frontend coverage failed: 97.41% statements, 89.71% branches, 65.21% functions, 97.41% lines. |
+| EVID-498 | Lint, typecheck, production build, and `git diff --check` passed. |
+| EVID-499 | Runtime HTTP verification passed: folder, four vocabulary items, four-question quiz, persisted 4/4 result, and dashboard update. |
+| EVID-500 | Real-browser interaction, pronunciation playback, console inspection, and viewport checks were NOT RUN because no browser tool was available. |
+| EVID-501 | Repository-wide `format:check` failed on 86 baseline files; changed frontend files were formatted directly. |
+| EVID-502 | Replaced the POSIX-only setup command with `scripts/setup.mjs`; Windows setup, migration, lint, typecheck, diff check, and a clean development-server start on ports 3000/5173 passed. Six verified stale project Node processes were stopped before verification. |
+
 ## Project-level review summary
 
 Implementation is complete and has been reviewed and verified against the approved SDD artifacts. Review/Verification: **PASS**. Final Acceptance: **ACCEPTED**. All 22 tasks are PASS; no unresolved Critical or Major findings remain. Handoff: **READY**.

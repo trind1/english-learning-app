@@ -1,5 +1,11 @@
 # SDD Project Dashboard
 
+## Current authoritative gate
+
+Post-acceptance UI/UX Redesign Review: **FAIL**. Blockers are frontend coverage below 95% and missing real-browser verification. TASK-001 through TASK-022 remain historically complete, but the redesigned handoff is **NOT READY**. Next allowed action: remediate coverage and execute the browser workflow. Evidence: EVID-493–EVID-501.
+
+EVID-502 resolves the Windows setup and stale-process defect. It does not change the remaining redesign gate blockers.
+
 | Field        | Value                                                                                                  |
 | ------------ | ------------------------------------------------------------------------------------------------------ |
 | Document     | SDD dashboard                                                                                          |

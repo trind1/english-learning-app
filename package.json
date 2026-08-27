@@ -20,7 +20,7 @@
     "dev:api": "npm run dev --workspace @english-learning/api",
     "build": "npm run build --workspace @english-learning/web",
     "start": "npm run start --workspace @english-learning/api",
-    "setup": "set -a; . ./.env; set +a; mkdir -p apps/api/prisma; touch apps/api/prisma/dev.db; npm run db:generate --workspace @english-learning/api && npm run db:migrate:deploy --workspace @english-learning/api",
+    "setup": "node scripts/setup.mjs",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "eslint . --max-warnings=0",
     "format:check": "prettier --check package.json tsconfig.base.json eslint.config.mjs apps packages",

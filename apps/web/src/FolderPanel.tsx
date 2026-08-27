@@ -5,7 +5,13 @@ export type FolderApi = {
   list: () => Promise<FolderSummary[]>;
   create: (name: string) => Promise<FolderSummary>;
 };
-export const FolderPanel = ({ api }: { api: FolderApi }) => {
+export const FolderPanel = ({
+  api,
+  onOpen,
+}: {
+  api: FolderApi;
+  onOpen?: (folder: FolderSummary) => void;
+}) => {
   const [folders, setFolders] = useState<FolderSummary[] | null>(null);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
@@ -88,9 +94,11 @@ export const FolderPanel = ({ api }: { api: FolderApi }) => {
         </p>
       )}
       {folders?.length === 0 && (
-        <p className="panel-state" role="status">
-          No folders yet.
-        </p>
+        <div className="empty-state" role="status">
+          <span aria-hidden="true">Aa</span>
+          <h3>No folders yet.</h3>
+          <p>Create your first topic to start collecting vocabulary.</p>
+        </div>
       )}
       {folders && folders.length > 0 && (
         <ul className="folder-grid" aria-label="Folder list">
@@ -101,6 +109,13 @@ export const FolderPanel = ({ api }: { api: FolderApi }) => {
                 <strong>{folder.name}</strong>
                 <span>{folder.vocabularyCount} words</span>
               </div>
+              <button
+                className="open-folder"
+                type="button"
+                onClick={() => onOpen?.(folder)}
+              >
+                Open
+              </button>
               <span className="folder-arrow" aria-hidden="true">
                 →
               </span>

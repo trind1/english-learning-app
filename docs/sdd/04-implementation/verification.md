@@ -1,5 +1,26 @@
 # TASK-001 through TASK-009 Implementation Verification
 
+## Integrated UI/UX redesign verification — 2026-08-27
+
+STATUS: **FAIL**
+
+Working directory: `D:\Work\english-learning-app`
+
+| Evidence | Command | Exit | Result |
+| --- | --- | ---: | --- |
+| EVID-493 | `npm.cmd install` | 0 | Installed dependencies; zero audit vulnerabilities. |
+| EVID-494 | Prisma generate and migrate deploy commands | 0 | Existing client generated and existing migration applied after creating the required empty SQLite file. |
+| EVID-495 | `npm.cmd run test:web` | 0 | 11 files and 28 tests passed. One React `act` warning remains. |
+| EVID-496 | `npm.cmd run coverage:api` | 0 | All four independent backend metrics meet 95%. |
+| EVID-497 | `npm.cmd run coverage:web` | 1 | Branches 89.71% and functions 65.21%; gate failed. |
+| EVID-498 | `npm.cmd run lint`; `npm.cmd run typecheck`; `npm.cmd run build`; `git diff --check` | 0 | All passed. |
+| EVID-501 | `npm.cmd run format:check` | 1 | Repository-wide baseline reports 86 files needing Prettier formatting; changed frontend files were formatted directly. |
+| EVID-499 | `npm.cmd run dev` plus HTTP workflow checks | 0 | API and frontend served; persisted folder/vocabulary/quiz/dashboard flow passed. |
+| EVID-500 | Interactive browser and responsive checks | NOT RUN | No browser automation or interactive browser capability was available. |
+| EVID-502 | `npm.cmd run setup`; `npm.cmd run lint`; `npm.cmd run typecheck`; `git diff --check`; `npm.cmd run dev` | 0 | Cross-platform setup passed on PowerShell; API listened on 3000, Vite on 5173, and both ports were free after clean shutdown. |
+
+Limitations: CSV and speech have passing component tests, but their real-browser behavior was not observed. The optional AI provider was intentionally disabled by local configuration. No raw database edits or schema changes were made.
+
 ## Project-level Implementation Review and Verification
 
 **Decision:** PASS. The complete implementation was reviewed against the approved Specification, Planning artifacts, API contract, data model, ADRs, task decomposition, tests, and traceability. No unresolved Critical or Major findings were identified. Historical blockers and remediation evidence remain preserved below.
