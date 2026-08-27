@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LinguistPro - AI Stories</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Be+Vietnam+Pro:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary": "#ffffff",
+                    "surface-variant": "#e0e3e5",
+                    "outline": "#727785",
+                    "tertiary": "#825100",
+                    "on-primary-container": "#fefcff",
+                    "tertiary-container": "#a36700",
+                    "on-background": "#191c1e",
+                    "surface-container-low": "#f2f4f6",
+                    "on-surface": "#191c1e",
+                    "surface-dim": "#d8dadc",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#2170e4",
+                    "surface": "#f7f9fb",
+                    "primary-fixed-dim": "#adc6ff",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "on-error": "#ffffff",
+                    "on-surface-variant": "#424754",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed": "#002113",
+                    "surface-tint": "#005ac2",
+                    "surface-bright": "#f7f9fb",
+                    "on-primary-fixed-variant": "#004395",
+                    "on-secondary-fixed-variant": "#005236",
+                    "primary": "#0058be",
+                    "primary-fixed": "#d8e2ff",
+                    "on-tertiary-container": "#fffbff",
+                    "background": "#f7f9fb",
+                    "surface-container": "#eceef0",
+                    "inverse-primary": "#adc6ff",
+                    "text-muted": "#64748B",
+                    "outline-variant": "#c2c6d6",
+                    "on-primary-fixed": "#001a42",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#eff1f3",
+                    "secondary-fixed": "#6ffbbe",
+                    "surface-container-highest": "#e0e3e5",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#6cf8bb",
+                    "brand-navy": "#4076A9",
+                    "secondary": "#006c49",
+                    "error-container": "#ffdad6",
+                    "surface-container-high": "#e6e8ea",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "tertiary-fixed": "#ffddb8",
+                    "secondary-fixed-dim": "#4edea3",
+                    "surface-white": "#FFFFFF",
+                    "text-main": "#1E293B",
+                    "on-secondary-container": "#00714d",
+                    "on-tertiary-fixed": "#2a1700",
+                    "inverse-surface": "#2d3133",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "gutter": "24px",
+                    "base": "4px",
+                    "sm": "12px",
+                    "container-max": "1280px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "label-md": [
+                            "Inter"
+                    ],
+                    "headline-lg-mobile": [
+                            "Be Vietnam Pro"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "ipa-display": [
+                            "Inter"
+                    ],
+                    "headline-lg": [
+                            "Be Vietnam Pro"
+                    ],
+                    "display-lg": [
+                            "Be Vietnam Pro"
+                    ],
+                    "headline-md": [
+                            "Be Vietnam Pro"
+                    ]
+            },
+            "fontSize": {
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0.01em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "ipa-display": [
+                            "15px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "56px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .highlighted-word {
+            position: relative;
+            display: inline-block;
+            font-weight: 600;
+            color: #0058be;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .highlighted-word::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #0058be;
+            opacity: 0.3;
+            transition: opacity 0.2s ease;
+        }
+        .highlighted-word:hover::after {
+            opacity: 1;
+        }
+        .highlighted-word:hover {
+            background-color: #d8e2ff;
+            border-radius: 4px;
+            padding: 0 2px;
+            margin: 0 -2px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background h-full flex overflow-hidden antialiased">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-full w-64 bg-surface shadow-sm docked left-0 p-lg overflow-y-auto">
+<div class="mb-xl flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-headline-md">
+                L
+            </div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">LinguistPro</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Language Mastery</p>
+</div>
+</div>
+<div class="flex-1 space-y-xs">
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-md text-label-md">Vocabulary</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors duration-150" href="#">
+<span class="material-symbols-outlined">fitness_center</span>
+<span class="font-label-md text-label-md">Practice Hub</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-primary font-bold bg-surface-container-high scale-[0.99] transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-label-md text-label-md">AI Stories</span>
+</a>
+</div>
+<div class="mt-auto space-y-md pt-lg border-t border-surface-variant">
+<button class="w-full bg-primary-container text-on-primary-container font-label-md text-label-md py-sm rounded-lg font-semibold hover:opacity-90 transition-opacity">
+                Upgrade to Pro
+            </button>
+<div class="space-y-xs">
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Support</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-hidden">
+<!-- TopNavBar (Mobile Only) -->
+<header class="md:hidden flex justify-between items-center px-lg py-md w-full bg-background sticky top-0 z-10">
+<div class="flex items-center gap-sm">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">LinguistPro</h1>
+</div>
+<div class="flex items-center gap-sm text-primary">
+<span class="font-label-md text-label-md">Daily Goal: 80%</span>
+<button class="material-symbols-outlined hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined hover:text-primary transition-colors">account_circle</button>
+</div>
+</header>
+<!-- Top Header (Desktop) -->
+<header class="hidden md:flex justify-end items-center px-lg py-md w-full bg-background max-w-container-max mx-auto z-10">
+<div class="flex items-center gap-md text-on-surface-variant">
+<span class="font-label-md text-label-md font-medium text-primary bg-primary-fixed px-sm py-xs rounded-full">Daily Goal: 80%</span>
+<button class="material-symbols-outlined hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined hover:text-primary transition-colors">account_circle</button>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-lg md:p-xl">
+<div class="max-w-container-max mx-auto h-full flex flex-col lg:flex-row gap-gutter">
+<!-- Story Canvas -->
+<div class="flex-1 flex flex-col min-h-0 bg-surface-container-lowest rounded-xl shadow-sm border border-surface-variant overflow-hidden">
+<div class="p-lg md:p-xl flex-1 overflow-y-auto">
+<div class="flex justify-between items-start mb-xl">
+<div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">The Midnight Bakery</h2>
+<p class="font-label-md text-label-md text-on-surface-variant flex items-center gap-sm">
+<span class="material-symbols-outlined" style="font-size: 18px;">translate</span> B1 Intermediate
+                                    <span class="text-surface-variant">•</span>
+<span class="material-symbols-outlined" style="font-size: 18px;">schedule</span> 3 Min Read
+                                </p>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant hover:bg-primary-fixed hover:text-primary transition-colors" title="Listen to Story">
+<span class="material-symbols-outlined">volume_up</span>
+</button>
+</div>
+<div class="prose prose-lg max-w-none font-body-lg text-body-lg text-on-surface space-y-md leading-relaxed">
+<p>
+                                The aroma of fresh bread was <span class="highlighted-word" data-word="ubiquitous">ubiquitous</span> in the small village of Oakhaven. Every morning, long before the sun decided to <span class="highlighted-word" data-word="illuminate">illuminate</span> the cobblestone streets, Elias was already at work. His bakery, a modest wooden structure, was a beacon of warmth in the chilly dawn.
+                            </p>
+<p>
+                                Today was different. Elias had found an ancient recipe book hidden in the walls of the bakery during a recent renovation. The pages were <span class="highlighted-word" data-word="fragile">fragile</span>, yellowed with age, and covered in elegant, looping script. He decided to attempt a recipe simply titled "Starlight Loaf."
+                            </p>
+<p>
+                                As he mixed the ingredients, a strange, <span class="highlighted-word" data-word="ethereal">ethereal</span> glow seemed to emanate from the dough. It wasn't just flour and water; it felt alive. He kneaded it with <span class="highlighted-word" data-word="meticulous">meticulous</span> care, ensuring every fold was perfect. When he finally placed it into the roaring oven, the fire flickered in unusual hues of blue and silver.
+                            </p>
+<p>
+                                When the loaf emerged, it was a masterpiece. Its crust was dark and crisp, yet it seemed to hold a soft, inner light. The first customer of the day, a <span class="highlighted-word" data-word="skeptical">skeptical</span> merchant named Silas, took a hesitant bite. Instantly, his eyes widened. He didn't just taste the bread; he experienced a fleeting memory of a joyful childhood summer.
+                            </p>
+<p>
+                                The "Starlight Loaf" was a <span class="highlighted-word" data-word="revelation">revelation</span>. It didn't just feed the body; it nourished the soul, leaving everyone who tasted it with a profound sense of peace.
+                            </p>
+</div>
+</div>
+<!-- Action Bar -->
+<div class="p-lg border-t border-surface-variant bg-surface-bright flex flex-col sm:flex-row gap-md justify-between items-center">
+<button class="w-full sm:w-auto px-lg py-sm rounded-lg border-2 border-outline-variant text-on-surface-variant font-label-md text-label-md font-semibold hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined">refresh</span> Generate New Story
+                        </button>
+<button class="w-full sm:w-auto px-lg py-sm rounded-lg bg-primary text-on-primary font-label-md text-label-md font-semibold hover:bg-surface-tint shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05),0_2px_0_0_#004395] transition-all active:translate-y-[2px] active:shadow-none flex items-center justify-center gap-xs">
+<span class="material-symbols-outlined">check_circle</span> Finish Session
+                        </button>
+</div>
+</div>
+<!-- Vocabulary Panel -->
+<aside class="w-full lg:w-[360px] flex flex-col gap-lg h-full">
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-surface-variant p-lg flex-1 overflow-y-auto">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">school</span> Words Practiced
+                        </h3>
+<div class="space-y-md">
+<!-- Vocab Card 1 -->
+<div class="bg-surface-bright rounded-lg border border-surface-container-highest p-md hover:border-primary-fixed transition-colors">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-body-lg text-body-lg font-semibold text-primary">ubiquitous</h4>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">volume_up</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">Present, appearing, or found everywhere.</p>
+<div class="pt-sm border-t border-surface-variant font-ipa-display text-ipa-display text-text-muted">
+                                    /juːˈbɪk.wɪ.təs/
+                                </div>
+</div>
+<!-- Vocab Card 2 -->
+<div class="bg-surface-bright rounded-lg border border-surface-container-highest p-md hover:border-primary-fixed transition-colors">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-body-lg text-body-lg font-semibold text-primary">illuminate</h4>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">volume_up</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">Make (something) visible or bright by shining light on it.</p>
+<div class="pt-sm border-t border-surface-variant font-ipa-display text-ipa-display text-text-muted">
+                                    /ɪˈluː.mɪ.neɪt/
+                                </div>
+</div>
+<!-- Vocab Card 3 -->
+<div class="bg-surface-bright rounded-lg border border-surface-container-highest p-md hover:border-primary-fixed transition-colors">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-body-lg text-body-lg font-semibold text-primary">fragile</h4>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">volume_up</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">Easily broken or damaged.</p>
+<div class="pt-sm border-t border-surface-variant font-ipa-display text-ipa-display text-text-muted">
+                                    /ˈfrædʒ.aɪl/
+                                </div>
+</div>
+<!-- Vocab Card 4 -->
+<div class="bg-surface-bright rounded-lg border border-surface-container-highest p-md hover:border-primary-fixed transition-colors">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-body-lg text-body-lg font-semibold text-primary">ethereal</h4>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">volume_up</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">Extremely delicate and light in a way that seems not to be of this world.</p>
+<div class="pt-sm border-t border-surface-variant font-ipa-display text-ipa-display text-text-muted">
+                                    /ɪˈθɪə.ri.əl/
+                                </div>
+</div>
+<!-- Vocab Card 5 -->
+<div class="bg-surface-bright rounded-lg border border-surface-container-highest p-md hover:border-primary-fixed transition-colors">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-body-lg text-body-lg font-semibold text-primary">meticulous</h4>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">volume_up</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">Showing great attention to detail; very careful and precise.</p>
+<div class="pt-sm border-t border-surface-variant font-ipa-display text-ipa-display text-text-muted">
+                                    /məˈtɪk.jə.ləs/
+                                </div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</main>
+</body></html>

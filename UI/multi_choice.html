@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LinguistPro - Multiple Choice Quiz</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-tertiary": "#ffffff",
+                "surface-variant": "#e0e3e5",
+                "outline": "#727785",
+                "tertiary": "#825100",
+                "on-primary-container": "#fefcff",
+                "tertiary-container": "#a36700",
+                "on-background": "#191c1e",
+                "surface-container-low": "#f2f4f6",
+                "on-surface": "#191c1e",
+                "surface-dim": "#d8dadc",
+                "surface-container-lowest": "#ffffff",
+                "primary-container": "#2170e4",
+                "surface": "#f7f9fb",
+                "primary-fixed-dim": "#adc6ff",
+                "on-tertiary-fixed-variant": "#653e00",
+                "on-error": "#ffffff",
+                "on-surface-variant": "#424754",
+                "on-secondary": "#ffffff",
+                "on-secondary-fixed": "#002113",
+                "surface-tint": "#005ac2",
+                "surface-bright": "#f7f9fb",
+                "on-primary-fixed-variant": "#004395",
+                "on-secondary-fixed-variant": "#005236",
+                "primary": "#0058be",
+                "primary-fixed": "#d8e2ff",
+                "on-tertiary-container": "#fffbff",
+                "background": "#f7f9fb",
+                "surface-container": "#eceef0",
+                "inverse-primary": "#adc6ff",
+                "text-muted": "#64748B",
+                "outline-variant": "#c2c6d6",
+                "on-primary-fixed": "#001a42",
+                "on-primary": "#ffffff",
+                "inverse-on-surface": "#eff1f3",
+                "secondary-fixed": "#6ffbbe",
+                "surface-container-highest": "#e0e3e5",
+                "on-error-container": "#93000a",
+                "secondary-container": "#6cf8bb",
+                "brand-navy": "#4076A9",
+                "secondary": "#006c49",
+                "error-container": "#ffdad6",
+                "surface-container-high": "#e6e8ea",
+                "tertiary-fixed-dim": "#ffb95f",
+                "tertiary-fixed": "#ffddb8",
+                "secondary-fixed-dim": "#4edea3",
+                "surface-white": "#FFFFFF",
+                "text-main": "#1E293B",
+                "on-secondary-container": "#00714d",
+                "on-tertiary-fixed": "#2a1700",
+                "inverse-surface": "#2d3133",
+                "error": "#ba1a1a"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "xs": "8px",
+                "gutter": "24px",
+                "base": "4px",
+                "sm": "12px",
+                "container-max": "1280px",
+                "xl": "32px",
+                "lg": "24px",
+                "md": "16px"
+        },
+        "fontFamily": {
+                "label-md": ["Inter"],
+                "headline-lg-mobile": ["Be Vietnam Pro"],
+                "body-lg": ["Inter"],
+                "body-md": ["Inter"],
+                "ipa-display": ["Inter"],
+                "headline-lg": ["Be Vietnam Pro"],
+                "display-lg": ["Be Vietnam Pro"],
+                "headline-md": ["Be Vietnam Pro"]
+        },
+        "fontSize": {
+                "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "ipa-display": ["15px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { background-color: #F8FAFC; } /* Level 0 Background */
+  .shadow-level-1 { box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.05); }
+  .shadow-level-2 { box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1); }
+  .primary-button {
+    background-color: #0058be; /* primary */
+    color: #ffffff; /* on-primary */
+    border-radius: 12px;
+    box-shadow: 0 2px 0 0 #004395; /* darker shade for pressable feel */
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .primary-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 0 0 0 #004395;
+  }
+  .primary-button:disabled {
+    background-color: #c2c6d6; /* outline-variant */
+    box-shadow: 0 2px 0 0 #a3a6b6;
+    cursor: not-allowed;
+  }
+</style>
+</head>
+<body class="bg-background text-on-background font-body-md h-screen flex flex-col">
+<!-- TopNavBar - Embedded from Shared Components logic -->
+<nav class="docked top-0 full-width sticky bg-background dark:bg-background flat no shadows">
+<div class="flex justify-between items-center px-lg py-md w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">LinguistPro</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center bg-surface-container-low px-4 py-2 rounded-full shadow-sm">
+<span class="material-symbols-outlined text-outline mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md text-on-surface w-48 outline-none" placeholder="Search lessons..." type="text"/>
+</div>
+<span class="font-label-md text-label-md font-medium text-secondary">Score: 240</span>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<img alt="User Profile" class="w-8 h-8 rounded-full object-cover shadow-sm" data-alt="A small circular profile picture of an adult student in a modern minimalist setting, soft lighting, professional and approachable." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGiQ4Br_2cHobqzyPrqzO7s3E7KUqQS_lB6EXlDFV9cVHb2l8fSg_aHwRjaGqzqS1ctIZL9ggTGX5-bW0JnQaStzrfyTIu1IsW1OXEsc43aWbZcrLgeHFzc2korf_m4E-REcyN_DB69mI6H-2vkdA0HjgcPHp_40vlmv5m8uFQ94-OzxpTVoeQ_hXqOY7BtGaxCT4HhMefetReM_ngEhitga_HgLEHyKm0jdtSUYsbTS0J4BLzK1iE"/>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<div class="flex-1 flex overflow-hidden">
+<!-- SideNavBar - Only on Web -->
+<aside class="hidden md:flex flex-col h-full p-lg overflow-y-auto bg-surface dark:bg-inverse-surface w-64 shadow-sm docked left-0 h-full w-64 border-r border-surface-variant">
+<div class="mb-xl">
+<!-- Space for logo if needed inside nav, but handled in top nav -->
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold bg-surface-container-high rounded-lg active" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-md text-label-md">Practice Hub</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="fitness_center">fitness_center</span>
+<span class="font-label-md text-label-md">Vocabulary</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-label-md text-label-md">AI Stories</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-surface-variant space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-md text-label-md">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 p-lg md:p-xl overflow-y-auto w-full max-w-container-max mx-auto flex flex-col items-center justify-center">
+<div class="w-full max-w-2xl">
+<!-- Progress Section -->
+<div class="mb-8 w-full">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Lesson Progress</span>
+<span class="font-label-md text-label-md font-semibold text-primary">Question 3 of 15</span>
+</div>
+<!-- Progress Bar: 8px height, rounded ends, track #E2E8F0, fill Primary -->
+<div class="h-2 w-full bg-[#E2E8F0] rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-300" style="width: 20%;"></div>
+</div>
+</div>
+<!-- Quiz Card -->
+<div class="bg-surface-container-lowest shadow-level-1 rounded-[16px] p-6 md:p-10 mb-8 border border-surface-variant">
+<!-- Question -->
+<div class="mb-10 text-center">
+<p class="font-label-md text-label-md text-outline mb-4">Complete the sentence:</p>
+<h2 class="font-headline-lg text-headline-lg md:text-display-lg text-on-surface font-semibold leading-tight">
+                        Elle <span class="inline-block border-b-2 border-outline-variant w-16 mx-1 border-dashed"></span> à la bibliothèque tous les jours.
+                    </h2>
+<!-- IPA Display Section -->
+<div class="mt-6 pt-4 border-t border-[#E2E8F0]">
+<p class="font-ipa-display text-ipa-display text-outline font-medium tracking-wide">
+                            /ɛl _ a la bi.bli.jɔ.tɛk tu le ʒuʁ/
+                        </p>
+</div>
+</div>
+<!-- Choices (Bento-style Grid for larger screens, stack for mobile) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<!-- Choice A -->
+<label class="cursor-pointer group relative">
+<input class="peer sr-only" name="quiz-choice" type="radio" value="A"/>
+<div class="h-full p-4 md:p-6 rounded-xl border-2 border-surface-container-highest bg-surface hover:bg-surface-container-low peer-checked:border-primary peer-checked:bg-primary-fixed peer-checked:shadow-sm transition-all duration-200 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center font-headline-md text-headline-md text-on-surface-variant group-hover:bg-primary-container group-hover:text-on-primary-container peer-checked:bg-primary peer-checked:text-on-primary transition-colors">
+                                A
+                            </div>
+<span class="font-body-lg text-body-lg text-on-surface font-medium">allons</span>
+</div>
+</label>
+<!-- Choice B -->
+<label class="cursor-pointer group relative">
+<input class="peer sr-only" name="quiz-choice" type="radio" value="B"/>
+<div class="h-full p-4 md:p-6 rounded-xl border-2 border-surface-container-highest bg-surface hover:bg-surface-container-low peer-checked:border-primary peer-checked:bg-primary-fixed peer-checked:shadow-sm transition-all duration-200 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center font-headline-md text-headline-md text-on-surface-variant group-hover:bg-primary-container group-hover:text-on-primary-container peer-checked:bg-primary peer-checked:text-on-primary transition-colors">
+                                B
+                            </div>
+<span class="font-body-lg text-body-lg text-on-surface font-medium">va</span>
+</div>
+</label>
+<!-- Choice C -->
+<label class="cursor-pointer group relative">
+<input class="peer sr-only" name="quiz-choice" type="radio" value="C"/>
+<div class="h-full p-4 md:p-6 rounded-xl border-2 border-surface-container-highest bg-surface hover:bg-surface-container-low peer-checked:border-primary peer-checked:bg-primary-fixed peer-checked:shadow-sm transition-all duration-200 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center font-headline-md text-headline-md text-on-surface-variant group-hover:bg-primary-container group-hover:text-on-primary-container peer-checked:bg-primary peer-checked:text-on-primary transition-colors">
+                                C
+                            </div>
+<span class="font-body-lg text-body-lg text-on-surface font-medium">vais</span>
+</div>
+</label>
+<!-- Choice D -->
+<label class="cursor-pointer group relative">
+<input class="peer sr-only" name="quiz-choice" type="radio" value="D"/>
+<div class="h-full p-4 md:p-6 rounded-xl border-2 border-surface-container-highest bg-surface hover:bg-surface-container-low peer-checked:border-primary peer-checked:bg-primary-fixed peer-checked:shadow-sm transition-all duration-200 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center font-headline-md text-headline-md text-on-surface-variant group-hover:bg-primary-container group-hover:text-on-primary-container peer-checked:bg-primary peer-checked:text-on-primary transition-colors">
+                                D
+                            </div>
+<span class="font-body-lg text-body-lg text-on-surface font-medium">allez</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Action Area -->
+<div class="flex justify-between items-center w-full">
+<button class="px-6 py-3 rounded-[12px] font-label-md text-label-md font-semibold text-outline hover:text-on-surface transition-colors">
+                    Skip Question
+                </button>
+<button class="primary-button px-8 py-4 font-headline-md text-headline-md font-bold disabled:opacity-50 flex items-center gap-2" disabled="" id="next-btn">
+                    Next
+                    <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+</div>
+<!-- Mobile Bottom Nav -->
+<nav class="md:hidden fixed bottom-0 w-full bg-surface dark:bg-inverse-surface shadow-level-2 pb-safe border-t border-surface-variant">
+<div class="flex justify-around items-center h-16">
+<a class="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-primary bg-primary-fixed-dim bg-opacity-20 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="fitness_center">fitness_center</span>
+</a>
+</div>
+</nav>
+<script>
+    // Simple logic to enable 'Next' button when a radio is checked
+    const radios = document.querySelectorAll('input[name="quiz-choice"]');
+    const nextBtn = document.getElementById('next-btn');
+
+    radios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            if (document.querySelector('input[name="quiz-choice"]:checked')) {
+                nextBtn.disabled = false;
+            }
+        });
+    });
+</script>
+</body></html>

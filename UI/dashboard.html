@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard - LinguistPro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#ffffff",
+                      "tertiary-fixed": "#ffddb8",
+                      "surface-container-high": "#e6e8ea",
+                      "background": "#f7f9fb",
+                      "secondary-fixed-dim": "#4edea3",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "on-primary-fixed": "#001a42",
+                      "primary-fixed": "#d8e2ff",
+                      "on-primary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed": "#6ffbbe",
+                      "on-error": "#ffffff",
+                      "brand-navy": "#4076A9",
+                      "surface-dim": "#d8dadc",
+                      "on-secondary-container": "#00714d",
+                      "tertiary": "#825100",
+                      "surface-variant": "#e0e3e5",
+                      "on-primary-fixed-variant": "#004395",
+                      "tertiary-fixed-dim": "#ffb95f",
+                      "surface": "#f7f9fb",
+                      "tertiary-container": "#a36700",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-low": "#f2f4f6",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-container": "#fffbff",
+                      "surface-tint": "#005ac2",
+                      "primary": "#0058be",
+                      "primary-fixed-dim": "#adc6ff",
+                      "on-secondary-fixed": "#002113",
+                      "surface-container-highest": "#e0e3e5",
+                      "surface-white": "#FFFFFF",
+                      "secondary-container": "#6cf8bb",
+                      "outline-variant": "#c2c6d6",
+                      "surface-container": "#eceef0",
+                      "primary-container": "#2170e4",
+                      "secondary": "#006c49",
+                      "inverse-primary": "#adc6ff",
+                      "text-muted": "#64748B",
+                      "on-secondary-fixed-variant": "#005236",
+                      "error-container": "#ffdad6",
+                      "outline": "#727785",
+                      "error": "#ba1a1a",
+                      "inverse-surface": "#2d3133",
+                      "on-background": "#191c1e",
+                      "on-primary-container": "#fefcff",
+                      "surface-bright": "#f7f9fb",
+                      "on-surface": "#191c1e",
+                      "on-surface-variant": "#424754",
+                      "on-tertiary-fixed": "#2a1700",
+                      "inverse-on-surface": "#eff1f3",
+                      "text-main": "#1E293B"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "base": "4px",
+                      "container-max": "1280px",
+                      "xs": "8px",
+                      "sm": "12px",
+                      "lg": "24px",
+                      "xl": "32px",
+                      "gutter": "24px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "Be Vietnam Pro"
+                      ],
+                      "headline-lg-mobile": [
+                              "Be Vietnam Pro"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "ipa-display": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Be Vietnam Pro"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Be Vietnam Pro"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "ipa-display": [
+                              "15px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md min-h-screen">
+<!-- SideNavBar -->
+<nav class="hidden md:flex h-screen w-64 fixed left-0 top-0 bg-surface-container-low dark:bg-inverse-surface shadow-sm flex-col py-lg px-md z-50">
+<div class="mb-xl px-sm">
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">LinguistPro</h1>
+<p class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant">English Mastery</p>
+</div>
+<div class="flex-grow flex flex-col gap-xs">
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary dark:border-primary-fixed-dim bg-primary-container/10 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard" data-weight="fill">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-md text-label-md">Vocabulary</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="fitness_center">fitness_center</span>
+<span class="font-label-md text-label-md">Practice</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-label-md text-label-md">Progress</span>
+</a>
+</div>
+<button class="mb-lg w-full bg-primary text-on-primary py-sm rounded-lg font-label-md text-label-md shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),_0px_2px_0px_0px_var(--tw-colors-brand-navy)] active:translate-y-[2px] active:shadow-none transition-all">
+            Start Lesson
+        </button>
+<div class="mt-auto flex flex-col gap-xs border-t border-outline-variant pt-sm">
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm rounded-lg text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-md text-label-md">Help</span>
+</a>
+</div>
+</nav>
+<!-- TopAppBar -->
+<header class="hidden md:flex fixed top-0 right-0 w-[calc(100%-16rem)] z-40 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant justify-between items-center h-16 px-xl transition-all duration-200">
+<div class="flex items-center">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full pl-[40px] pr-sm py-xs rounded-xl border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none font-body-md text-body-md transition-all" placeholder="Search..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-sm">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-xs rounded-full hover:bg-surface-container-high active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+<div class="flex items-center gap-sm cursor-pointer hover:bg-surface-container-high p-xs rounded-lg transition-colors">
+<img alt="User Avatar" class="w-[32px] h-[32px] rounded-full object-cover border border-outline-variant" data-alt="A small, professional headshot avatar of an adult language learner smiling warmly in a bright, modern light-mode setting. Clean white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxfKwox0ELM9RwQFDsIGrx0Z_kOMo8ZMmTa6H9O5w1KWS7B-5qpMErzPzrAFzyAhjFp7KLHcy4XwiSYYu0JreanvOaNHE7NsunW70145fsFcn2kiFG8mLJy7DXEOJUrPadVy6jmA73W_lG_hkjV9AbsdtBiEtxh0mCbqc--cvHSh0Wq7a2rq5p-eg4qxz4QMW8uC2xVjxBnvxIDJlDleohoBAzjDP66kX5jBOEgbblIMrFv878g7Ip"/>
+<span class="font-label-md text-label-md text-on-surface">Profile</span>
+<span class="material-symbols-outlined text-outline" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="md:ml-64 pt-24 px-xl pb-xl max-w-container-max mx-auto">
+<!-- Welcome Section -->
+<section class="mb-xl">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Welcome back, Alex!</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">You're on a 5-day streak. Keep up the great work.</p>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg mb-xl">
+<!-- Overall Progress Widget -->
+<div class="bg-surface-container-lowest rounded-[16px] p-lg shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05)] col-span-1 lg:col-span-1 border border-outline-variant/30 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-headline-md text-headline-md text-on-surface">Daily Progress</h3>
+<span class="material-symbols-outlined text-primary bg-primary-container/10 p-xs rounded-full" data-icon="trending_up">trending_up</span>
+</div>
+<div class="flex items-baseline gap-xs mb-sm">
+<span class="font-display-lg text-display-lg text-primary">75%</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Goal completed</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">45 / 60 new words learned today.</p>
+</div>
+<div>
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-1000 ease-out" style="width: 75%"></div>
+</div>
+</div>
+</div>
+<!-- Recent Activity Chart (Placeholder) -->
+<div class="bg-surface-container-lowest rounded-[16px] p-lg shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05)] col-span-1 lg:col-span-2 border border-outline-variant/30">
+<div class="flex items-center justify-between mb-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface">Learning Consistency</h3>
+<div class="flex gap-sm">
+<span class="font-label-md text-label-md px-sm py-1 rounded-full bg-surface-container-low text-on-surface-variant">This Week</span>
+</div>
+</div>
+<div class="h-[200px] flex items-end justify-between gap-sm px-sm pb-sm border-b border-outline-variant/50 relative">
+<!-- Y-axis labels -->
+<div class="absolute left-0 top-0 h-full flex flex-col justify-between text-xs text-outline pr-2 w-8 text-right pointer-events-none">
+<span>100%</span>
+<span>50%</span>
+<span>0%</span>
+</div>
+<!-- Chart Bars -->
+<div class="w-full flex justify-between items-end h-full pl-8">
+<div class="w-1/12 bg-primary/20 hover:bg-primary/40 rounded-t-lg transition-colors cursor-pointer relative group" style="height: 40%">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">40%</div>
+</div>
+<div class="w-1/12 bg-primary rounded-t-lg transition-colors cursor-pointer relative group" style="height: 80%">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">80%</div>
+</div>
+<div class="w-1/12 bg-primary/20 hover:bg-primary/40 rounded-t-lg transition-colors cursor-pointer relative group" style="height: 60%">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">60%</div>
+</div>
+<div class="w-1/12 bg-primary rounded-t-lg transition-colors cursor-pointer relative group" style="height: 100%">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">100%</div>
+</div>
+<div class="w-1/12 bg-primary/20 hover:bg-primary/40 rounded-t-lg transition-colors cursor-pointer relative group" style="height: 30%">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">30%</div>
+</div>
+<div class="w-1/12 bg-primary rounded-t-lg transition-colors cursor-pointer relative group" style="height: 75%">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">75%</div>
+</div>
+<div class="w-1/12 bg-surface-container-high rounded-t-lg transition-colors cursor-pointer" style="height: 5%"></div>
+</div>
+</div>
+<div class="flex justify-between px-sm pl-10 mt-2 font-label-md text-label-md text-outline">
+<span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+</div>
+</div>
+</div>
+<!-- Topic Folders -->
+<section>
+<div class="flex items-center justify-between mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Topic Folders</h2>
+<button class="font-label-md text-label-md text-primary hover:bg-primary-container/10 px-sm py-xs rounded-lg transition-colors">View All</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Folder Card 1 -->
+<div class="bg-surface-container-lowest rounded-[16px] p-lg shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05)] border border-outline-variant/30 hover:shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.1)] transition-shadow cursor-pointer group">
+<div class="w-12 h-12 rounded-xl bg-primary-container/10 flex items-center justify-center mb-md group-hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary transition-colors" data-icon="work">work</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Business English</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">Meetings, negotiations, and emails.</p>
+<div class="flex items-center justify-between mt-auto pt-sm border-t border-outline-variant/30">
+<span class="font-label-md text-label-md text-on-surface-variant">120 words</span>
+<div class="w-1/2 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 40%"></div>
+</div>
+</div>
+</div>
+<!-- Folder Card 2 -->
+<div class="bg-surface-container-lowest rounded-[16px] p-lg shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05)] border border-outline-variant/30 hover:shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.1)] transition-shadow cursor-pointer group">
+<div class="w-12 h-12 rounded-xl bg-primary-container/10 flex items-center justify-center mb-md group-hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary transition-colors" data-icon="flight">flight</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Travel</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">Airports, hotels, and directions.</p>
+<div class="flex items-center justify-between mt-auto pt-sm border-t border-outline-variant/30">
+<span class="font-label-md text-label-md text-on-surface-variant">85 words</span>
+<div class="w-1/2 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 70%"></div>
+</div>
+</div>
+</div>
+<!-- Folder Card 3 -->
+<div class="bg-surface-container-lowest rounded-[16px] p-lg shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05)] border border-outline-variant/30 hover:shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.1)] transition-shadow cursor-pointer group">
+<div class="w-12 h-12 rounded-xl bg-primary-container/10 flex items-center justify-center mb-md group-hover:bg-primary transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary transition-colors" data-icon="coffee">coffee</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Daily Life</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg">Casual conversations and routines.</p>
+<div class="flex items-center justify-between mt-auto pt-sm border-t border-outline-variant/30">
+<span class="font-label-md text-label-md text-on-surface-variant">150 words</span>
+<div class="w-1/2 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 25%"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

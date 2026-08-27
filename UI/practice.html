@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LinguistPro - Practice Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#ffffff",
+                      "tertiary-fixed": "#ffddb8",
+                      "surface-container-high": "#e6e8ea",
+                      "background": "#f7f9fb",
+                      "secondary-fixed-dim": "#4edea3",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "on-primary-fixed": "#001a42",
+                      "primary-fixed": "#d8e2ff",
+                      "on-primary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed": "#6ffbbe",
+                      "on-error": "#ffffff",
+                      "brand-navy": "#4076A9",
+                      "surface-dim": "#d8dadc",
+                      "on-secondary-container": "#00714d",
+                      "tertiary": "#825100",
+                      "surface-variant": "#e0e3e5",
+                      "on-primary-fixed-variant": "#004395",
+                      "tertiary-fixed-dim": "#ffb95f",
+                      "surface": "#f7f9fb",
+                      "tertiary-container": "#a36700",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-low": "#f2f4f6",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-container": "#fffbff",
+                      "surface-tint": "#005ac2",
+                      "primary": "#0058be",
+                      "primary-fixed-dim": "#adc6ff",
+                      "on-secondary-fixed": "#002113",
+                      "surface-container-highest": "#e0e3e5",
+                      "surface-white": "#FFFFFF",
+                      "secondary-container": "#6cf8bb",
+                      "outline-variant": "#c2c6d6",
+                      "surface-container": "#eceef0",
+                      "primary-container": "#2170e4",
+                      "secondary": "#006c49",
+                      "inverse-primary": "#adc6ff",
+                      "text-muted": "#64748B",
+                      "on-secondary-fixed-variant": "#005236",
+                      "error-container": "#ffdad6",
+                      "outline": "#727785",
+                      "error": "#ba1a1a",
+                      "inverse-surface": "#2d3133",
+                      "on-background": "#191c1e",
+                      "on-primary-container": "#fefcff",
+                      "surface-bright": "#f7f9fb",
+                      "on-surface": "#191c1e",
+                      "on-surface-variant": "#424754",
+                      "on-tertiary-fixed": "#2a1700",
+                      "inverse-on-surface": "#eff1f3",
+                      "text-main": "#1E293B"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "base": "4px",
+                      "container-max": "1280px",
+                      "xs": "8px",
+                      "sm": "12px",
+                      "lg": "24px",
+                      "xl": "32px",
+                      "gutter": "24px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "Be Vietnam Pro"
+                      ],
+                      "headline-lg-mobile": [
+                              "Be Vietnam Pro"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "ipa-display": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Be Vietnam Pro"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Be Vietnam Pro"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "ipa-display": [
+                              "15px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: #F8FAFC;
+        }
+        .practice-card-shadow {
+            box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .practice-card-hover:hover {
+            box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-primary-shadow {
+            box-shadow: 0 2px 0 0 #004395;
+        }
+        .btn-primary-shadow:active {
+            box-shadow: 0 0px 0 0 #004395;
+            transform: translateY(2px);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface antialiased">
+<nav class="bg-surface-container-low dark:bg-inverse-surface shadow-sm h-screen w-64 fixed left-0 top-0 flex flex-col h-full py-lg px-md z-50 hidden md:flex">
+<div class="mb-xl px-sm">
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim tracking-tight">LinguistPro</h1>
+<p class="font-label-md text-label-md text-on-surface-variant dark:text-surface-variant mt-1">English Mastery</p>
+</div>
+<div class="mb-lg px-sm">
+<button class="w-full bg-primary text-on-primary py-sm px-md rounded-lg font-label-md text-label-md btn-primary-shadow transition-transform flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                Start Lesson
+            </button>
+</div>
+<ul class="flex flex-col gap-2 flex-grow">
+<li>
+<a class="flex items-center gap-3 px-sm py-xs rounded-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200 font-label-md text-label-md opacity-90 scale-[0.99] transition-transform" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-sm py-xs rounded-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200 font-label-md text-label-md opacity-90 scale-[0.99] transition-transform" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+                    Vocabulary
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-sm py-xs text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary dark:border-primary-fixed-dim bg-primary-container/10 font-label-md text-label-md opacity-90 scale-[0.99] transition-transform rounded-l-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+                    Practice
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-sm py-xs rounded-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200 font-label-md text-label-md opacity-90 scale-[0.99] transition-transform" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+                    Progress
+                </a>
+</li>
+</ul>
+<div class="mt-auto border-t border-outline-variant/30 pt-sm">
+<ul class="flex flex-col gap-2">
+<li>
+<a class="flex items-center gap-3 px-sm py-xs rounded-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200 font-label-md text-label-md opacity-90 scale-[0.99] transition-transform" href="#">
+<span class="material-symbols-outlined">settings</span>
+                        Settings
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-sm py-xs rounded-md text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors duration-200 font-label-md text-label-md opacity-90 scale-[0.99] transition-transform" href="#">
+<span class="material-symbols-outlined">help</span>
+                        Help
+                    </a>
+</li>
+</ul>
+</div>
+</nav>
+<header class="bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md fixed top-0 right-0 w-full md:w-[calc(100%-16rem)] z-40 border-b border-outline-variant flex justify-between items-center h-16 px-md md:px-xl transition-all duration-200">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="font-headline-md text-headline-md-mobile md:text-headline-md font-bold text-primary dark:text-primary-fixed-dim md:hidden">LinguistPro</h2>
+</div>
+<div class="flex items-center gap-2 md:gap-4">
+<button class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors p-2 rounded-full active:scale-95">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors p-2 rounded-full active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center gap-2 hover:bg-surface-container-high p-1 rounded-full md:rounded-lg transition-colors active:scale-95 border border-transparent hover:border-outline-variant/30">
+<img alt="User Avatar" class="w-8 h-8 rounded-full object-cover border border-outline-variant/50" data-alt="A small, circular avatar image of a young adult learner smiling softly. High key lighting, clear and approachable expression, professional headshot style suitable for an educational app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyENR2MexXQRFSgUhP8VYZ_uNMldyHhfIK9FktqQ0OvtgVj9Duay-R2klS6gamFfCpJVYP6a7MCX_55pSBt2lrHiNs9h2NfRIRnxk8nprRCPmFm1vYM6bZA2oBr9rEw29N2k6a77i2KK35TAitH5frNB5cjjhB6i3yQaa4aCgrscAv3SK3zoMDyxByWlGCF9lFvnewlYWjy1AdJ1T7WpzD5E_w1iX6JQfukDsi8czC178EH0C6eYws"/>
+<span class="font-label-md text-label-md text-on-surface-variant hidden md:block px-1">Profile</span>
+</button>
+</div>
+</header>
+<main class="md:ml-64 pt-24 px-md md:px-xl pb-xl max-w-container-max mx-auto min-h-screen flex flex-col gap-lg">
+<section class="flex flex-col gap-2 mb-sm">
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Practice Hub</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Sharpen your skills with targeted exercises. Choose a mode below to begin your session.</p>
+</section>
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<article class="bg-surface-white rounded-[16px] p-lg practice-card-shadow practice-card-hover flex flex-col h-full border border-outline-variant/20">
+<div class="w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary text-[28px]" style="font-variation-settings: 'FILL' 1;">style</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Flashcard Mode</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg flex-grow">Flip and Learn. Review your saved vocabulary with spaced repetition to ensure long-term retention.</p>
+<div class="border-t border-surface-variant pt-md mt-auto flex justify-between items-center">
+<span class="font-label-md text-label-md text-text-muted">32 Cards Due</span>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-label-md text-label-md btn-primary-shadow transition-transform">
+                        Start
+                     </button>
+</div>
+</article>
+<article class="bg-surface-white rounded-[16px] p-lg practice-card-shadow practice-card-hover flex flex-col h-full border border-outline-variant/20">
+<div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-secondary text-[28px]" style="font-variation-settings: 'FILL' 1;">quiz</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Multiple Choice Quiz</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg flex-grow">Test your knowledge. Challenge yourself with grammar and vocabulary questions adapted to your level.</p>
+<div class="border-t border-surface-variant pt-md mt-auto flex justify-between items-center">
+<span class="font-label-md text-label-md text-text-muted">15 Questions</span>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-label-md text-label-md btn-primary-shadow transition-transform">
+                        Start
+                     </button>
+</div>
+</article>
+<article class="bg-surface-white rounded-[16px] p-lg practice-card-shadow practice-card-hover flex flex-col h-full border border-outline-variant/20 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-primary-container/5 to-transparent rounded-bl-full pointer-events-none"></div>
+<div class="w-12 h-12 rounded-full bg-tertiary-container/10 flex items-center justify-center mb-md relative z-10">
+<span class="material-symbols-outlined text-tertiary text-[28px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs relative z-10">AI Story Generator</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-lg flex-grow relative z-10">Generate a story using your words. Practice reading comprehension with contextually relevant mini-stories.</p>
+<div class="border-t border-surface-variant pt-md mt-auto relative z-10">
+<label class="font-label-md text-label-md text-on-surface block mb-xs" for="word-input">Words to include (Max 10):</label>
+<div class="flex gap-2">
+<input class="flex-grow rounded-lg border-outline-variant border px-sm py-xs font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow bg-surface-white" id="word-input" placeholder="e.g., resilient, ubiquitous..." type="text"/>
+<button class="bg-primary text-on-primary px-md py-sm rounded-lg font-label-md text-label-md btn-primary-shadow transition-transform whitespace-nowrap flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">bolt</span> Start
+                         </button>
+</div>
+</div>
+</article>
+</section>
+<section class="mt-lg bg-surface-white rounded-[16px] p-lg practice-card-shadow border border-outline-variant/20 flex flex-col md:flex-row items-center gap-lg">
+<div class="w-full md:w-1/3 h-48 rounded-lg overflow-hidden bg-surface-container-low flex items-center justify-center">
+<span class="material-symbols-outlined text-[64px] text-outline-variant/50">monitoring</span>
+</div>
+<div class="w-full md:w-2/3 flex flex-col gap-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface">Weekly Goal Progress</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">You are on a 3-day streak! Complete 2 more practice sessions this week to reach your goal.</p>
+<div class="w-full h-2 bg-surface-variant rounded-full mt-2 overflow-hidden">
+<div class="h-full bg-secondary rounded-full w-[60%] transition-all duration-500 ease-out"></div>
+</div>
+<div class="flex justify-between font-label-md text-label-md text-text-muted mt-1">
+<span>3 / 5 Sessions</span>
+<span>60%</span>
+</div>
+</div>
+</section>
+</main>
+</body></html>
