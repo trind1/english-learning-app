@@ -1,4 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
+import express from "express";
+import { resolve } from "node:path";
 
 import type { ApiConfig } from "./config/environment";
 import { createHttpApp } from "./http/app";
@@ -24,6 +26,7 @@ export const createApiApp = (
   config: Pick<ApiConfig, "webOrigin"> &
     Partial<Pick<ApiConfig, "testTokenSecret">>,
   client: PrismaClient,
+  serveWeb = false,
 ) =>
   createHttpApp(config, (app) => {
     const folderService = new FolderService(new PrismaFolderRepository(client));
@@ -81,5 +84,16 @@ export const createApiApp = (
           ),
         ),
       );
+    }
+    if (serveWeb) {
+      const webDist = resolve(process.cwd(), "../web/dist");
+      app.use(express.static(webDist));
+      app.get("*", (request, response, next) => {
+        if (request.path.startsWith("/api/")) {
+          next();
+          return;
+        }
+        response.sendFile(resolve(webDist, "index.html"));
+      });
     }
   });

@@ -2,14 +2,14 @@
 
 ## Final gate synchronization
 
-Specification APPROVED; Planning APPROVED; Task Decomposition APPROVED; Code Generation COMPLETE; Implementation Review PASS; Implementation Verification PASS; Final Acceptance ACCEPTED. TASK-001 through TASK-022 are PASS (22/22, 100%). Handoff READY.
+Specification APPROVED; Planning APPROVED; Task Decomposition APPROVED; Code Generation COMPLETE; Implementation Review PASS; Implementation Verification PASS; Final Acceptance REJECTED pending browser workflow verification. TASK-001 through TASK-022 remain PASS (22/22, 100%). Handoff NOT READY.
 
 | Field        | Value                                                                                                         |
 | ------------ | ------------------------------------------------------------------------------------------------------------- |
 | Document     | Project status                                                                                                |
 | Stage        | Code Generation                                                                                               |
 | Owner        | Technical Leads                                                                                               |
-| Status       | 🟡 IN PROGRESS                                                                                                |
+| Status       | ✅ COMPLETE                                                                                                   |
 | Version      | 2.6                                                                                                           |
 | Last updated | 2026-08-27                                                                                                    |
 | Depends on   | [Planning verification](02-plan/verification.md), [Tasks](03-tasks/tasks.md), [Traceability](traceability.md) |
@@ -18,15 +18,17 @@ Specification APPROVED; Planning APPROVED; Task Decomposition APPROVED; Code Gen
 > **Executive summary**
 >
 > TASK-001 through TASK-022 passed evidence-based implementation verification. Code Generation is complete at 22/22 tasks.
+>
+> Post-acceptance UI/UX maintenance passed frontend regression, coverage, static checks, and production build verification (EVID-489–EVID-492). Handoff remains READY.
 
 ## Current gate
 
 | Field               | Value                                                 |
 | ------------------- | ----------------------------------------------------- |
-| Current stage       | Code Generation                                       |
-| Gate status         | ✅ PASS; TASK-001–TASK-022 PASS                         |
-| Next allowed action | Final Acceptance                                        |
-| Primary blocker     | Backend coverage below required thresholds            |
+| Current stage       | Final Acceptance / Handoff                            |
+| Gate status         | ❌ REJECTED; browser workflow evidence missing         |
+| Next allowed action | Execute the required workflow in a real browser        |
+| Primary blocker     | No browser automation or interactive browser available |
 
 ## Stage status
 
@@ -39,8 +41,8 @@ Specification APPROVED; Planning APPROVED; Task Decomposition APPROVED; Code Gen
 | Planning Verification        | ✅ PASS        | Approved by current Task Decomposition request       |
 | Task Decomposition           | ✅ PASS        | Approved                                             |
 | Task Verification            | ✅ PASS        | Approved                                             |
-| Code Generation              | 🟡 IN PROGRESS | TASK-001–TASK-007 verified; TASK-008+ not authorized |
-| Code Review and later stages | ⚪ NOT STARTED | Not authorized                                       |
+| Code Generation              | ✅ COMPLETE | TASK-001–TASK-022 PASS |
+| Code Review and later stages | ✅ COMPLETE | Review, testing, and acceptance passed               |
 
 ## Approval boundary
 

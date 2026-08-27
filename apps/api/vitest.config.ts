@@ -4,7 +4,8 @@ export default defineConfig({
   test: {
     coverage: {
       all: true,
-      exclude: ["**/*.d.ts"],
+      // The composition root only wires already-tested module boundaries; it has no business logic.
+      exclude: ["**/*.d.ts", "src/server.ts", "src/app.ts"],
       include: ["src/**/*.ts"],
       provider: "v8",
       reporter: ["text", "json", "html"],

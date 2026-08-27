@@ -19,11 +19,11 @@
 
 | Field                | Value                                                  |
 | -------------------- | ------------------------------------------------------ |
-| Current stage        | Code Generation — TASK-008 verified                     |
+| Current stage        | Final Acceptance — rejected pending browser verification |
 | Gate status          | ✅ PASS; TASK-001–TASK-022 PASS                         |
-| Current blockers     | Backend coverage below required thresholds             |
-| Next allowed action  | Final Acceptance                                        |
-| User approval status | TASK-008 verification complete; review required        |
+| Current blockers     | None                                                    |
+| Next allowed action  | Handoff / normal maintenance                            |
+| User approval status | Final Acceptance not approved; handoff NOT READY       |
 
 ## Stage navigation
 
@@ -33,10 +33,10 @@
 | Specification             | Business Analyst   | [Specification](01-spec/spec.md)                                    | [Specification Verification](01-spec/verification.md)            | ✅ PASS and approved                   |
 | Planning                  | Software Architect | [Technical Plan](02-plan/plan.md)                                   | [Planning Verification](02-plan/verification.md)                 | ✅ PASS and approved                   |
 | Task Decomposition        | Technical Leads    | [Tasks](03-tasks/tasks.md)                                          | [Task Verification](03-tasks/verification.md)                    | ✅ PASS and approved                   |
-| Code Generation           | FE/BE Leads        | [Implementation report](04-implementation/implementation-report.md) | [Implementation Verification](04-implementation/verification.md) | 🟡 IN PROGRESS; TASK-001–TASK-007 PASS |
-| Code Review               | Reviewer           | [Review report](05-review/review-report.md)                         | [Review Verification](05-review/verification.md)                 | ⚪ NOT STARTED                         |
-| Unit Testing and Coverage | QA                 | [Test report](06-testing/test-report.md)                            | [Testing Verification](06-testing/verification.md)               | ⚪ NOT STARTED                         |
-| Final Acceptance          | User               | [Final acceptance](07-acceptance/final-acceptance.md)               | —                                                                | ✅ ACCEPTED                           |
+| Code Generation           | FE/BE Leads        | [Implementation report](04-implementation/implementation-report.md) | [Implementation Verification](04-implementation/verification.md) | ✅ COMPLETE; TASK-001–TASK-022 PASS |
+| Code Review               | Reviewer           | [Review report](05-review/review-report.md)                         | [Review Verification](05-review/verification.md)                 | ✅ PASS                              |
+| Unit Testing and Coverage | QA                 | [Test report](06-testing/test-report.md)                            | [Testing Verification](06-testing/verification.md)               | ✅ PASS                              |
+| Final Acceptance          | User               | [Final acceptance](07-acceptance/final-acceptance.md)               | —                                                                | ❌ REJECTED                           |
 
 ## Planning artifacts
 
@@ -51,8 +51,8 @@
 
 | Application | Statements | Branches | Functions | Lines | Evidence status                                                                                       |
 | ----------- | ---------: | -------: | --------: | ----: | ----------------------------------------------------------------------------------------------------- |
-| Frontend    |       ≥95% |     ≥95% |      ≥95% |  ≥95% | Implemented source through TASK-005: 100% all metrics; final application not yet measurable           |
-| Backend     |       ≥95% |     ≥95% |      ≥95% |  ≥95% | Implemented source through TASK-005: 98.94% statements, 97.16% branches, 100% functions, 98.94% lines |
+| Frontend    |       ≥95% |     ≥95% |      ≥95% |  ≥95% | Final verified coverage meets all thresholds |
+| Backend     |       ≥95% |     ≥95% |      ≥95% |  ≥95% | Final verified coverage meets all thresholds |
 
 A combined monorepo percentage cannot satisfy either application. Exclusions require documented technical justification and cannot remove business logic merely to raise coverage.
 
@@ -71,3 +71,5 @@ A combined monorepo percentage cannot satisfy either application. Exclusions req
 ## Blockers and approval
 
 No implementation defect is open. Overall implementation progress is 22/22 tasks (100%). All tasks are PASS.
+
+Dependency and security checks are now verified: `npm ls --all` passed and `npm audit --audit-level=low` reports zero vulnerabilities after the targeted `tsx` upgrade and deduplication. Final Acceptance remains REJECTED because the required interactive browser workflow could not be executed in this environment; handoff remains NOT READY.

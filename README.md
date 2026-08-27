@@ -1,8 +1,19 @@
 # English Learning App
 
-This repository is an SDD workspace for a beginner-friendly, full-stack English-learning application. Application source code has not been initialized.
+This repository contains a beginner-friendly, full-stack English-learning application.
 
-## Current workflow
+For local development, see the [local run guide](docs/RUN-GUIDE.md):
+
+```bash
+npm install
+cp .env.example .env
+npm run setup
+npm run dev
+```
+
+Then open http://localhost:5173.
+
+## Project workflow
 
 Start with the [SDD dashboard](docs/sdd/index.md) and follow [repository governance](AGENTS.md). Each stage requires an evidence-based verification result of `PASS` and explicit user approval before the next stage starts.
 
@@ -10,13 +21,13 @@ Start with the [SDD dashboard](docs/sdd/index.md) and follow [repository governa
 
 The planned product covers topic folders, manual and CSV vocabulary entry, IPA, pronunciation, flashcards, multiple-choice tests, per-session answer tracking, a progress dashboard, and optional AI-generated text using no more than ten selected words.
 
-The technology baseline is a proposal until it is evaluated and approved during Planning. Do not install dependencies or create application code during Bootstrap.
+The implementation uses npm workspaces, React/Vite, Express, Prisma/SQLite, and automated tests.
 
 ## Documentation map
 
 - `docs/sdd/`: stage artifacts, status, traceability, and templates.
 - `.codex/agents/`: project-scoped role definitions.
-- `.env.example`: safe placeholder names for future configuration.
+- `.env.example`: safe local configuration placeholders.
 - `.gitignore`: prevents local secrets, databases, dependencies, and generated reports from being committed.
 
 ## Beginner check

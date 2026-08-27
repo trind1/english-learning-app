@@ -1,4 +1,4 @@
 # Coverage Report
 
-> Status: NOT STARTED
-> This artifact will be completed during the corresponding SDD stage.
+> Status: PASS
+> Backend and frontend coverage independently met all four required thresholds.

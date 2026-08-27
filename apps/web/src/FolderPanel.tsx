@@ -43,21 +43,37 @@ export const FolderPanel = ({ api }: { api: FolderApi }) => {
     }
   };
   return (
-    <section id="folders" aria-labelledby="folders-title">
-      <h2 id="folders-title">Folders</h2>
-      <form onSubmit={submit}>
-        <label htmlFor="folder-name">Folder name</label>
-        <input
-          id="folder-name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          maxLength={50}
-          disabled={busy}
-        />
-        <button type="submit" disabled={busy}>
-          {busy ? "Saving…" : "Create folder"}
-        </button>
-      </form>
+    <section
+      className="folder-panel"
+      id="folders"
+      aria-labelledby="folders-title"
+    >
+      <div className="folder-panel-header">
+        <div>
+          <span className="folder-icon" aria-hidden="true" />
+          <div>
+            <h2 id="folders-title">Folders</h2>
+            <p>Group words by topic and keep your learning organized.</p>
+          </div>
+        </div>
+        <form className="folder-form" onSubmit={submit}>
+          <label className="sr-only" htmlFor="folder-name">
+            Folder name
+          </label>
+          <input
+            id="folder-name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            maxLength={50}
+            placeholder="e.g. Travel English"
+            disabled={busy}
+          />
+          <button type="submit" disabled={busy}>
+            <span aria-hidden="true">+</span>
+            {busy ? "Saving…" : "Create folder"}
+          </button>
+        </form>
+      </div>
       {error && (
         <p role="alert">
           {error}{" "}
@@ -66,12 +82,29 @@ export const FolderPanel = ({ api }: { api: FolderApi }) => {
           </button>
         </p>
       )}
-      {folders === null && !error && <p role="status">Loading folders…</p>}
-      {folders?.length === 0 && <p role="status">No folders yet.</p>}
+      {folders === null && !error && (
+        <p className="panel-state" role="status">
+          Loading folders…
+        </p>
+      )}
+      {folders?.length === 0 && (
+        <p className="panel-state" role="status">
+          No folders yet.
+        </p>
+      )}
       {folders && folders.length > 0 && (
-        <ul aria-label="Folder list">
+        <ul className="folder-grid" aria-label="Folder list">
           {folders.map((folder) => (
-            <li key={folder.id}>{folder.name}</li>
+            <li key={folder.id}>
+              <span className="folder-card-icon" aria-hidden="true" />
+              <div>
+                <strong>{folder.name}</strong>
+                <span>{folder.vocabularyCount} words</span>
+              </div>
+              <span className="folder-arrow" aria-hidden="true">
+                →
+              </span>
+            </li>
           ))}
         </ul>
       )}
