@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 export const PracticeHub = ({
   wordCount = 0,
   onStartFlashcards,
@@ -9,10 +7,8 @@ export const PracticeHub = ({
   wordCount?: number;
   onStartFlashcards?: () => void;
   onStartQuiz?: () => void;
-  onStartAi?: (word: string) => void;
+  onStartAi?: () => void;
 }) => {
-  const [aiWord, setAiWord] = useState("");
-
   return (
     <section
       aria-label="Practice Hub"
@@ -194,8 +190,8 @@ export const PracticeHub = ({
               flexGrow: 1,
             }}
           >
-            Contextual Learning. Read customized stories that naturally embed
-            your target words for better comprehension.
+            Generate a story using your saved words. Practice reading
+            comprehension with contextually relevant mini-stories.
           </p>
           <div
             style={{
@@ -207,27 +203,20 @@ export const PracticeHub = ({
               marginTop: "auto",
             }}
           >
-            <div style={{ display: "flex", gap: "8px" }}>
-              <label htmlFor="word-input" className="sr-only">
-                Words to include (Max 10):
-              </label>
-              <input
-                id="word-input"
-                type="text"
-                placeholder="e.g., resilient, ubiquitous..."
-                value={aiWord}
-                onChange={(e) => setAiWord(e.target.value)}
-                style={{ flexGrow: 1, height: "40px", fontSize: "14px" }}
-              />
-              <button
-                className="btn-primary"
-                type="button"
-                aria-label="Start AI story"
-                onClick={() => onStartAi?.(aiWord)}
-              >
-                Start
-              </button>
-            </div>
+            <p
+              className="text-label-md"
+              style={{ color: "var(--text-muted)", margin: 0 }}
+            >
+              Choose up to 10 saved words in the next step.
+            </p>
+            <button
+              className="btn-primary"
+              type="button"
+              aria-label="Start AI story"
+              onClick={onStartAi}
+            >
+              Start
+            </button>
           </div>
         </article>
       </div>

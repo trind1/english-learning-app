@@ -19,6 +19,7 @@ import { AiPanel } from "./AiPanel";
 import { PracticeHub } from "./PracticeHub";
 import { Login } from "./Login";
 import { Register } from "./Register";
+import { AuthService, AuthStorage, type AuthUser } from "./auth";
 
 export type View =
   | "dashboard"
@@ -76,17 +77,38 @@ const resultSchema = z.object({
 const aiSchema = z.object({ data: z.object({ text: z.string() }) });
 
 export const App = () => {
+  const auth = useMemo(() => new AuthService(), []);
   const client = useMemo(
     () => createApiClient(`${window.location.origin}/api/v1`),
     [],
   );
-  const [view, setView] = useState<View>("dashboard");
+  const [user, setUser] = useState<AuthUser | null>(() =>
+    AuthStorage.session(),
+  );
+  const pathToView = (path: string): View => {
+    if (path === "/login") return "login";
+    if (path === "/register") return "register";
+    if (path === "/library") return "library";
+    if (path.includes("/practice")) return "practice";
+    if (path.includes("/flashcards")) return "flashcards";
+    if (path.includes("/quiz")) return "quiz";
+    if (path.includes("/ai")) return "ai_generator";
+    return "dashboard";
+  };
+  const [view, setView] = useState<View>(() =>
+    AuthStorage.session()
+      ? ["login", "register"].includes(pathToView(window.location.pathname))
+        ? "dashboard"
+        : pathToView(window.location.pathname)
+      : "login",
+  );
   const [folder, setFolder] = useState<FolderSummary | null>(null);
   const [words, setWords] = useState<VocabularyItem[]>([]);
   const [test, setTest] = useState<TestPayload | null>(null);
   const [studyError, setStudyError] = useState("");
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
+  const [showMobileNavigation, setShowMobileNavigation] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement>(null);
 
   // Click outside to close profile dropdown
@@ -130,10 +152,53 @@ export const App = () => {
   }, [folder, loadWords]);
 
   const navigate = (next: View) => {
+    if (next !== "login" && next !== "register" && !user) {
+      setView("login");
+      return;
+    }
     setStudyError("");
     setShowProfileMenu(false);
+    setShowMobileNavigation(false);
     setView(next);
+    const paths: Record<View, string> = {
+      dashboard: "/dashboard",
+      login: "/login",
+      register: "/register",
+      library: "/library",
+      folder: "/library",
+      practice: "/practice",
+      flashcards: "/flashcards",
+      quiz: "/quiz",
+      ai_generator: "/ai",
+    };
+    window.history.pushState({}, "", paths[next]);
   };
+
+  useEffect(() => {
+    const syncRoute = () => {
+      const path = window.location.pathname;
+      const requested = pathToView(path);
+      if (!user && path !== "/register" && path !== "/login") {
+        window.history.replaceState({}, "", "/login");
+        setView("login");
+        return;
+      }
+      if (
+        user &&
+        (path === "/" || requested === "login" || requested === "register")
+      ) {
+        window.history.replaceState({}, "", "/dashboard");
+        setView("dashboard");
+        return;
+      }
+      setView(
+        user ? requested : requested === "register" ? "register" : "login",
+      );
+    };
+    syncRoute();
+    window.addEventListener("popstate", syncRoute);
+    return () => window.removeEventListener("popstate", syncRoute);
+  }, [user]);
 
   const startQuiz = async () => {
     if (!folder) return;
@@ -191,7 +256,11 @@ export const App = () => {
   if (view === "login") {
     return (
       <Login
-        onLogin={() => navigate("dashboard")}
+        onLogin={(email, password) => {
+          setUser(auth.login(email, password));
+          window.history.replaceState({}, "", "/dashboard");
+          setView("dashboard");
+        }}
         onNavigateRegister={() => navigate("register")}
       />
     );
@@ -199,7 +268,11 @@ export const App = () => {
   if (view === "register") {
     return (
       <Register
-        onRegister={() => navigate("dashboard")}
+        onRegister={(input) => {
+          setUser(auth.register(input));
+          window.history.replaceState({}, "", "/dashboard");
+          setView("dashboard");
+        }}
         onNavigateLogin={() => navigate("login")}
       />
     );
@@ -386,6 +459,17 @@ export const App = () => {
 
       {/* Top User Bar (Notification + Profile Only) */}
       <header className="top-app-bar">
+        <button
+          className="mobile-navigation-toggle btn-ghost"
+          type="button"
+          aria-label="Open navigation"
+          aria-controls="mobile-navigation"
+          aria-expanded={showMobileNavigation}
+          onClick={() => setShowMobileNavigation((open) => !open)}
+        >
+          <span aria-hidden="true">☰</span>
+          <span className="mobile-navigation-label">Menu</span>
+        </button>
         <div className="top-bar-actions">
           <button
             className="btn-ghost"
@@ -408,6 +492,12 @@ export const App = () => {
               className="user-profile-pill"
               type="button"
               onClick={() => setShowProfileMenu(!showProfileMenu)}
+              onKeyDown={(event) => {
+                if (event.key === "Escape") {
+                  event.preventDefault();
+                  setShowProfileMenu(false);
+                }
+              }}
               aria-expanded={showProfileMenu}
               aria-label="User profile"
             >
@@ -433,6 +523,16 @@ export const App = () => {
                 className="profile-dropdown-menu"
                 role="menu"
                 aria-label="Profile options"
+                onKeyDown={(event) => {
+                  if (event.key === "Escape") {
+                    setShowProfileMenu(false);
+                    (
+                      event.currentTarget.parentElement?.querySelector(
+                        ".user-profile-pill",
+                      ) as HTMLButtonElement | null
+                    )?.focus();
+                  }
+                }}
               >
                 <button
                   type="button"
@@ -457,6 +557,8 @@ export const App = () => {
                   className="dropdown-item"
                   onClick={() => {
                     setShowProfileMenu(false);
+                    auth.logout();
+                    setUser(null);
                     navigate("login");
                   }}
                 >
@@ -474,6 +576,74 @@ export const App = () => {
         </div>
       </header>
 
+      {showMobileNavigation && (
+        <div
+          className="mobile-navigation-backdrop"
+          data-testid="mobile-navigation-backdrop"
+          onClick={() => setShowMobileNavigation(false)}
+        >
+          <nav
+            id="mobile-navigation"
+            className="mobile-navigation-drawer"
+            aria-label="Mobile navigation"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="side-brand">
+              <span className="brand-icon" aria-hidden="true">
+                ◉
+              </span>
+              <div>
+                <p className="brand-title">LinguistPro</p>
+                <p className="brand-subtitle">English Mastery</p>
+              </div>
+            </div>
+            <ul className="side-nav-links">
+              <li
+                className={`side-nav-item ${view === "dashboard" ? "active" : ""}`}
+              >
+                <button type="button" onClick={() => navigate("dashboard")}>
+                  Dashboard
+                </button>
+              </li>
+              <li
+                className={`side-nav-item ${view === "library" || view === "folder" ? "active" : ""}`}
+              >
+                <button type="button" onClick={() => navigate("library")}>
+                  Vocabulary
+                </button>
+              </li>
+              <li
+                className={`side-nav-item ${view === "practice" || view === "ai_generator" ? "active" : ""}`}
+              >
+                <button type="button" onClick={() => navigate("practice")}>
+                  Practice
+                </button>
+              </li>
+              <li className="side-nav-item">
+                <button type="button">Progress</button>
+              </li>
+            </ul>
+            <button
+              className="side-cta-btn"
+              type="button"
+              onClick={() =>
+                folder ? navigate("flashcards") : navigate("practice")
+              }
+            >
+              Start Lesson
+            </button>
+            <ul className="side-nav-footer">
+              <li className="side-nav-item">
+                <button type="button">Settings</button>
+              </li>
+              <li className="side-nav-item">
+                <button type="button">Help</button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      )}
+
       {/* Information Modal */}
       {showInfoModal && (
         <div
@@ -482,6 +652,9 @@ export const App = () => {
           aria-modal="true"
           aria-labelledby="info-modal-title"
           onClick={() => setShowInfoModal(false)}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") setShowInfoModal(false);
+          }}
         >
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <div
@@ -531,28 +704,21 @@ export const App = () => {
       {/* Main Content Area */}
       <main id="main" className="main-wrapper" tabIndex={-1}>
         {view === "dashboard" && (
-          <>
-            <PageHeader
-              eyebrow="Overview"
-              title="Welcome back"
-              text="Keep your vocabulary growing, one focused session at a time."
-              action={
-                <button
-                  className="btn-primary"
-                  type="button"
-                  onClick={() => navigate("library")}
-                >
-                  Start learning
-                </button>
-              }
-            />
-            <Dashboard load={loadDashboard} onAction={navigate} />
-          </>
+          <Dashboard
+            load={loadDashboard}
+            loadFolders={folderApi.list}
+            onAction={navigate}
+            onOpenFolder={(selected) => {
+              setFolder(selected);
+              navigate("folder");
+            }}
+          />
         )}
 
         {view === "library" && (
           <>
             <PageHeader
+              className="folder-page-header"
               eyebrow="Library"
               title="Your vocabulary topics"
               text="Create a topic, add useful words, then study when you are ready."
@@ -587,7 +753,7 @@ export const App = () => {
               action={
                 <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                   <button
-                    className="btn-primary"
+                    className="btn-primary study-action study-action-primary"
                     type="button"
                     onClick={() => navigate("flashcards")}
                   >
@@ -601,7 +767,7 @@ export const App = () => {
                     Flashcards
                   </button>
                   <button
-                    className="btn-secondary"
+                    className="btn-secondary study-action"
                     type="button"
                     onClick={() => void startQuiz()}
                   >
@@ -717,13 +883,16 @@ const PageHeader = ({
   title,
   text,
   action,
+  className,
 }: {
   eyebrow: string;
   title: string;
   text: string;
   action?: React.ReactNode;
+  className?: string;
 }) => (
   <section
+    className={className}
     style={{
       display: "flex",
       alignItems: "flex-end",

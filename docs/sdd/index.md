@@ -2,6 +2,10 @@
 
 ## Current authoritative gate — 2026-08-28
 
+Authentication and Routing Remediation and Final Acceptance are **PASS**. The complete browser acceptance workflow passed with the persistent dev server, including auth routing, learning flow, CSV import, flashcards, quiz, AI, and logout/login persistence. Handoff is **READY**.
+
+Next allowed action: approve UI-REM-001 only. Final Acceptance remains **NOT READY**.
+
 Final Acceptance is **BLOCKED**. The frontend coverage defect is closed: EVID-504 reports 99.57% statements, 95.41% branches, 100% functions, and 99.57% lines. Backend coverage remains passing at 95.01% statements, 95.00% branches, 97.22% functions, and 95.01% lines (EVID-506). The complete 127-test regression passes sequentially (EVID-507), and typecheck, lint, formatting, production build, dependency-tree inspection, and whitespace checks pass (EVID-508–EVID-509).
 
 The remaining gate blocker is the required complete real-browser workflow and mobile screenshot. Headless Chrome reached and captured the real dashboard, but the workflow did not pass before the browser rerun was denied (EVID-511–EVID-512). The npm registry was also unreachable during the current audit attempt; the lockfile is unchanged and historical zero-vulnerability evidence remains EVID-493, but the current audit attempt is recorded as a limitation in EVID-510.
@@ -89,3 +93,6 @@ A combined monorepo percentage cannot satisfy either application. Exclusions req
 No implementation defect is open. Overall implementation progress is 22/22 tasks (100%). All tasks are PASS.
 
 Dependency and security checks are now verified: `npm ls --all` passed and `npm audit --audit-level=low` reports zero vulnerabilities after the targeted `tsx` upgrade and deduplication. Final Acceptance remains REJECTED because the required interactive browser workflow could not be executed in this environment; handoff remains NOT READY.
+Vocabulary UI redesign responsive verification is **PASS** at representative desktop, tablet, and mobile viewports.
+Vocabulary visual refinement is **PASS**; no functional or backend changes were made.
+Folder Detail UI redesign is **PASS**; all study and vocabulary controls remain available.

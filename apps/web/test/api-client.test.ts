@@ -58,6 +58,25 @@ describe("TEST-002 frontend API client boundary", () => {
     );
   });
 
+  it("preserves multipart boundaries for FormData uploads", async () => {
+    const fetcher = vi.fn<typeof fetch>().mockResolvedValue(
+      new Response(JSON.stringify({ data: { ready: true } }), {
+        status: 200,
+      }),
+    );
+    const client = createApiClient("http://localhost:3000", fetcher);
+    const form = new FormData();
+    form.append("csv", new File(["word,meaning\nhello,greeting"], "words.csv"));
+    await expect(
+      client.request("folders/folder/vocabulary/import", responseSchema, {
+        method: "POST",
+        body: form,
+      }),
+    ).resolves.toEqual({ data: { ready: true } });
+    const request = fetcher.mock.calls[0]?.[1] as RequestInit;
+    expect(request.headers).toEqual({ Accept: "application/json" });
+  });
+
   it("rejects invalid base URLs and malformed response contracts", async () => {
     expect(() => createApiClient("not-a-url", vi.fn())).toThrow();
 

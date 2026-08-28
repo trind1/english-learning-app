@@ -49,4 +49,28 @@ describe("Register component", () => {
     fireEvent.click(screen.getByRole("button", { name: "Create Account" }));
     fireEvent.click(screen.getByRole("link", { name: "Log In" }));
   });
+  it("shows registration errors from the service callback", () => {
+    render(
+      <Register
+        onRegister={() => {
+          throw new Error("Duplicate account");
+        }}
+      />,
+    );
+    fireEvent.change(screen.getByLabelText("Full Name"), {
+      target: { value: "A" },
+    });
+    fireEvent.change(screen.getByLabelText("Email"), {
+      target: { value: "a@example.com" },
+    });
+    fireEvent.change(screen.getByLabelText("Password"), {
+      target: { value: "secret1" },
+    });
+    fireEvent.change(screen.getByLabelText("Confirm Password"), {
+      target: { value: "secret1" },
+    });
+    fireEvent.click(screen.getByLabelText(/I agree to the/i));
+    fireEvent.click(screen.getByRole("button", { name: "Create Account" }));
+    expect(screen.getByRole("alert")).toHaveTextContent("Duplicate account");
+  });
 });

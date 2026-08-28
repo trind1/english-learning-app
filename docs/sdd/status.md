@@ -2,19 +2,23 @@
 
 ## Current authoritative status — 2026-08-28
 
+Vocabulary UI redesign representative responsive verification is **PASS** at 1440px, 768px, and 390px. No browser errors or overflow were observed.
+Vocabulary visual refinement remains **PASS** with the existing page structure and behavior preserved.
+Folder Detail UI redesign is **PASS** with representative browser verification complete.
+
 | Field | Value |
 | --- | --- |
-| Current stage | Final Acceptance remediation verification |
-| Gate status | **BLOCKED** |
+| Current stage | Final Acceptance |
+| Gate status | **PASS** — Authentication and Routing Remediation and browser acceptance complete |
 | Completed remediation | Frontend coverage, reachable pronunciation, flashcard controls, dashboard metric grouping, React state-update defect, Node 26 Windows startup |
-| Current blockers | Complete browser workflow/mobile evidence was not authorized to rerun |
-| Current limitation | npm registry DNS prevented a fresh security audit; package lock is unchanged |
-| Next allowed action | Rerun the browser acceptance command with user authorization |
-| User approval status | Final Acceptance not approved; handoff **NOT READY** |
+| Current blockers | None |
+| Current limitation | None for the completed acceptance scope |
+| Next allowed action | Handoff |
+| User approval status | Final Acceptance accepted; handoff **READY** |
 
 Testing Verification is **PASS**: frontend 99.57/95.41/100/99.57 and backend 95.01/95.00/97.22/95.01 for statements/branches/functions/lines. The sequential full suite passes 127/127. Implementation remediation is verified by EVID-503–EVID-509. Browser evidence EVID-512 is incomplete, so it cannot satisfy Final Acceptance.
 
-This section supersedes inconsistent historical current-state language below without rewriting historical evidence.
+The [UI/UX review](05-review/ui-review.md) is complete and the [UI remediation plan](05-review/ui-remediation-plan.md) is in progress. Runtime bootstrap verification is now PASS: the earlier blank screenshots were caused by the short-lived dev-server process ending before browser inspection, not an application bootstrap exception. UI task acceptance remains pending visual workflow review.
 
 ## Current authoritative redesign status
 

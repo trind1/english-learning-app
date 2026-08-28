@@ -75,13 +75,10 @@ export const VocabularyPanel = ({
   };
 
   return (
-    <section
-      aria-labelledby="vocabulary-title"
-      style={{ display: "flex", flexDirection: "column", gap: "24px" }}
-    >
+    <section aria-labelledby="vocabulary-title" className="vocabulary-detail">
       {/* Action Bar & Summary Header */}
       <div
-        className="card"
+        className="card vocabulary-summary"
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -128,10 +125,14 @@ export const VocabularyPanel = ({
             gap: "16px",
           }}
         >
-          {error && <p role="alert">{error}</p>}
+          {error && (
+            <p role="alert" className="vocabulary-error">
+              {error}
+            </p>
+          )}
           {items === null && !error && (
             <div
-              className="card"
+              className="card vocabulary-empty"
               style={{ padding: "32px", textAlign: "center" }}
             >
               <p
@@ -145,7 +146,7 @@ export const VocabularyPanel = ({
           )}
           {items?.length === 0 && (
             <div
-              className="card"
+              className="card vocabulary-empty"
               style={{ padding: "40px", textAlign: "center" }}
             >
               <span
@@ -170,7 +171,7 @@ export const VocabularyPanel = ({
           )}
 
           {items && items.length > 0 && (
-            <div className="vocab-table-card">
+            <div className="vocab-table-card vocabulary-list-card">
               <ul
                 className="vocabulary-list"
                 aria-label="Vocabulary list"
@@ -179,6 +180,7 @@ export const VocabularyPanel = ({
                 {items.map((item) => (
                   <li
                     key={item.id}
+                    className="vocabulary-item"
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
@@ -245,7 +247,7 @@ export const VocabularyPanel = ({
 
         {/* Right Column: Add Entry Panel */}
         <aside
-          className="card"
+          className="card vocabulary-editor"
           style={{
             flex: "0 0 320px",
             backgroundColor: "var(--surface-white)",

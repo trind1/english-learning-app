@@ -36,4 +36,21 @@ describe("Login component", () => {
     fireEvent.click(screen.getByRole("link", { name: "Sign Up" }));
     fireEvent.click(screen.getByRole("link", { name: "Forgot Password?" }));
   });
+  it("shows authentication errors from the service callback", () => {
+    render(
+      <Login
+        onLogin={() => {
+          throw new Error("Invalid credentials");
+        }}
+      />,
+    );
+    fireEvent.change(screen.getByLabelText("Email Address"), {
+      target: { value: "a@example.com" },
+    });
+    fireEvent.change(screen.getByLabelText("Password"), {
+      target: { value: "wrong" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /Login/i }));
+    expect(screen.getByRole("alert")).toHaveTextContent("Invalid credentials");
+  });
 });

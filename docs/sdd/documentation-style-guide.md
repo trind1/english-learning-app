@@ -30,6 +30,10 @@
 ## Status markers
 Use only: ✅ PASS, ❌ FAIL, ⛔ BLOCKED, ⏳ IN PROGRESS, ⚪ NOT STARTED, and ⚠️ WARNING. Text is mandatory.
 
+### Status semantics
+
+`PASS` requires all acceptance and verification gates for the task to pass. Use `IN PROGRESS` whenever remaining implementation, tests, coverage, browser verification, local defect repair, static checks, or SDD synchronization is locally actionable. These conditions must never be labeled `BLOCKED`. Reserve `BLOCKED` only for a material issue that cannot be resolved autonomously, including contradictory approved requirements, unavailable required external credentials/services, destructive decisions requiring user approval, or architecture decisions that cannot safely be derived. While a task is `IN PROGRESS`, diagnose, fix, rerun focused verification, and continue; if a run ends before completion, report `IN PROGRESS`.
+
 ## Stable IDs
 Use `FR-001`, `NFR-001`, `BR-001`, `AC-001`, `TASK-001`, `TEST-001`, `FIND-001`, `EVID-001`, `ADR-001`, and `RISK-001`. Approved IDs never change.
 

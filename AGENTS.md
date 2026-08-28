@@ -18,7 +18,11 @@ Bootstrap creates governance and placeholder artifacts before this sequence begi
 ## Stage-gate policy
 - A stage starts only when the previous verification is `PASS` and explicitly user-approved.
 - Stop after every stage. Never treat “mostly complete” as `PASS`.
-- Gate statuses are `PASS`, `FAIL`, and `BLOCKED`; templates may use `NOT STARTED`.
+- Gate statuses are `PASS`, `FAIL`, `IN PROGRESS`, and `BLOCKED`; templates may use `NOT STARTED`.
+- `PASS` means every required acceptance and verification gate for the task passed.
+- `IN PROGRESS` means implementation, testing, remediation, or synchronization remains locally actionable. Test failures, coverage gaps, missing tests, routing or localStorage defects, browser automation failures, runtime integration defects, static-check failures, and incomplete SDD synchronization are all `IN PROGRESS`, never `BLOCKED`.
+- `BLOCKED` is reserved for a material issue that cannot be resolved autonomously, such as contradictory approved requirements, an unavailable required external credential/service, a destructive product/schema decision requiring user approval, or an architecture decision that cannot safely be derived.
+- When a task is `IN PROGRESS`, diagnose the failure, fix it, rerun focused verification, and continue. If the current run must end before completion, report `IN PROGRESS`, not `BLOCKED`.
 - Do not implement before Specification, Plan, and Tasks are verified and approved.
 
 ## Approval policy

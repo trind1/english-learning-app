@@ -48,7 +48,19 @@ export const createApiApp = (
                 select: { id: true, word: true },
               }),
           },
-          undefined,
+          // Local development uses a deterministic provider so the complete
+          // learning flow is verifiable without external credentials.
+          process.env.NODE_ENV === "production"
+            ? undefined
+            : {
+                generate: async (
+                  words: readonly string[],
+                  _signal: AbortSignal,
+                ) => (
+                  void _signal,
+                  `A practice story featuring ${words.join(", ")}.`
+                ),
+              },
           10_000,
         ),
       ),

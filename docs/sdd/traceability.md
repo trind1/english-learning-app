@@ -4,6 +4,10 @@
 
 | Change | Requirements / rules | Tasks | Tests / evidence | Status |
 | --- | --- | --- | --- | --- |
+| Approved-design UI review and remediation planning | NFR-011–NFR-013, AC-010, AC-022; approved `UI/` visual specifications | UI-REM-001–UI-REM-008 (separate; not historical TASK IDs) | UI-FIND-001–UI-FIND-011; EVID-513–EVID-516 | ❌ FAIL — planned / not started |
+
+| Change | Requirements / rules | Tasks | Tests / evidence | Status |
+| --- | --- | --- | --- | --- |
 | Reachable pronunciation in vocabulary and flashcards | FR-005, BR-007, BR-022, AC-005, AC-025 | TASK-013, TASK-015, TASK-016 | TEST-013, TEST-015, TEST-016, EVID-504–EVID-507 | PASS |
 | Flashcard progress, previous, next, shuffle, and restart controls | FR-006, BR-008, BR-023, AC-006 | TASK-016 | TEST-016, EVID-504–EVID-507 | PASS |
 | Integrated navigation/API journeys and error branches | FR-001–FR-016, NFR-011–NFR-017 | TASK-011–TASK-021 | TEST-011, TEST-021, EVID-504–EVID-507 | PASS |
@@ -248,3 +252,9 @@ Post-acceptance UI/UX maintenance preserved the approved behavior and improved t
 | OQ-006        | Flashcard/test mechanics          | ✅ Resolved → BR-023–BR-024 |
 | OQ-007        | Sessions/dashboard                | ✅ Resolved → BR-025–BR-026 |
 | OQ-008        | AI provider/storage               | ✅ Resolved → BR-027–BR-028 |
+# Current authoritative acceptance state (2026-08-28)
+
+Authentication and Routing Remediation tasks AUTH-REM-001 through AUTH-REM-008 are PASS. Final Acceptance is ACCEPTED after the persistent real-browser workflow and quality gates passed. Handoff is READY; no current blockers remain.
+Vocabulary UI redesign verification (1440/768/390 representative viewports) PASS; functional interactions and browser console checks passed.
+Vocabulary visual refinement PASS; existing vocabulary, CSV, pronunciation, and study-flow behavior retained.
+Folder Detail redesign PASS; folder, study-mode, and vocabulary requirements remain traceable to existing behavior.

@@ -32,11 +32,11 @@ describe("PracticeHub component", () => {
     fireEvent.click(screen.getByRole("button", { name: "Start quiz" }));
     expect(onStartQuiz).toHaveBeenCalledTimes(1);
 
-    fireEvent.change(screen.getByPlaceholderText(/e.g., resilient/), {
-      target: { value: "ubiquitous" },
-    });
+    expect(
+      screen.getByText("Choose up to 10 saved words in the next step."),
+    ).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Start AI story" }));
-    expect(onStartAi).toHaveBeenCalledWith("ubiquitous");
+    expect(onStartAi).toHaveBeenCalledTimes(1);
   });
 
   it("renders modes with wordCount = 0 and handles missing callbacks", () => {

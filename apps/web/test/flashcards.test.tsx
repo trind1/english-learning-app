@@ -36,6 +36,23 @@ describe("TEST-016 flashcards", () => {
     // Click to flip
     fireEvent.click(populatedView.getByText("hello"));
     expect(populatedView.getByText("greeting")).toBeInTheDocument();
+    fireEvent.keyDown(
+      populatedView.getByRole("button", {
+        name: "Flip flashcard to hide meaning",
+      }),
+      { key: " " },
+    );
+    expect(
+      populatedView.getByRole("button", {
+        name: "Flip flashcard to show meaning",
+      }),
+    ).toBeInTheDocument();
+    fireEvent.keyDown(
+      populatedView.getByRole("button", {
+        name: "Flip flashcard to show meaning",
+      }),
+      { key: "Enter" },
+    );
 
     // Click rating buttons
     fireEvent.click(populatedView.getByRole("button", { name: /Hard/ }));

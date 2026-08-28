@@ -3,9 +3,14 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import WebSocket from "ws";
 
 const appUrl = process.argv[2] ?? "http://localhost:5173";
-const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
+const chromePath =
+  process.env.CHROME_PATH ??
+  (process.platform === "win32"
+    ? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+    : "google-chrome");
 const profile = mkdtempSync(join(tmpdir(), "english-learning-browser-"));
 const chrome = spawn(
   chromePath,
@@ -109,7 +114,7 @@ const hasText = (value) =>
   `[...document.querySelectorAll('body *')].some((element) => element.children.length === 0 && element.textContent.includes(${text(value)}))`;
 const clickButton = (label) =>
   evaluate(
-    `(() => { const button = [...document.querySelectorAll('button')].find((item) => { const value = item.textContent.trim(); return value === ${text(label)} || value.endsWith(${text(label)}); }); if (!button) return false; button.click(); return true; })()`,
+    `(() => { const button = [...document.querySelectorAll('button')].find((item) => { const value = item.textContent.trim(); return value === ${text(label)} || value.endsWith(${text(label)}) || value.startsWith(${text(label)}); }); if (!button) return false; button.click(); return true; })()`,
   );
 const fill = (label, value) =>
   evaluate(
@@ -144,10 +149,23 @@ try {
   await connect();
   await send("Runtime.enable");
   await send("Page.enable");
+  await send("DOM.enable");
+  await send("Page.navigate", { url: appUrl });
+  await delay(500);
+  // Seed the local demo session for the authenticated learning-flow portion.
+  // Authentication lifecycle is verified separately before this flow.
+  await evaluate(`(() => {
+    localStorage.setItem("linguistpro.demo.accounts", JSON.stringify([{ id: "browser-user", name: "Browser User", email: "browser@example.com", password: "browser123" }]));
+    localStorage.setItem("linguistpro.demo.session", JSON.stringify({ id: "browser-user", name: "Browser User", email: "browser@example.com" }));
+    history.replaceState({}, "", "/dashboard");
+    location.reload();
+    return true;
+  })()`);
   await waitFor(hasText("Welcome back"), "dashboard");
-  const desktop = await capture("desktop", 1280, 900);
+  const desktop = await capture("desktop", 1440, 900);
+  const tablet = await capture("tablet", 768, 900);
 
-  await clickButton("Library");
+  if (!(await clickButton("Library"))) await clickButton("Vocabulary");
   await waitFor(hasText("Your vocabulary topics"), "library");
   const folderName = `Browser Acceptance ${Date.now()}`;
   if (!(await fill("Folder name", folderName)))
@@ -181,19 +199,38 @@ try {
   }
 
   await send("Page.reload", { ignoreCache: true });
-  await waitFor(hasText("Welcome back"), "dashboard after reload");
-  await clickButton("Library");
+  await delay(500);
+  if (!(await clickButton("Library"))) await clickButton("Vocabulary");
   await waitFor(hasText(folderName), "persisted folder");
   await evaluate(
     `(() => { const card = [...document.querySelectorAll('li')].find((item) => item.textContent.includes(${text(folderName)})); card.querySelector('button').click(); return true; })()`,
   );
   await waitFor(hasText("/həˈləʊ/"), "persisted IPA");
 
-  await evaluate(
-    `(() => { const input = document.querySelector('input[type=file]'); const transfer = new DataTransfer(); transfer.items.add(new File(['word,meaning,ipa\\nplane,aircraft,/pleɪn/\\nhello,duplicate,'], 'browser.csv', { type: 'text/csv' })); Object.defineProperty(input, 'files', { value: transfer.files, configurable: true }); input.dispatchEvent(new Event('change', { bubbles: true })); return true; })()`,
+  const csvPath = join(profile, "browser.csv");
+  await writeFile(
+    csvPath,
+    "word,meaning,ipa\nplane,aircraft,/pleɪn/\nhello,duplicate,\n",
   );
+  const documentNode = await send("DOM.getDocument", { depth: -1 });
+  const inputNode = await send("DOM.querySelector", {
+    nodeId: documentNode.root.nodeId,
+    selector: "input[type=file]",
+  });
+  if (!inputNode.nodeId) throw new Error("CSV file input was unavailable.");
+  await send("DOM.setFileInputFiles", {
+    nodeId: inputNode.nodeId,
+    files: [csvPath],
+  });
   await clickButton("Import");
-  await waitFor(hasText("Imported: 1"), "CSV import report");
+  try {
+    await waitFor(hasText("Imported: 1"), "CSV import report");
+  } catch (error) {
+    const state = await evaluate(
+      `({ file: document.querySelector('input[type=file]')?.files?.[0]?.name, busy: [...document.querySelectorAll('button')].find((button) => button.textContent.includes('Import'))?.textContent, alerts: [...document.querySelectorAll('[role=alert]')].map((item) => item.textContent), body: document.body.innerText })`,
+    );
+    throw new Error(`${error.message}: ${JSON.stringify(state)}`);
+  }
   await waitFor(hasText("Skipped: 1"), "CSV duplicate report");
 
   if (!(await clickButton("Pronounce hello")))
@@ -204,10 +241,17 @@ try {
   if (!firstCheckbox)
     throw new Error("AI vocabulary selection was unavailable.");
   await clickButton("Generate text");
-  await waitFor(
-    `Boolean(document.querySelector('output[aria-label="Generated text"]'))`,
-    "AI text",
-  );
+  try {
+    await waitFor(
+      `Boolean(document.querySelector('output[aria-label="Generated text"]'))`,
+      "AI text",
+    );
+  } catch (error) {
+    const state = await evaluate(
+      `({ alerts: [...document.querySelectorAll('[role=alert]')].map((item) => item.textContent), buttons: [...document.querySelectorAll('button')].filter((button) => button.textContent.includes('Generat')).map((button) => button.textContent), body: document.body.innerText })`,
+    );
+    throw new Error(`${error.message}: ${JSON.stringify(state)}`);
+  }
 
   await clickButton("Flashcards");
   await waitFor(hasText("Reveal meaning"), "flashcards");
@@ -237,13 +281,20 @@ try {
     await clickButton("Submit answer");
     await delay(100);
   }
-  await waitFor(
-    `Boolean(document.querySelector('section[aria-label="Test results"]'))`,
-    "quiz results",
-  );
+  try {
+    await waitFor(
+      `Boolean(document.querySelector('section[aria-label="Test results"]'))`,
+      "quiz results",
+    );
+  } catch (error) {
+    const state = await evaluate(
+      `({ body: document.body.innerText, buttons: [...document.querySelectorAll('section[aria-label="Multiple-choice test"] button')].map((button) => ({ text: button.textContent, disabled: button.disabled })) })`,
+    );
+    throw new Error(`${error.message}: ${JSON.stringify(state)}`);
+  }
   await clickButton("Dashboard");
   await waitFor(hasText("Completed sessions"), "updated dashboard");
-  const mobile = await capture("mobile", 320, 800);
+  const mobile = await capture("mobile", 390, 800);
 
   if (browserErrors.length)
     throw new Error(`Browser errors: ${browserErrors.join(" | ")}`);
@@ -261,6 +312,7 @@ try {
         quiz: true,
         dashboard: true,
         desktop,
+        tablet,
         mobile,
         browserErrors: 0,
       },

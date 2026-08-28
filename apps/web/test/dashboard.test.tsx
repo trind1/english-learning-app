@@ -13,15 +13,22 @@ describe("TEST-018 dashboard UI", () => {
       incorrectAnswerCount: 1,
       accuracyPercent: 80,
     });
-    render(<Dashboard load={load} onAction={onAction} />);
+    render(
+      <Dashboard
+        load={load}
+        loadFolders={vi.fn().mockResolvedValue([])}
+        onAction={onAction}
+      />,
+    );
     await waitFor(() => expect(screen.getByText("80%")).toBeInTheDocument());
     expect(screen.getByText("Completed sessions")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Create folder" }));
-    fireEvent.click(screen.getByRole("button", { name: "Add vocabulary" }));
-    fireEvent.click(screen.getByRole("button", { name: "Import CSV" }));
-    fireEvent.click(screen.getByRole("button", { name: "Start study" }));
+    expect(
+      screen.getByRole("heading", { name: "Topic Folders" }),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Start learning" }));
+    fireEvent.click(screen.getByRole("button", { name: "View All" }));
+    fireEvent.click(screen.getByRole("button", { name: "Browse topics" }));
     expect(onAction).toHaveBeenCalledWith("library");
-    expect(onAction).toHaveBeenCalledWith("flashcards");
   });
   it("shows loading, error, and retry", async () => {
     const load = vi
@@ -35,9 +42,40 @@ describe("TEST-018 dashboard UI", () => {
         incorrectAnswerCount: 0,
         accuracyPercent: 0,
       });
-    render(<Dashboard load={load} />);
+    render(
+      <Dashboard load={load} loadFolders={vi.fn().mockResolvedValue([])} />,
+    );
     await waitFor(() => expect(screen.getByRole("alert")).toBeInTheDocument());
     fireEvent.click(screen.getByRole("button", { name: "Retry" }));
     await waitFor(() => expect(screen.getByText("0%")).toBeInTheDocument());
+  });
+  it("opens a real topic folder from the dashboard carousel", async () => {
+    const onOpenFolder = vi.fn();
+    render(
+      <Dashboard
+        load={vi.fn().mockResolvedValue({
+          folderCount: 1,
+          vocabularyCount: 2,
+          completedSessionCount: 0,
+          correctAnswerCount: 0,
+          incorrectAnswerCount: 0,
+          accuracyPercent: 0,
+        })}
+        loadFolders={vi.fn().mockResolvedValue([
+          {
+            id: "travel",
+            name: "Travel",
+            vocabularyCount: 2,
+            createdAt: "2026-08-28T00:00:00.000Z",
+            updatedAt: "2026-08-28T00:00:00.000Z",
+          },
+        ])}
+        onOpenFolder={onOpenFolder}
+      />,
+    );
+    fireEvent.click(await screen.findByRole("button", { name: "Open folder" }));
+    expect(onOpenFolder).toHaveBeenCalledWith(
+      expect.objectContaining({ id: "travel" }),
+    );
   });
 });

@@ -180,6 +180,19 @@ export const Flashcards = ({
         <div
           className={`flashcard-3d-card ${revealed ? "rotate-y-180" : ""}`}
           onClick={() => setRevealed(!revealed)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              setRevealed(!revealed);
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label={
+            revealed
+              ? "Flip flashcard to hide meaning"
+              : "Flip flashcard to show meaning"
+          }
           style={{ minHeight: "360px" }}
         >
           {/* Front (Side A) */}

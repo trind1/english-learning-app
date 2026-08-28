@@ -1,7 +1,14 @@
 import "@testing-library/jest-dom/vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { App } from "../src/App";
+import { AuthStorage } from "../src/auth";
 
 const json = (data: unknown, status = 200) =>
   Promise.resolve(
@@ -22,7 +29,26 @@ const dashboard = {
 };
 
 describe("TEST-011 and TEST-021 integrated web shell", () => {
-  afterEach(() => vi.restoreAllMocks());
+  beforeEach(() => {
+    window.history.replaceState({}, "", "/dashboard");
+    AuthStorage.saveAccounts([
+      {
+        id: "test-user",
+        name: "Test User",
+        email: "test@example.com",
+        password: "123456",
+      },
+    ]);
+    AuthStorage.saveSession({
+      id: "test-user",
+      name: "Test User",
+      email: "test@example.com",
+    });
+  });
+  afterEach(() => {
+    vi.restoreAllMocks();
+    AuthStorage.clearSession();
+  });
 
   it("shows the real dashboard and navigates to vocabulary", async () => {
     vi.spyOn(globalThis, "fetch").mockImplementation((input) =>
@@ -32,14 +58,134 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     );
     render(<App />);
     expect(
-      screen.getByRole("heading", { name: "Welcome back" }),
-    ).toBeInTheDocument();
-    expect(
       screen.getByRole("navigation", { name: "Primary navigation" }),
     ).toBeInTheDocument();
     await screen.findByText("0%");
+    expect(
+      screen.getByRole("heading", { name: "Welcome back" }),
+    ).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Vocabulary" }));
     expect(await screen.findByText("No folders yet.")).toBeInTheDocument();
+  });
+
+  it("opens a dashboard topic through the application shell", async () => {
+    const folder = {
+      id: "dashboard-folder",
+      name: "Travel",
+      vocabularyCount: 0,
+      createdAt: "2026-08-28T00:00:00.000Z",
+      updatedAt: "2026-08-28T00:00:00.000Z",
+    };
+    vi.spyOn(globalThis, "fetch").mockImplementation((input) => {
+      const url = String(input);
+      if (url.endsWith("/dashboard")) return json(dashboard);
+      if (url.endsWith("/folders"))
+        return json({ data: { folders: [folder] } });
+      if (url.endsWith("/vocabulary"))
+        return json({ data: { folder, vocabulary: [] } });
+      return json({ data: {} });
+    });
+    render(<App />);
+    fireEvent.click(await screen.findByRole("button", { name: "Open folder" }));
+    expect(
+      await screen.findByRole("heading", { name: "Travel" }),
+    ).toBeInTheDocument();
+  });
+
+  it("opens the approved mobile navigation structure", async () => {
+    vi.spyOn(globalThis, "fetch").mockImplementation((input) =>
+      String(input).endsWith("/dashboard")
+        ? json(dashboard)
+        : json({ data: { folders: [] } }),
+    );
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: "Open navigation" }));
+    const navigation = screen.getByRole("navigation", {
+      name: "Mobile navigation",
+    });
+    expect(navigation).toHaveTextContent("Dashboard");
+    expect(navigation).toHaveTextContent("Vocabulary");
+    expect(navigation).toHaveTextContent("Practice");
+    expect(navigation).toHaveTextContent("Progress");
+    expect(navigation).toHaveTextContent("Start Lesson");
+    expect(navigation).toHaveTextContent("Settings");
+    expect(navigation).toHaveTextContent("Help");
+    fireEvent.click(
+      within(navigation).getByRole("button", { name: "Vocabulary" }),
+    );
+    expect(
+      screen.queryByRole("navigation", { name: "Mobile navigation" }),
+    ).not.toBeInTheDocument();
+    await screen.findByText("No folders yet.");
+
+    fireEvent.click(screen.getByRole("button", { name: "Open navigation" }));
+    fireEvent.click(screen.getByTestId("mobile-navigation-backdrop"));
+    expect(
+      screen.queryByRole("navigation", { name: "Mobile navigation" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("restores supported URL views and guards guests", async () => {
+    for (const path of [
+      "/library",
+      "/practice",
+      "/flashcards",
+      "/quiz",
+      "/ai",
+      "/unknown",
+    ]) {
+      window.history.replaceState({}, "", path);
+      const view = render(<App />);
+      expect(view.container.querySelector("main")).toBeInTheDocument();
+      view.unmount();
+    }
+    AuthStorage.clearSession();
+    window.history.replaceState({}, "", "/");
+    render(<App />);
+    expect(screen.getByRole("button", { name: "Login" })).toBeInTheDocument();
+    expect(window.location.pathname).toBe("/login");
+    window.history.pushState({}, "", "/dashboard");
+    window.dispatchEvent(new PopStateEvent("popstate"));
+    expect(window.location.pathname).toBe("/login");
+    expect(screen.getByRole("button", { name: "Login" })).toBeInTheDocument();
+  });
+
+  it("redirects an authenticated user away from guest routes", async () => {
+    vi.spyOn(globalThis, "fetch").mockImplementation((input) =>
+      String(input).endsWith("/dashboard")
+        ? json(dashboard)
+        : json({ data: { folders: [] } }),
+    );
+    window.history.replaceState({}, "", "/login");
+    render(<App />);
+    await screen.findByText("0%");
+    expect(
+      screen.getByRole("heading", { name: "Welcome back" }),
+    ).toBeInTheDocument();
+  });
+
+  it("normalizes the authenticated root URL to the dashboard", async () => {
+    vi.spyOn(globalThis, "fetch").mockImplementation((input) =>
+      String(input).endsWith("/dashboard")
+        ? json(dashboard)
+        : json({ data: { folders: [] } }),
+    );
+    window.history.replaceState({}, "", "/");
+    render(<App />);
+    await screen.findByText("0%");
+    expect(window.location.pathname).toBe("/dashboard");
+  });
+
+  it("normalizes the authenticated register URL to the dashboard", async () => {
+    vi.spyOn(globalThis, "fetch").mockImplementation((input) =>
+      String(input).endsWith("/dashboard")
+        ? json(dashboard)
+        : json({ data: { folders: [] } }),
+    );
+    window.history.replaceState({}, "", "/register");
+    render(<App />);
+    await screen.findByText("0%");
+    expect(window.location.pathname).toBe("/dashboard");
   });
 
   it("creates and opens a folder through the same-origin API", async () => {
@@ -324,17 +470,34 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
 
     // Profile menu toggle and Information modal
     fireEvent.click(screen.getByRole("button", { name: "User profile" }));
+    fireEvent.keyDown(screen.getByRole("button", { name: "User profile" }), {
+      key: "Escape",
+    });
+    fireEvent.click(screen.getByRole("button", { name: "User profile" }));
     expect(
       screen.getByRole("menuitem", { name: "Information" }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("menuitem", { name: "Log out" }),
     ).toBeInTheDocument();
+    fireEvent.keyDown(screen.getByRole("menu"), { key: "Escape" });
+    expect(
+      screen.queryByRole("menuitem", { name: "Information" }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "User profile" }));
 
     fireEvent.click(screen.getByRole("menuitem", { name: "Information" }));
     expect(
       screen.getByRole("heading", { name: "User Information" }),
     ).toBeInTheDocument();
+    fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
+    expect(
+      screen.queryByRole("heading", { name: "User Information" }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "User profile" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Information" }));
     fireEvent.click(screen.getByRole("button", { name: "Close" }));
     expect(
       screen.queryByRole("heading", { name: "User Information" }),
@@ -381,7 +544,7 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
       target: { value: "Test User" },
     });
     fireEvent.change(screen.getByLabelText("Email"), {
-      target: { value: "test@example.com" },
+      target: { value: "new@example.com" },
     });
     fireEvent.change(screen.getByLabelText("Password"), {
       target: { value: "123456" },
@@ -453,6 +616,19 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     await screen.findByText("Academics");
     fireEvent.click(screen.getByRole("button", { name: "Open" }));
     await screen.findByText("hypothesis");
+
+    // Mobile Start Lesson preserves the active folder and opens flashcards.
+    fireEvent.click(screen.getByRole("button", { name: "Open navigation" }));
+    const mobileNavigation = screen.getByRole("navigation", {
+      name: "Mobile navigation",
+    });
+    fireEvent.click(
+      within(mobileNavigation).getByRole("button", { name: "Start Lesson" }),
+    );
+    expect(
+      screen.getByRole("heading", { name: "Flashcards", level: 1 }),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Back to Academics/ }));
 
     // Go to Practice Hub
     fireEvent.click(screen.getByRole("button", { name: "Practice" }));

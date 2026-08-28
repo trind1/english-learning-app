@@ -2,7 +2,7 @@
 
 ## Final Acceptance remediation verification — 2026-08-28
 
-STATUS: **PASS** for implementation remediation; downstream Final Acceptance **BLOCKED**
+STATUS: **PASS** — Final Acceptance accepted
 
 | Evidence | Command or source | Exit code | Result |
 | --- | --- | ---: | --- |
@@ -20,9 +20,9 @@ STATUS: **PASS** for implementation remediation; downstream Final Acceptance **B
 
 Limitations: EVID-512 does not verify the full browser journey. The desktop screenshot predates the dashboard metric-grouping correction and is retained as failed-review evidence. EVID-510 is not a successful current security audit; historical EVID-493 remains applicable only because `package-lock.json` is unchanged.
 
-NEXT_ALLOWED_ACTION: authorize the browser acceptance rerun and inspect desktop/mobile output.
+NEXT_ALLOWED_ACTION: Handoff
 
-USER_APPROVAL_REQUIRED: Yes.
+USER_APPROVAL_REQUIRED: No.
 
 ## Integrated UI/UX redesign verification — 2026-08-27
 
@@ -554,3 +554,17 @@ TASK-006 implementation and tests were created. Historical coverage failures wer
 | EVID-490 | Frontend coverage passed: 99.02% statements, 95.13% branches, 97.67% functions, and 99.02% lines. |
 | EVID-491 | Typecheck, lint, formatting, and `git diff --check` passed. |
 | EVID-492 | Production frontend build passed; Vite emitted the HTML, CSS, and JavaScript assets. |
+### Runtime bootstrap remediation — 2026-08-28
+
+The Vite HTML shell and React entrypoint were inspected. The initial blank-page screenshots were reproduced only after the short-lived `npm run dev` command had terminated its child processes; the browser then received an empty shell. With `npm run dev` kept alive in a terminal session, HTTP 200, React content in `#root`, and visible dashboard renders were confirmed at 1440px and 390px. No bootstrap code change was required. UI remediation tasks remain pending full page-by-page visual verification.
+## Vocabulary UI redesign verification — 2026-08-28
+
+STATUS: **PASS**
+
+Representative browser verification passed at 1440px desktop, 768px tablet, and 390px mobile. The Vocabulary page rendered without horizontal overflow or blocking browser errors; vocabulary management, CSV import, pronunciation, and study navigation remained functional.
+## Vocabulary visual redesign refinement — 2026-08-28
+
+STATUS: **PASS**. The existing Vocabulary information architecture was preserved while refining surfaces, spacing, typography, list-row hierarchy, states, and responsive presentation. Browser acceptance passed at 1440px, 768px, and 390px with no overflow and zero browser errors.
+## Folder detail visual redesign — 2026-08-28
+
+STATUS: **PASS**. Folder detail retains all existing controls while presenting a stronger topic header, study actions, vocabulary content, and responsive layout. Browser workflow passed at 1440px, 768px, and 390px with zero errors.

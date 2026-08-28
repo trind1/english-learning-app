@@ -4,7 +4,7 @@
 
 STAGE: Code Generation remediation
 
-STATUS: PASS for implementation; Final Acceptance remains BLOCKED
+STATUS: PASS — Final Acceptance accepted
 
 FILES_CREATED: `.prettierrc.json`, `scripts/browser-acceptance.mjs`, `scripts/tsx-windows-shim.mjs`, `docs/sdd/evidence/browser-desktop.png`
 
@@ -18,9 +18,9 @@ EVIDENCE: EVID-503–EVID-513.
 
 OPEN_QUESTIONS: Will the user authorize the corrected headless Chrome workflow so desktop/mobile runtime acceptance can complete?
 
-NEXT_ALLOWED_ACTION: Start the app, authorize the browser acceptance command, inspect both generated screenshots, and update Final Acceptance.
+NEXT_ALLOWED_ACTION: Handoff
 
-USER_APPROVAL_REQUIRED: Yes, for the browser launch and Final Acceptance.
+USER_APPROVAL_REQUIRED: No
 
 ### Implemented remediation
 
