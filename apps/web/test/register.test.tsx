@@ -4,12 +4,16 @@ import { describe, expect, it, vi } from "vitest";
 import { Register } from "../src/Register";
 
 describe("Register component", () => {
-  it("renders register form and handles submit and navigation", () => {
+  it("renders register form and handles submit, links, and navigation", () => {
     const onRegister = vi.fn();
     const onNavigateLogin = vi.fn();
-    render(<Register onRegister={onRegister} onNavigateLogin={onNavigateLogin} />);
+    render(
+      <Register onRegister={onRegister} onNavigateLogin={onNavigateLogin} />,
+    );
 
-    expect(screen.getByRole("heading", { name: "Create an Account" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Create an Account" }),
+    ).toBeInTheDocument();
     expect(screen.getByLabelText("Full Name")).toBeInTheDocument();
     expect(screen.getByLabelText("Email")).toBeInTheDocument();
     expect(screen.getByLabelText("Password")).toBeInTheDocument();
@@ -30,10 +34,19 @@ describe("Register component", () => {
     });
     fireEvent.click(screen.getByLabelText(/I agree to the/i));
 
+    fireEvent.click(screen.getByRole("link", { name: "Terms" }));
+    fireEvent.click(screen.getByRole("link", { name: "Privacy Policy" }));
+
     fireEvent.click(screen.getByRole("button", { name: "Create Account" }));
     expect(onRegister).toHaveBeenCalledTimes(1);
 
     fireEvent.click(screen.getByRole("link", { name: "Log In" }));
     expect(onNavigateLogin).toHaveBeenCalledTimes(1);
+  });
+
+  it("handles fallback when no callbacks provided", () => {
+    render(<Register />);
+    fireEvent.click(screen.getByRole("button", { name: "Create Account" }));
+    fireEvent.click(screen.getByRole("link", { name: "Log In" }));
   });
 });

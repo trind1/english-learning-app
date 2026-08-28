@@ -24,9 +24,17 @@ export const Register = ({
         {/* Left Side: Branding / Visual (Hidden on mobile) */}
         <div className="register-hero-side">
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "32px" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                marginBottom: "32px",
+              }}
+            >
               <span
                 className="material-symbols-outlined"
+                aria-hidden="true"
                 style={{ fontSize: "32px", fontVariationSettings: "'FILL' 1" }}
               >
                 school
@@ -35,20 +43,53 @@ export const Register = ({
                 LinguistPro
               </span>
             </div>
-            <h1 className="text-display-lg" style={{ color: "white", marginBottom: "24px", maxWidth: "420px" }}>
+            <h1
+              className="text-display-lg"
+              style={{
+                color: "white",
+                marginBottom: "24px",
+                maxWidth: "420px",
+              }}
+            >
               Start your journey to language mastery.
             </h1>
             <p
               className="text-body-lg"
-              style={{ color: "var(--primary-fixed)", maxWidth: "420px", opacity: 0.95 }}
+              style={{
+                color: "var(--primary-fixed)",
+                maxWidth: "420px",
+                opacity: 0.95,
+              }}
             >
-              Join thousands of learners achieving fluency with our methodical, distraction-free approach.
+              Join thousands of learners achieving fluency with our methodical,
+              distraction-free approach.
             </p>
           </div>
           <div style={{ display: "flex", gap: "16px", marginTop: "48px" }}>
-            <div style={{ width: "48px", height: "4px", backgroundColor: "var(--secondary-container)", borderRadius: "4px" }} />
-            <div style={{ width: "16px", height: "4px", backgroundColor: "rgba(255, 255, 255, 0.3)", borderRadius: "4px" }} />
-            <div style={{ width: "16px", height: "4px", backgroundColor: "rgba(255, 255, 255, 0.3)", borderRadius: "4px" }} />
+            <div
+              style={{
+                width: "48px",
+                height: "4px",
+                backgroundColor: "var(--secondary-container)",
+                borderRadius: "4px",
+              }}
+            />
+            <div
+              style={{
+                width: "16px",
+                height: "4px",
+                backgroundColor: "rgba(255, 255, 255, 0.3)",
+                borderRadius: "4px",
+              }}
+            />
+            <div
+              style={{
+                width: "16px",
+                height: "4px",
+                backgroundColor: "rgba(255, 255, 255, 0.3)",
+                borderRadius: "4px",
+              }}
+            />
           </div>
         </div>
 
@@ -56,23 +97,42 @@ export const Register = ({
         <div className="register-form-side">
           {/* Header */}
           <div style={{ marginBottom: "28px" }}>
-            <h2 className="text-headline-lg" style={{ color: "var(--on-surface)", margin: "0 0 8px 0" }}>
+            <h2
+              className="text-headline-lg"
+              style={{ color: "var(--on-surface)", margin: "0 0 8px 0" }}
+            >
               Create an Account
             </h2>
-            <p className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: 0 }}>
+            <p
+              className="text-body-md"
+              style={{ color: "var(--on-surface-variant)", margin: 0 }}
+            >
               Sign up to start learning with LinguistPro.
             </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          <form
+            onSubmit={handleSubmit}
+            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+          >
             {/* Full Name */}
             <div>
-              <label className="text-label-md" htmlFor="fullName" style={{ color: "var(--on-surface)", display: "block", marginBottom: "4px" }}>
+              <label
+                className="text-label-md"
+                htmlFor="fullName"
+                style={{
+                  color: "var(--on-surface)",
+                  display: "block",
+                  marginBottom: "4px",
+                }}
+              >
                 Full Name
               </label>
               <div className="input-icon-wrapper">
-                <span className="material-symbols-outlined">person</span>
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  person
+                </span>
                 <input
                   id="fullName"
                   name="fullName"
@@ -87,11 +147,21 @@ export const Register = ({
 
             {/* Email */}
             <div>
-              <label className="text-label-md" htmlFor="email" style={{ color: "var(--on-surface)", display: "block", marginBottom: "4px" }}>
+              <label
+                className="text-label-md"
+                htmlFor="email"
+                style={{
+                  color: "var(--on-surface)",
+                  display: "block",
+                  marginBottom: "4px",
+                }}
+              >
                 Email
               </label>
               <div className="input-icon-wrapper">
-                <span className="material-symbols-outlined">mail</span>
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  mail
+                </span>
                 <input
                   id="email"
                   name="email"
@@ -106,11 +176,21 @@ export const Register = ({
 
             {/* Password */}
             <div>
-              <label className="text-label-md" htmlFor="password" style={{ color: "var(--on-surface)", display: "block", marginBottom: "4px" }}>
+              <label
+                className="text-label-md"
+                htmlFor="password"
+                style={{
+                  color: "var(--on-surface)",
+                  display: "block",
+                  marginBottom: "4px",
+                }}
+              >
                 Password
               </label>
               <div className="input-icon-wrapper">
-                <span className="material-symbols-outlined">lock</span>
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  lock
+                </span>
                 <input
                   id="password"
                   name="password"
@@ -125,11 +205,21 @@ export const Register = ({
 
             {/* Confirm Password */}
             <div>
-              <label className="text-label-md" htmlFor="confirmPassword" style={{ color: "var(--on-surface)", display: "block", marginBottom: "4px" }}>
+              <label
+                className="text-label-md"
+                htmlFor="confirmPassword"
+                style={{
+                  color: "var(--on-surface)",
+                  display: "block",
+                  marginBottom: "4px",
+                }}
+              >
                 Confirm Password
               </label>
               <div className="input-icon-wrapper">
-                <span className="material-symbols-outlined">lock</span>
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  lock
+                </span>
                 <input
                   id="confirmPassword"
                   name="confirmPassword"
@@ -143,23 +233,52 @@ export const Register = ({
             </div>
 
             {/* Terms and Privacy */}
-            <div style={{ display: "flex", alignItems: "flex-start", gap: "10px", marginTop: "4px" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "10px",
+                marginTop: "4px",
+              }}
+            >
               <input
                 id="terms"
                 name="terms"
                 type="checkbox"
                 checked={agreed}
                 onChange={(e) => setAgreed(e.target.checked)}
-                style={{ width: "18px", height: "18px", marginTop: "2px", accentColor: "var(--primary)", cursor: "pointer" }}
+                style={{
+                  width: "18px",
+                  height: "18px",
+                  marginTop: "2px",
+                  accentColor: "var(--primary)",
+                  cursor: "pointer",
+                }}
                 required
               />
-              <label htmlFor="terms" className="text-body-md" style={{ fontSize: "14px", color: "var(--on-surface-variant)", cursor: "pointer" }}>
+              <label
+                htmlFor="terms"
+                className="text-body-md"
+                style={{
+                  fontSize: "14px",
+                  color: "var(--on-surface-variant)",
+                  cursor: "pointer",
+                }}
+              >
                 I agree to the{" "}
-                <a href="#terms" style={{ color: "var(--primary)", fontWeight: 500 }} onClick={(e) => e.preventDefault()}>
+                <a
+                  href="#terms"
+                  style={{ color: "var(--primary)", fontWeight: 500 }}
+                  onClick={(e) => e.preventDefault()}
+                >
                   Terms
                 </a>{" "}
                 and{" "}
-                <a href="#privacy" style={{ color: "var(--primary)", fontWeight: 500 }} onClick={(e) => e.preventDefault()}>
+                <a
+                  href="#privacy"
+                  style={{ color: "var(--primary)", fontWeight: 500 }}
+                  onClick={(e) => e.preventDefault()}
+                >
                   Privacy Policy
                 </a>
               </label>
@@ -169,7 +288,12 @@ export const Register = ({
             <button
               className="btn-primary"
               type="submit"
-              style={{ width: "100%", padding: "12px", marginTop: "12px", borderRadius: "10px" }}
+              style={{
+                width: "100%",
+                padding: "12px",
+                marginTop: "12px",
+                borderRadius: "10px",
+              }}
             >
               Create Account
             </button>
@@ -206,7 +330,11 @@ export const Register = ({
               <span>Google</span>
             </button>
             <button className="social-btn" type="button">
-              <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
+              <span
+                className="material-symbols-outlined"
+                aria-hidden="true"
+                style={{ fontSize: "20px" }}
+              >
                 file_download
               </span>
               <span>Apple</span>
@@ -215,12 +343,19 @@ export const Register = ({
 
           {/* Login Link */}
           <div style={{ marginTop: "24px", textAlign: "center" }}>
-            <p className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: 0 }}>
+            <p
+              className="text-body-md"
+              style={{ color: "var(--on-surface-variant)", margin: 0 }}
+            >
               Already have an account?{" "}
               <a
                 href="#login"
                 className="text-label-md"
-                style={{ color: "var(--primary)", textDecoration: "none", fontWeight: 600 }}
+                style={{
+                  color: "var(--primary)",
+                  textDecoration: "none",
+                  fontWeight: 600,
+                }}
                 onClick={(e) => {
                   e.preventDefault();
                   onNavigateLogin?.();

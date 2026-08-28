@@ -75,7 +75,10 @@ export const VocabularyPanel = ({
   };
 
   return (
-    <section aria-labelledby="vocabulary-title" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+    <section
+      aria-labelledby="vocabulary-title"
+      style={{ display: "flex", flexDirection: "column", gap: "24px" }}
+    >
       {/* Action Bar & Summary Header */}
       <div
         className="card"
@@ -90,33 +93,77 @@ export const VocabularyPanel = ({
       >
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <div>
-            <h2 id="vocabulary-title" className="text-headline-md" style={{ margin: 0 }}>
+            <h2
+              id="vocabulary-title"
+              className="text-headline-md"
+              style={{ margin: 0 }}
+            >
               Vocabulary
             </h2>
-            <span className="text-label-md" style={{ color: "var(--on-surface-variant)" }}>
+            <span
+              className="text-label-md"
+              style={{ color: "var(--on-surface-variant)" }}
+            >
               {items?.length ?? 0} total
             </span>
           </div>
         </div>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "row", gap: "24px", alignItems: "flex-start", flexWrap: "wrap" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "24px",
+          alignItems: "flex-start",
+          flexWrap: "wrap",
+        }}
+      >
         {/* Left Column: Vocabulary List / Table */}
-        <div style={{ flex: "1 1 500px", display: "flex", flexDirection: "column", gap: "16px" }}>
+        <div
+          style={{
+            flex: "1 1 500px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+          }}
+        >
           {error && <p role="alert">{error}</p>}
           {items === null && !error && (
-            <div className="card" style={{ padding: "32px", textAlign: "center" }}>
-              <p role="status" className="text-body-md" style={{ color: "var(--on-surface-variant)" }}>
+            <div
+              className="card"
+              style={{ padding: "32px", textAlign: "center" }}
+            >
+              <p
+                role="status"
+                className="text-body-md"
+                style={{ color: "var(--on-surface-variant)" }}
+              >
                 Loading vocabulary…
               </p>
             </div>
           )}
           {items?.length === 0 && (
-            <div className="card" style={{ padding: "40px", textAlign: "center" }}>
-              <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "48px", color: "var(--outline)", marginBottom: "8px" }}>
+            <div
+              className="card"
+              style={{ padding: "40px", textAlign: "center" }}
+            >
+              <span
+                className="material-symbols-outlined"
+                aria-hidden="true"
+                style={{
+                  fontSize: "48px",
+                  color: "var(--outline)",
+                  marginBottom: "8px",
+                }}
+              >
                 menu_book
               </span>
-              <p role="status" className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: 0 }}>
+              <p
+                role="status"
+                className="text-body-md"
+                style={{ color: "var(--on-surface-variant)", margin: 0 }}
+              >
                 No vocabulary yet.
               </p>
             </div>
@@ -141,18 +188,52 @@ export const VocabularyPanel = ({
                       transition: "background-color 0.15s",
                     }}
                   >
-                    <div style={{ display: "flex", flexDirection: "column", gap: "4px", flex: 1 }}>
-                      <div style={{ display: "flex", alignItems: "baseline", gap: "12px" }}>
-                        <strong className="text-body-lg" style={{ color: "var(--on-surface)", fontWeight: 600 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "4px",
+                        flex: 1,
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "baseline",
+                          gap: "12px",
+                        }}
+                      >
+                        <strong
+                          className="text-body-lg"
+                          style={{
+                            color: "var(--on-surface)",
+                            fontWeight: 600,
+                          }}
+                        >
                           {item.word}
                         </strong>
-                        <span className="text-ipa-display">{item.ipa || "IPA unavailable"}</span>
+                        <span className="text-ipa-display">
+                          {item.ipa || "IPA unavailable"}
+                        </span>
                       </div>
-                      <p className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: 0 }}>
+                      <p
+                        className="text-body-md"
+                        style={{
+                          color: "var(--on-surface-variant)",
+                          margin: 0,
+                        }}
+                      >
                         {item.meaning}
                       </p>
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px", marginLeft: "16px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        marginLeft: "16px",
+                      }}
+                    >
                       <PronunciationButton word={item.word} />
                     </div>
                   </li>
@@ -173,21 +254,42 @@ export const VocabularyPanel = ({
             borderRadius: "16px",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "20px" }}>
-            <span className="material-symbols-outlined" aria-hidden="true" style={{ color: "var(--primary)" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              marginBottom: "20px",
+            }}
+          >
+            <span
+              className="material-symbols-outlined"
+              aria-hidden="true"
+              style={{ color: "var(--primary)" }}
+            >
               edit_note
             </span>
-            <h3 className="text-headline-md" style={{ fontSize: "18px", margin: 0 }}>
+            <h3
+              className="text-headline-md"
+              style={{ fontSize: "18px", margin: 0 }}
+            >
               Add Entry
             </h3>
           </div>
 
-          <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          <form
+            onSubmit={submit}
+            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+          >
             <div>
               <label
                 htmlFor="word"
                 className="text-label-md"
-                style={{ color: "var(--on-surface-variant)", display: "block", marginBottom: "6px" }}
+                style={{
+                  color: "var(--on-surface-variant)",
+                  display: "block",
+                  marginBottom: "6px",
+                }}
               >
                 Word
               </label>
@@ -204,7 +306,11 @@ export const VocabularyPanel = ({
               <label
                 htmlFor="meaning"
                 className="text-label-md"
-                style={{ color: "var(--on-surface-variant)", display: "block", marginBottom: "6px" }}
+                style={{
+                  color: "var(--on-surface-variant)",
+                  display: "block",
+                  marginBottom: "6px",
+                }}
               >
                 Meaning
               </label>
@@ -221,7 +327,11 @@ export const VocabularyPanel = ({
               <label
                 htmlFor="ipa"
                 className="text-label-md"
-                style={{ color: "var(--on-surface-variant)", display: "block", marginBottom: "6px" }}
+                style={{
+                  color: "var(--on-surface-variant)",
+                  display: "block",
+                  marginBottom: "6px",
+                }}
               >
                 IPA (optional)
               </label>
@@ -240,7 +350,11 @@ export const VocabularyPanel = ({
               disabled={busy}
               style={{ width: "100%", marginTop: "8px", padding: "12px" }}
             >
-              <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+              <span
+                className="material-symbols-outlined"
+                aria-hidden="true"
+                style={{ fontSize: "18px" }}
+              >
                 add
               </span>
               {busy ? "Saving…" : "Add vocabulary"}

@@ -9,45 +9,71 @@ export const PracticeHub = ({
   wordCount?: number;
   onStartFlashcards?: () => void;
   onStartQuiz?: () => void;
-  onStartAi?: (customWords?: string) => void;
+  onStartAi?: (word: string) => void;
 }) => {
-  const [customWords, setCustomWords] = useState("");
+  const [aiWord, setAiWord] = useState("");
 
   return (
-    <section aria-label="Practice Hub" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-      {/* Section Header */}
-      <div style={{ marginBottom: "8px" }}>
-        <h1 className="text-headline-lg" style={{ color: "var(--on-surface)", margin: "0 0 8px 0" }}>
+    <section
+      aria-label="Practice Hub"
+      style={{ display: "flex", flexDirection: "column", gap: "32px" }}
+    >
+      {/* Header Banner */}
+      <div>
+        <h1
+          className="text-headline-lg"
+          style={{ color: "var(--on-surface)", margin: "0 0 8px 0" }}
+        >
           Practice Hub
         </h1>
-        <p className="text-body-lg" style={{ color: "var(--on-surface-variant)", margin: 0, maxWidth: "640px" }}>
-          Sharpen your skills with targeted exercises. Choose a mode below to begin your session.
+        <p
+          className="text-body-lg"
+          style={{
+            color: "var(--on-surface-variant)",
+            margin: 0,
+            maxWidth: "640px",
+          }}
+        >
+          Select a mode to sharpen your skills. Consistent daily practice leads
+          to rapid language acquisition.
         </p>
       </div>
 
-      {/* Practice Modes Grid */}
-      <div className="practice-grid">
+      {/* 3 Main Practice Modes */}
+      <div className="practice-cards-grid">
         {/* Flashcard Mode */}
         <article className="practice-mode-card">
           <div
             className="mode-icon-circle"
-            style={{ backgroundColor: "rgba(0, 88, 190, 0.1)", color: "var(--primary)" }}
+            style={{
+              backgroundColor: "var(--primary-fixed)",
+              color: "var(--primary)",
+            }}
           >
             <span
               className="material-symbols-outlined"
+              aria-hidden="true"
               style={{ fontSize: "28px", fontVariationSettings: "'FILL' 1" }}
             >
               style
             </span>
           </div>
-          <h3 className="text-headline-md" style={{ color: "var(--on-surface)", margin: "0 0 8px 0" }}>
+          <h3
+            className="text-headline-md"
+            style={{ color: "var(--on-surface)", margin: "0 0 8px 0" }}
+          >
             Flashcard Mode
           </h3>
           <p
             className="text-body-md"
-            style={{ color: "var(--on-surface-variant)", margin: "0 0 24px 0", flexGrow: 1 }}
+            style={{
+              color: "var(--on-surface-variant)",
+              margin: "0 0 24px 0",
+              flexGrow: 1,
+            }}
           >
-            Flip and Learn. Review your saved vocabulary with spaced repetition to ensure long-term retention.
+            Flip and Learn. Review your saved vocabulary with spaced repetition
+            to ensure long-term retention.
           </p>
           <div
             style={{
@@ -59,10 +85,18 @@ export const PracticeHub = ({
               marginTop: "auto",
             }}
           >
-            <span className="text-label-md" style={{ color: "var(--text-muted)" }}>
+            <span
+              className="text-label-md"
+              style={{ color: "var(--text-muted)" }}
+            >
               {wordCount > 0 ? `${wordCount} Cards Due` : "Vocabulary Cards"}
             </span>
-            <button className="btn-primary" type="button" onClick={onStartFlashcards}>
+            <button
+              className="btn-primary"
+              type="button"
+              aria-label="Start flashcards"
+              onClick={onStartFlashcards}
+            >
               Start
             </button>
           </div>
@@ -72,23 +106,35 @@ export const PracticeHub = ({
         <article className="practice-mode-card">
           <div
             className="mode-icon-circle"
-            style={{ backgroundColor: "rgba(108, 248, 187, 0.2)", color: "var(--secondary)" }}
+            style={{
+              backgroundColor: "rgba(108, 248, 187, 0.2)",
+              color: "var(--secondary)",
+            }}
           >
             <span
               className="material-symbols-outlined"
+              aria-hidden="true"
               style={{ fontSize: "28px", fontVariationSettings: "'FILL' 1" }}
             >
               quiz
             </span>
           </div>
-          <h3 className="text-headline-md" style={{ color: "var(--on-surface)", margin: "0 0 8px 0" }}>
+          <h3
+            className="text-headline-md"
+            style={{ color: "var(--on-surface)", margin: "0 0 8px 0" }}
+          >
             Multiple Choice Quiz
           </h3>
           <p
             className="text-body-md"
-            style={{ color: "var(--on-surface-variant)", margin: "0 0 24px 0", flexGrow: 1 }}
+            style={{
+              color: "var(--on-surface-variant)",
+              margin: "0 0 24px 0",
+              flexGrow: 1,
+            }}
           >
-            Test your knowledge. Challenge yourself with grammar and vocabulary questions adapted to your level.
+            Test your knowledge. Challenge yourself with grammar and vocabulary
+            questions adapted to your level.
           </p>
           <div
             style={{
@@ -100,10 +146,18 @@ export const PracticeHub = ({
               marginTop: "auto",
             }}
           >
-            <span className="text-label-md" style={{ color: "var(--text-muted)" }}>
+            <span
+              className="text-label-md"
+              style={{ color: "var(--text-muted)" }}
+            >
               {wordCount > 0 ? `${wordCount} Questions` : "Adaptive Questions"}
             </span>
-            <button className="btn-primary" type="button" onClick={onStartQuiz}>
+            <button
+              className="btn-primary"
+              type="button"
+              aria-label="Start quiz"
+              onClick={onStartQuiz}
+            >
               Start
             </button>
           </div>
@@ -113,50 +167,64 @@ export const PracticeHub = ({
         <article className="practice-mode-card">
           <div
             className="mode-icon-circle"
-            style={{ backgroundColor: "rgba(163, 103, 0, 0.1)", color: "var(--tertiary)" }}
+            style={{
+              backgroundColor: "rgba(224, 187, 255, 0.3)",
+              color: "#7B2CBF",
+            }}
           >
             <span
               className="material-symbols-outlined"
+              aria-hidden="true"
               style={{ fontSize: "28px", fontVariationSettings: "'FILL' 1" }}
             >
-              auto_awesome
+              auto_stories
             </span>
           </div>
-          <h3 className="text-headline-md" style={{ color: "var(--on-surface)", margin: "0 0 8px 0" }}>
+          <h3
+            className="text-headline-md"
+            style={{ color: "var(--on-surface)", margin: "0 0 8px 0" }}
+          >
             AI Story Generator
           </h3>
           <p
             className="text-body-md"
-            style={{ color: "var(--on-surface-variant)", margin: "0 0 24px 0", flexGrow: 1 }}
+            style={{
+              color: "var(--on-surface-variant)",
+              margin: "0 0 24px 0",
+              flexGrow: 1,
+            }}
           >
-            Generate a story using your words. Practice reading comprehension with contextually relevant mini-stories.
+            Contextual Learning. Read customized stories that naturally embed
+            your target words for better comprehension.
           </p>
-          <div style={{ paddingTop: "16px", borderTop: "1px solid var(--surface-variant)", marginTop: "auto" }}>
-            <label
-              className="text-label-md"
-              htmlFor="word-input"
-              style={{ display: "block", marginBottom: "8px", color: "var(--on-surface)" }}
-            >
-              Words to include (Max 10):
-            </label>
+          <div
+            style={{
+              paddingTop: "16px",
+              borderTop: "1px solid var(--surface-variant)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "12px",
+              marginTop: "auto",
+            }}
+          >
             <div style={{ display: "flex", gap: "8px" }}>
+              <label htmlFor="word-input" className="sr-only">
+                Words to include (Max 10):
+              </label>
               <input
                 id="word-input"
                 type="text"
                 placeholder="e.g., resilient, ubiquitous..."
-                value={customWords}
-                onChange={(e) => setCustomWords(e.target.value)}
+                value={aiWord}
+                onChange={(e) => setAiWord(e.target.value)}
                 style={{ flexGrow: 1, height: "40px", fontSize: "14px" }}
               />
               <button
                 className="btn-primary"
                 type="button"
-                style={{ whiteSpace: "nowrap", padding: "8px 16px" }}
-                onClick={() => onStartAi?.(customWords)}
+                aria-label="Start AI story"
+                onClick={() => onStartAi?.(aiWord)}
               >
-                <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>
-                  bolt
-                </span>{" "}
                 Start
               </button>
             </div>
@@ -165,57 +233,42 @@ export const PracticeHub = ({
       </div>
 
       {/* Weekly Goal Progress Card */}
-      <section
+      <div
         className="card"
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          gap: "24px",
-          marginTop: "16px",
-          backgroundColor: "var(--surface-white)",
-        }}
+        style={{ display: "flex", flexDirection: "column", gap: "16px" }}
       >
         <div
           style={{
-            width: "120px",
-            height: "100px",
-            borderRadius: "12px",
-            backgroundColor: "var(--surface-container-low)",
             display: "flex",
+            justifyContent: "space-between",
             alignItems: "center",
-            justifyContent: "center",
-            flexShrink: 0,
           }}
         >
-          <span className="material-symbols-outlined" style={{ fontSize: "48px", color: "var(--primary)" }}>
-            monitoring
-          </span>
-        </div>
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "8px" }}>
-          <h3 className="text-headline-md" style={{ color: "var(--on-surface)", margin: 0 }}>
-            Weekly Goal Progress
-          </h3>
-          <p className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: 0 }}>
-            You are on a streak! Complete your daily practice sessions this week to reach your goal.
-          </p>
-          <div className="progress-bar-container" style={{ marginTop: "4px" }}>
-            <div className="progress-bar-fill" style={{ width: "60%", backgroundColor: "var(--secondary)" }} />
+          <div>
+            <h3 className="text-headline-md" style={{ margin: 0 }}>
+              Weekly Goal Progress
+            </h3>
+            <p
+              className="text-body-md"
+              style={{ color: "var(--on-surface-variant)", margin: 0 }}
+            >
+              5 of 7 days practiced
+            </p>
           </div>
-          <div
+          <span
             style={{
-              display: "flex",
-              justifyContent: "space-between",
-              fontSize: "13px",
-              color: "var(--text-muted)",
-              fontWeight: 500,
+              fontSize: "20px",
+              fontWeight: 700,
+              color: "var(--primary)",
             }}
           >
-            <span>3 / 5 Sessions</span>
-            <span>60%</span>
-          </div>
+            71%
+          </span>
         </div>
-      </section>
+        <div className="progress-bar-container">
+          <div className="progress-bar-fill" style={{ width: "71%" }} />
+        </div>
+      </div>
     </section>
   );
 };

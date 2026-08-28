@@ -29,7 +29,9 @@ export const TestSession = ({
 }) => {
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<string>();
-  const [answers, setAnswers] = useState<{ vocabularyId: string; selectedMeaning: string }[]>([]);
+  const [answers, setAnswers] = useState<
+    { vocabularyId: string; selectedMeaning: string }[]
+  >([]);
   const [result, setResult] = useState<{
     correctCount: number;
     incorrectCount: number;
@@ -39,11 +41,26 @@ export const TestSession = ({
 
   if (!questions.length) {
     return (
-      <div className="card" style={{ textAlign: "center", padding: "48px 24px" }}>
-        <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "48px", color: "var(--outline)", marginBottom: "16px" }}>
+      <div
+        className="card"
+        style={{ textAlign: "center", padding: "48px 24px" }}
+      >
+        <span
+          className="material-symbols-outlined"
+          aria-hidden="true"
+          style={{
+            fontSize: "48px",
+            color: "var(--outline)",
+            marginBottom: "16px",
+          }}
+        >
           quiz
         </span>
-        <p role="status" className="text-body-lg" style={{ color: "var(--on-surface-variant)" }}>
+        <p
+          role="status"
+          className="text-body-lg"
+          style={{ color: "var(--on-surface-variant)" }}
+        >
           This test is not available.
         </p>
       </div>
@@ -51,7 +68,9 @@ export const TestSession = ({
   }
 
   if (result) {
-    const accuracyPercent = Math.round((result.correctCount / result.totalCount) * 100);
+    const accuracyPercent = Math.round(
+      (result.correctCount / result.totalCount) * 100,
+    );
     return (
       <section
         aria-label="Test results"
@@ -66,22 +85,36 @@ export const TestSession = ({
           gap: "24px",
         }}
       >
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "8px",
+          }}
+        >
           <span
             className="material-symbols-outlined"
             aria-hidden="true"
             style={{
               fontSize: "56px",
-              color: accuracyPercent >= 70 ? "var(--secondary)" : "var(--primary)",
+              color:
+                accuracyPercent >= 70 ? "var(--secondary)" : "var(--primary)",
               fontVariationSettings: "'FILL' 1",
             }}
           >
             {accuracyPercent >= 70 ? "stars" : "check_circle"}
           </span>
-          <h2 className="text-headline-lg" style={{ color: "var(--on-surface)", margin: 0 }}>
+          <h2
+            className="text-headline-lg"
+            style={{ color: "var(--on-surface)", margin: 0 }}
+          >
             Results
           </h2>
-          <p className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: 0 }}>
+          <p
+            className="text-body-md"
+            style={{ color: "var(--on-surface-variant)", margin: 0 }}
+          >
             {result.correctCount} correct of {result.totalCount}
           </p>
         </div>
@@ -97,10 +130,16 @@ export const TestSession = ({
             alignItems: "center",
           }}
         >
-          <span className="text-display-lg" style={{ color: "var(--primary)", lineHeight: 1 }}>
+          <span
+            className="text-display-lg"
+            style={{ color: "var(--primary)", lineHeight: 1 }}
+          >
             {accuracyPercent}%
           </span>
-          <span className="text-label-md" style={{ color: "var(--text-muted)", marginTop: "4px" }}>
+          <span
+            className="text-label-md"
+            style={{ color: "var(--text-muted)", marginTop: "4px" }}
+          >
             accuracy
           </span>
         </div>
@@ -122,11 +161,26 @@ export const TestSession = ({
         </dl>
 
         {/* Action Row */}
-        <div style={{ display: "flex", gap: "12px", justifyContent: "center", marginTop: "8px" }}>
-          <button className="btn-primary" type="button" onClick={() => onNavigate?.("folder")}>
+        <div
+          style={{
+            display: "flex",
+            gap: "12px",
+            justifyContent: "center",
+            marginTop: "8px",
+          }}
+        >
+          <button
+            className="btn-primary"
+            type="button"
+            onClick={() => onNavigate?.("folder")}
+          >
             Back to folder
           </button>
-          <button className="btn-secondary" type="button" onClick={() => onNavigate?.("dashboard")}>
+          <button
+            className="btn-secondary"
+            type="button"
+            onClick={() => onNavigate?.("dashboard")}
+          >
             Dashboard
           </button>
         </div>
@@ -144,7 +198,10 @@ export const TestSession = ({
 
   const submit = async () => {
     if (!selected) return;
-    const next = [...answers, { vocabularyId: q.vocabularyId, selectedMeaning: selected }];
+    const next = [
+      ...answers,
+      { vocabularyId: q.vocabularyId, selectedMeaning: selected },
+    ];
     setAnswers(next);
     setSelected(undefined);
     if (index + 1 < questions.length) {
@@ -171,11 +228,27 @@ export const TestSession = ({
     >
       {/* Progress Header */}
       <div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-          <span className="text-label-md" style={{ color: "var(--on-surface-variant)", textTransform: "uppercase" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "8px",
+          }}
+        >
+          <span
+            className="text-label-md"
+            style={{
+              color: "var(--on-surface-variant)",
+              textTransform: "uppercase",
+            }}
+          >
             Lesson Progress
           </span>
-          <span className="text-label-md" style={{ color: "var(--primary)", fontWeight: 700 }}>
+          <span
+            className="text-label-md"
+            style={{ color: "var(--primary)", fontWeight: 700 }}
+          >
             Question {index + 1} of {questions.length}
           </span>
         </div>
@@ -183,17 +256,34 @@ export const TestSession = ({
           value={index + 1}
           max={questions.length}
           aria-label="Quiz progress"
-          style={{ width: "100%", height: "8px", borderRadius: "9999px", accentColor: "var(--primary)" }}
+          style={{
+            width: "100%",
+            height: "8px",
+            borderRadius: "9999px",
+            accentColor: "var(--primary)",
+          }}
         />
       </div>
 
       {/* Quiz Card */}
-      <div className="card" style={{ padding: "32px 24px", backgroundColor: "var(--surface-white)" }}>
+      <div
+        className="card"
+        style={{
+          padding: "32px 24px",
+          backgroundColor: "var(--surface-white)",
+        }}
+      >
         <div style={{ textAlign: "center", marginBottom: "28px" }}>
-          <p className="text-label-md" style={{ color: "var(--outline)", marginBottom: "8px" }}>
+          <p
+            className="text-label-md"
+            style={{ color: "var(--outline)", marginBottom: "8px" }}
+          >
             Choose the correct meaning for:
           </p>
-          <h2 className="text-headline-lg" style={{ color: "var(--on-surface)", margin: 0 }}>
+          <h2
+            className="text-headline-lg"
+            style={{ color: "var(--on-surface)", margin: 0 }}
+          >
             {q.word}
           </h2>
         </div>
@@ -214,7 +304,10 @@ export const TestSession = ({
                 <div className="option-letter-badge" aria-hidden="true">
                   {letter}
                 </div>
-                <span className="text-body-lg" style={{ fontWeight: isSelected ? 600 : 400 }}>
+                <span
+                  className="text-body-lg"
+                  style={{ fontWeight: isSelected ? 600 : 400 }}
+                >
                   {choice}
                 </span>
               </button>
@@ -224,7 +317,13 @@ export const TestSession = ({
       </div>
 
       {/* Action Row */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <button
           className="btn-ghost"
           type="button"
@@ -243,7 +342,11 @@ export const TestSession = ({
           style={{ padding: "12px 28px", fontSize: "16px" }}
         >
           <span>Submit answer</span>
-          <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "20px" }}>
+          <span
+            className="material-symbols-outlined"
+            aria-hidden="true"
+            style={{ fontSize: "20px" }}
+          >
             arrow_forward
           </span>
         </button>

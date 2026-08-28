@@ -19,14 +19,33 @@ export const Flashcards = ({
 
   if (!items.length) {
     return (
-      <section aria-label="Flashcards" className="card" style={{ textAlign: "center", padding: "48px 24px" }}>
-        <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "48px", color: "var(--outline)", marginBottom: "16px" }}>
+      <section
+        aria-label="Flashcards"
+        className="card"
+        style={{ textAlign: "center", padding: "48px 24px" }}
+      >
+        <span
+          className="material-symbols-outlined"
+          aria-hidden="true"
+          style={{
+            fontSize: "48px",
+            color: "var(--outline)",
+            marginBottom: "16px",
+          }}
+        >
           style
         </span>
-        <h2 className="text-headline-md" style={{ color: "var(--on-surface)", marginBottom: "8px" }}>
+        <h2
+          className="text-headline-md"
+          style={{ color: "var(--on-surface)", marginBottom: "8px" }}
+        >
           Flashcards
         </h2>
-        <p role="status" className="text-body-md" style={{ color: "var(--on-surface-variant)" }}>
+        <p
+          role="status"
+          className="text-body-md"
+          style={{ color: "var(--on-surface-variant)" }}
+        >
           No vocabulary available for flashcards.
         </p>
       </section>
@@ -82,32 +101,58 @@ export const Flashcards = ({
               className="btn-ghost"
               onClick={onClose}
               aria-label="Close session"
-              style={{ width: "36px", height: "36px", borderRadius: "50%", padding: 0 }}
+              style={{
+                width: "36px",
+                height: "36px",
+                borderRadius: "50%",
+                padding: 0,
+              }}
             >
-              <span className="material-symbols-outlined" aria-hidden="true">close</span>
+              <span className="material-symbols-outlined" aria-hidden="true">
+                close
+              </span>
             </button>
           )}
-          <h2 className="text-headline-md" style={{ margin: 0, color: "var(--primary)", fontSize: "20px" }}>
+          <h2
+            className="text-headline-md"
+            style={{ margin: 0, color: "var(--primary)", fontSize: "20px" }}
+          >
             Flashcards
           </h2>
         </div>
 
         {/* Progress Bar & Counter */}
         <div style={{ flex: 1, maxWidth: "340px", margin: "0 24px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
-            <span className="text-label-md" style={{ color: "var(--on-surface-variant)", fontSize: "12px" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: "4px",
+            }}
+          >
+            <span
+              className="text-label-md"
+              style={{ color: "var(--on-surface-variant)", fontSize: "12px" }}
+            >
               Progress
             </span>
             <span
               className="text-label-md"
               aria-label="Flashcard progress"
-              style={{ color: "var(--primary)", fontWeight: 700, fontSize: "12px" }}
+              style={{
+                color: "var(--primary)",
+                fontWeight: 700,
+                fontSize: "12px",
+              }}
             >
               {index + 1} / {cards.length}
             </span>
           </div>
           <div className="progress-bar-container" style={{ height: "6px" }}>
-            <div className="progress-bar-fill" style={{ width: `${progressPercent}%` }} />
+            <div
+              className="progress-bar-fill"
+              style={{ width: `${progressPercent}%` }}
+            />
           </div>
         </div>
 
@@ -128,7 +173,10 @@ export const Flashcards = ({
       </div>
 
       {/* 3D Flashcard */}
-      <div className="perspective-1000" style={{ width: "100%", maxWidth: "640px", minHeight: "360px" }}>
+      <div
+        className="perspective-1000"
+        style={{ width: "100%", maxWidth: "640px", minHeight: "360px" }}
+      >
         <div
           className={`flashcard-3d-card ${revealed ? "rotate-y-180" : ""}`}
           onClick={() => setRevealed(!revealed)}
@@ -147,10 +195,15 @@ export const Flashcards = ({
                 textAlign: "center",
               }}
             >
-              <h3 className="text-display-lg" style={{ color: "var(--on-surface)", margin: 0 }}>
+              <h3
+                className="text-display-lg"
+                style={{ color: "var(--on-surface)", margin: 0 }}
+              >
                 {card.word}
               </h3>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
                 <p className="text-ipa-display" style={{ margin: 0 }}>
                   {card.ipa || "IPA unavailable"}
                 </p>
@@ -185,11 +238,19 @@ export const Flashcards = ({
               <div>
                 <span
                   className="text-label-md"
-                  style={{ color: "var(--primary)", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: 700 }}
+                  style={{
+                    color: "var(--primary)",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    fontWeight: 700,
+                  }}
                 >
                   Meaning
                 </span>
-                <p className="text-headline-md" style={{ color: "var(--on-surface)", margin: "4px 0 0 0" }}>
+                <p
+                  className="text-headline-md"
+                  style={{ color: "var(--on-surface)", margin: "4px 0 0 0" }}
+                >
                   {card.meaning}
                 </p>
               </div>
@@ -238,7 +299,12 @@ export const Flashcards = ({
             className="btn-primary"
             type="button"
             onClick={() => setRevealed(true)}
-            style={{ width: "100%", maxWidth: "260px", padding: "14px 28px", fontSize: "16px" }}
+            style={{
+              width: "100%",
+              maxWidth: "260px",
+              padding: "14px 28px",
+              fontSize: "16px",
+            }}
           >
             Reveal meaning
           </button>
@@ -306,27 +372,58 @@ export const Flashcards = ({
         )}
 
         {/* Secondary Controls Bar */}
-        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "center" }}>
-          <button className="btn-secondary" type="button" onClick={() => move(index - 1)}>
-            <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
+          <button
+            className="btn-secondary"
+            type="button"
+            onClick={() => move(index - 1)}
+          >
+            <span
+              className="material-symbols-outlined"
+              aria-hidden="true"
+              style={{ fontSize: "18px" }}
+            >
               arrow_back
             </span>
             Previous
           </button>
-          <button className="btn-secondary" type="button" onClick={() => move(index + 1)}>
+          <button
+            className="btn-secondary"
+            type="button"
+            onClick={() => move(index + 1)}
+          >
             Next
-            <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+            <span
+              className="material-symbols-outlined"
+              aria-hidden="true"
+              style={{ fontSize: "18px" }}
+            >
               arrow_forward
             </span>
           </button>
           <button className="btn-secondary" type="button" onClick={restart}>
-            <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+            <span
+              className="material-symbols-outlined"
+              aria-hidden="true"
+              style={{ fontSize: "18px" }}
+            >
               shuffle
             </span>
             Shuffle
           </button>
           <button className="btn-secondary" type="button" onClick={restart}>
-            <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+            <span
+              className="material-symbols-outlined"
+              aria-hidden="true"
+              style={{ fontSize: "18px" }}
+            >
               restart_alt
             </span>
             Restart

@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { PracticeHub } from "../src/PracticeHub";
 
 describe("PracticeHub component", () => {
-  it("renders modes and handles triggers", () => {
+  it("renders modes and handles triggers with wordCount > 0", () => {
     const onStartFlashcards = vi.fn();
     const onStartQuiz = vi.fn();
     const onStartAi = vi.fn();
@@ -18,23 +18,33 @@ describe("PracticeHub component", () => {
       />,
     );
 
-    expect(screen.getByRole("heading", { name: "Practice Hub" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Practice Hub" }),
+    ).toBeInTheDocument();
     expect(screen.getByText("Flashcard Mode")).toBeInTheDocument();
     expect(screen.getByText("Multiple Choice Quiz")).toBeInTheDocument();
     expect(screen.getByText("AI Story Generator")).toBeInTheDocument();
     expect(screen.getByText("12 Cards Due")).toBeInTheDocument();
 
-    const startButtons = screen.getAllByRole("button", { name: /Start/i });
-    fireEvent.click(startButtons[0]!);
+    fireEvent.click(screen.getByRole("button", { name: "Start flashcards" }));
     expect(onStartFlashcards).toHaveBeenCalledTimes(1);
 
-    fireEvent.click(startButtons[1]!);
+    fireEvent.click(screen.getByRole("button", { name: "Start quiz" }));
     expect(onStartQuiz).toHaveBeenCalledTimes(1);
 
     fireEvent.change(screen.getByPlaceholderText(/e.g., resilient/), {
       target: { value: "ubiquitous" },
     });
-    fireEvent.click(startButtons[2]!);
+    fireEvent.click(screen.getByRole("button", { name: "Start AI story" }));
     expect(onStartAi).toHaveBeenCalledWith("ubiquitous");
+  });
+
+  it("renders modes with wordCount = 0 and handles missing callbacks", () => {
+    render(<PracticeHub wordCount={0} />);
+    expect(screen.getByText("Vocabulary Cards")).toBeInTheDocument();
+    expect(screen.getByText("Adaptive Questions")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Start flashcards" }));
+    fireEvent.click(screen.getByRole("button", { name: "Start quiz" }));
+    fireEvent.click(screen.getByRole("button", { name: "Start AI story" }));
   });
 });

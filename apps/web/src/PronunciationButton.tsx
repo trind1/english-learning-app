@@ -32,7 +32,13 @@ export const PronunciationButton = ({
   };
 
   return (
-    <div style={{ display: "inline-flex", flexDirection: "column", alignItems: "center" }}>
+    <div
+      style={{
+        display: "inline-flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <button
         type="button"
         className="btn-ghost"
@@ -58,7 +64,14 @@ export const PronunciationButton = ({
         </span>
         <span className="sr-only">Pronounce {word}</span>
       </button>
-      {error && <p role="alert" style={{ fontSize: "12px", margin: "4px 0 0 0", padding: "4px 8px" }}>{error}</p>}
+      {error && (
+        <p
+          role="alert"
+          style={{ fontSize: "12px", margin: "4px 0 0 0", padding: "4px 8px" }}
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 };

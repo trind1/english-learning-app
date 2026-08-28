@@ -6,7 +6,12 @@ export const AiPanel = ({
   enabled = true,
   onFinish,
 }: {
-  words: readonly { id: string; word: string; meaning?: string; ipa?: string | null }[];
+  words: readonly {
+    id: string;
+    word: string;
+    meaning?: string;
+    ipa?: string | null;
+  }[];
   generate: (ids: readonly string[]) => Promise<string>;
   enabled?: boolean;
   onFinish?: () => void;
@@ -18,7 +23,11 @@ export const AiPanel = ({
 
   const toggle = (id: string) =>
     setSelected((s) =>
-      s.includes(id) ? s.filter((x) => x !== id) : s.length < 10 ? [...s, id] : s,
+      s.includes(id)
+        ? s.filter((x) => x !== id)
+        : s.length < 10
+          ? [...s, id]
+          : s,
     );
 
   const submit = async () => {
@@ -53,7 +62,9 @@ export const AiPanel = ({
 
     const parts = storyText.split(regex);
     return parts.map((part, i) => {
-      const match = selectedWordObjects.find((w) => w.word.toLowerCase() === part.toLowerCase());
+      const match = selectedWordObjects.find(
+        (w) => w.word.toLowerCase() === part.toLowerCase(),
+      );
       if (match) {
         return (
           <span key={i} className="highlighted-word" data-word={match.word}>
@@ -75,26 +86,61 @@ export const AiPanel = ({
         width: "100%",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <div>
-          <h2 className="text-headline-lg" style={{ color: "var(--on-surface)", margin: 0 }}>
+          <h2
+            className="text-headline-lg"
+            style={{ color: "var(--on-surface)", margin: 0 }}
+          >
             AI text
           </h2>
-          <p className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: "4px 0 0 0" }}>
+          <p
+            className="text-body-md"
+            style={{ color: "var(--on-surface-variant)", margin: "4px 0 0 0" }}
+          >
             Generate natural reading material using your selected vocabulary.
           </p>
         </div>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "row", gap: "24px", alignItems: "flex-start", flexWrap: "wrap" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "24px",
+          alignItems: "flex-start",
+          flexWrap: "wrap",
+        }}
+      >
         {/* Story Canvas (Left/Center) */}
         <div
           className="story-canvas"
-          style={{ flex: "1 1 480px", display: "flex", flexDirection: "column", minHeight: "360px" }}
+          style={{
+            flex: "1 1 480px",
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "360px",
+          }}
         >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "20px" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              marginBottom: "20px",
+            }}
+          >
             <div>
-              <h3 className="text-headline-md" style={{ color: "var(--on-surface)", margin: 0 }}>
+              <h3
+                className="text-headline-md"
+                style={{ color: "var(--on-surface)", margin: 0 }}
+              >
                 {text ? "Generated Story" : "Story Generator"}
               </h3>
               <p
@@ -107,12 +153,20 @@ export const AiPanel = ({
                   marginTop: "4px",
                 }}
               >
-                <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+                <span
+                  className="material-symbols-outlined"
+                  aria-hidden="true"
+                  style={{ fontSize: "18px" }}
+                >
                   auto_stories
                 </span>{" "}
                 AI Generated
                 <span>•</span>
-                <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+                <span
+                  className="material-symbols-outlined"
+                  aria-hidden="true"
+                  style={{ fontSize: "18px" }}
+                >
                   schedule
                 </span>{" "}
                 2 Min Read
@@ -120,7 +174,9 @@ export const AiPanel = ({
             </div>
           </div>
 
-          <div style={{ flex: 1, lineHeight: "1.8", color: "var(--on-surface)" }}>
+          <div
+            style={{ flex: 1, lineHeight: "1.8", color: "var(--on-surface)" }}
+          >
             {text ? (
               <output
                 aria-label="Generated text"
@@ -141,10 +197,21 @@ export const AiPanel = ({
                   textAlign: "center",
                 }}
               >
-                <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "48px", opacity: 0.5, marginBottom: "8px" }}>
+                <span
+                  className="material-symbols-outlined"
+                  aria-hidden="true"
+                  style={{
+                    fontSize: "48px",
+                    opacity: 0.5,
+                    marginBottom: "8px",
+                  }}
+                >
                   auto_awesome
                 </span>
-                <p>Select words from the right and click "Generate text" to build your contextual story.</p>
+                <p>
+                  Select words from the right and click "Generate text" to build
+                  your contextual story.
+                </p>
               </div>
             )}
           </div>
@@ -169,14 +236,26 @@ export const AiPanel = ({
               disabled={busy}
               style={{ padding: "10px 20px" }}
             >
-              <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+              <span
+                className="material-symbols-outlined"
+                aria-hidden="true"
+                style={{ fontSize: "18px" }}
+              >
                 {busy ? "hourglass_empty" : "refresh"}
               </span>
               {busy ? "Generating…" : "Generate text"}
             </button>
             {onFinish && (
-              <button className="btn-secondary" type="button" onClick={onFinish}>
-                <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+              <button
+                className="btn-secondary"
+                type="button"
+                onClick={onFinish}
+              >
+                <span
+                  className="material-symbols-outlined"
+                  aria-hidden="true"
+                  style={{ fontSize: "18px" }}
+                >
                   check_circle
                 </span>
                 Finish Session
@@ -197,24 +276,46 @@ export const AiPanel = ({
             gap: "16px",
           }}
         >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <h3
               className="text-headline-md"
-              style={{ fontSize: "18px", margin: 0, display: "flex", alignItems: "center", gap: "8px" }}
+              style={{
+                fontSize: "18px",
+                margin: 0,
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
             >
-              <span className="material-symbols-outlined" aria-hidden="true" style={{ color: "var(--primary)" }}>
+              <span
+                className="material-symbols-outlined"
+                aria-hidden="true"
+                style={{ color: "var(--primary)" }}
+              >
                 school
               </span>
               Words Practiced
             </h3>
-            <span className="text-label-md" style={{ color: "var(--text-muted)" }}>
+            <span
+              className="text-label-md"
+              style={{ color: "var(--text-muted)" }}
+            >
               {selected.length}/10 selected
             </span>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {words.length === 0 ? (
-              <p className="text-body-md" style={{ color: "var(--text-muted)", margin: 0 }}>
+              <p
+                className="text-body-md"
+                style={{ color: "var(--text-muted)", margin: 0 }}
+              >
                 No vocabulary available to select.
               </p>
             ) : (
@@ -230,7 +331,9 @@ export const AiPanel = ({
                       padding: "10px 14px",
                       borderRadius: "10px",
                       border: `1px solid ${isChecked ? "var(--primary)" : "var(--outline-variant)"}`,
-                      backgroundColor: isChecked ? "var(--primary-fixed)" : "var(--surface)",
+                      backgroundColor: isChecked
+                        ? "var(--primary-fixed)"
+                        : "var(--surface)",
                       cursor: "pointer",
                       transition: "all 0.15s ease",
                     }}
@@ -240,11 +343,21 @@ export const AiPanel = ({
                       checked={isChecked}
                       onChange={() => toggle(w.id)}
                       disabled={busy}
-                      style={{ width: "18px", height: "18px", accentColor: "var(--primary)", cursor: "pointer" }}
+                      style={{
+                        width: "18px",
+                        height: "18px",
+                        accentColor: "var(--primary)",
+                        cursor: "pointer",
+                      }}
                     />
                     <span
                       className="text-body-md"
-                      style={{ fontWeight: 600, color: isChecked ? "var(--primary)" : "var(--on-surface)" }}
+                      style={{
+                        fontWeight: 600,
+                        color: isChecked
+                          ? "var(--primary)"
+                          : "var(--on-surface)",
+                      }}
                     >
                       {w.word}
                     </span>
