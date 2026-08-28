@@ -23,7 +23,8 @@ const dashboard = {
 
 describe("TEST-011 and TEST-021 integrated web shell", () => {
   afterEach(() => vi.restoreAllMocks());
-  it("shows the real dashboard and navigates to the library", async () => {
+
+  it("shows the real dashboard and navigates to vocabulary", async () => {
     vi.spyOn(globalThis, "fetch").mockImplementation((input) =>
       String(input).endsWith("/dashboard")
         ? json(dashboard)
@@ -37,9 +38,10 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
       screen.getByRole("navigation", { name: "Primary navigation" }),
     ).toBeInTheDocument();
     await screen.findByText("0%");
-    fireEvent.click(screen.getByRole("button", { name: "Library" }));
+    fireEvent.click(screen.getByRole("button", { name: "Vocabulary" }));
     expect(await screen.findByText("No folders yet.")).toBeInTheDocument();
   });
+
   it("creates and opens a folder through the same-origin API", async () => {
     const folder = {
       id: "25e6a282-c27b-4af7-957c-bb8ecab04a4f",
@@ -61,7 +63,7 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
         return json({ data: {} });
       });
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Library" }));
+    fireEvent.click(screen.getByRole("button", { name: "Vocabulary" }));
     await screen.findByText("No folders yet.");
     fireEvent.change(screen.getByLabelText("Folder name"), {
       target: { value: "Travel" },
@@ -91,22 +93,27 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
       await screen.findByRole("heading", { name: "Your vocabulary topics" }),
     ).toBeInTheDocument();
     await screen.findByText("No folders yet.");
-    fireEvent.click(screen.getByRole("button", { name: "Study" }));
+
+    // Practice
+    fireEvent.click(screen.getByRole("button", { name: "Practice" }));
     expect(
-      screen.getByRole("heading", { name: "Your vocabulary topics" }),
+      screen.getByRole("heading", { name: "Practice Hub" }),
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "+ Add vocabulary" }));
+
+    // Progress (UI placeholder)
+    fireEvent.click(screen.getByRole("button", { name: "Progress" }));
+
+    // Settings & Help
+    fireEvent.click(screen.getByRole("button", { name: "Settings" }));
+    fireEvent.click(screen.getByRole("button", { name: "Help" }));
+
+    // Dashboard
     fireEvent.click(screen.getByRole("button", { name: "Dashboard" }));
     await screen.findByText("0%");
-    fireEvent.click(screen.getByRole("button", { name: "Library" }));
+
+    // Vocabulary
+    fireEvent.click(screen.getByRole("button", { name: "Vocabulary" }));
     await screen.findByText("No folders yet.");
-    fireEvent.click(
-      screen.getByRole("button", { name: "English Learning home" }),
-    );
-    expect(
-      screen.getByRole("heading", { name: "Welcome back" }),
-    ).toBeInTheDocument();
-    await screen.findByText("0%");
   });
 
   it("completes the folder, vocabulary, import, AI, flashcard, and quiz journey", async () => {
@@ -185,7 +192,7 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     });
 
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Library" }));
+    fireEvent.click(screen.getByRole("button", { name: "Vocabulary" }));
     await screen.findByText("Travel");
     fireEvent.click(screen.getByRole("button", { name: "Open" }));
     await screen.findByText("hello");
@@ -241,7 +248,9 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     await waitFor(() =>
       expect(vocabularyLoads()).toBeGreaterThan(loadsBeforeReturn),
     );
-    fireEvent.click(screen.getByRole("button", { name: "Study" }));
+
+    // Click Start Lesson with folder active
+    fireEvent.click(screen.getByRole("button", { name: "Start Lesson" }));
     expect(
       screen.getByRole("heading", { name: "Flashcards", level: 1 }),
     ).toBeInTheDocument();
@@ -279,7 +288,7 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
       return json({ data: {} });
     });
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Library" }));
+    fireEvent.click(screen.getByRole("button", { name: "Vocabulary" }));
     await screen.findByText("Business");
     fireEvent.click(screen.getByRole("button", { name: "Open" }));
     await screen.findByText("No vocabulary yet.");
@@ -301,43 +310,54 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     ).toBeInTheDocument();
   });
 
-  it("navigates through AI Stories, Login, Register, Profile menu, and Practice Hub", async () => {
+  it("tests profile dropdown with Information and Log out, click outside, and auth forms", async () => {
     vi.spyOn(globalThis, "fetch").mockImplementation((input) => {
       const url = String(input);
       if (url.endsWith("/dashboard")) return json(dashboard);
       if (url.endsWith("/folders")) return json({ data: { folders: [] } });
-      if (url.endsWith("/ai/text"))
-        return json({ data: { text: "Generated AI text" } });
       return json({ data: {} });
     });
     render(<App />);
 
-    // AI Stories view
-    fireEvent.click(screen.getByRole("button", { name: "AI Stories" }));
+    // Notification click
+    fireEvent.click(screen.getByRole("button", { name: "Notifications" }));
+
+    // Profile menu toggle and Information modal
+    fireEvent.click(screen.getByRole("button", { name: "User profile" }));
     expect(
-      screen.getByRole("heading", { name: "AI Story Generator" }),
+      screen.getByRole("menuitem", { name: "Information" }),
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Finish Session" }));
     expect(
-      screen.getByRole("heading", { name: "Practice Hub" }),
+      screen.getByRole("menuitem", { name: "Log out" }),
     ).toBeInTheDocument();
 
-    // In Practice Hub without active folder: triggers navigation to library or AI
-    fireEvent.click(screen.getByRole("button", { name: "Start flashcards" })); // Flashcards -> Library
+    fireEvent.click(screen.getByRole("menuitem", { name: "Information" }));
     expect(
-      screen.getByRole("heading", { name: "Your vocabulary topics" }),
+      screen.getByRole("heading", { name: "User Information" }),
     ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Close" }));
+    expect(
+      screen.queryByRole("heading", { name: "User Information" }),
+    ).not.toBeInTheDocument();
 
-    // Side nav Login / Register
-    fireEvent.click(screen.getByRole("button", { name: "Login Screen" }));
+    // Click outside to close dropdown
+    fireEvent.click(screen.getByRole("button", { name: "User profile" }));
+    expect(
+      screen.getByRole("menuitem", { name: "Information" }),
+    ).toBeInTheDocument();
+    fireEvent.mouseDown(document.body);
+    expect(
+      screen.queryByRole("menuitem", { name: "Information" }),
+    ).not.toBeInTheDocument();
+
+    // Log out action
+    fireEvent.click(screen.getByRole("button", { name: "User profile" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Log out" }));
     expect(
       screen.getByRole("heading", { name: "LinguistPro" }),
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("link", { name: "Sign Up" }));
-    expect(
-      screen.getByRole("heading", { name: "Create an Account" }),
-    ).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("link", { name: "Log In" }));
+
+    // Login submit
     fireEvent.change(screen.getByLabelText("Email Address"), {
       target: { value: "test@example.com" },
     });
@@ -345,16 +365,20 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
       target: { value: "123456" },
     });
     fireEvent.click(screen.getByRole("button", { name: "Login" }));
+    expect(
+      await screen.findByRole("heading", { name: "Welcome back" }),
+    ).toBeInTheDocument();
 
-    // Profile menu toggle and navigation
+    // Go to register from login
     fireEvent.click(screen.getByRole("button", { name: "User profile" }));
-    fireEvent.click(screen.getByRole("button", { name: "Register" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Log out" }));
+    fireEvent.click(screen.getByRole("link", { name: "Sign Up" }));
     expect(
       screen.getByRole("heading", { name: "Create an Account" }),
     ).toBeInTheDocument();
 
     fireEvent.change(screen.getByLabelText("Full Name"), {
-      target: { value: "Test" },
+      target: { value: "Test User" },
     });
     fireEvent.change(screen.getByLabelText("Email"), {
       target: { value: "test@example.com" },
@@ -367,29 +391,18 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     });
     fireEvent.click(screen.getByLabelText(/I agree to the/));
     fireEvent.click(screen.getByRole("button", { name: "Create Account" }));
-
-    // Profile menu Log In
-    fireEvent.click(screen.getByRole("button", { name: "User profile" }));
-    fireEvent.click(screen.getByRole("button", { name: "Log In" }));
     expect(
-      screen.getByRole("heading", { name: "LinguistPro" }),
+      await screen.findByRole("heading", { name: "Welcome back" }),
     ).toBeInTheDocument();
-    fireEvent.change(screen.getByLabelText("Email Address"), {
-      target: { value: "test@example.com" },
-    });
-    fireEvent.change(screen.getByLabelText("Password"), {
-      target: { value: "123456" },
-    });
-    fireEvent.click(screen.getByRole("button", { name: "Login" }));
 
-    // Start Lesson button
+    // Start Lesson button without active folder routes to practice
     fireEvent.click(screen.getByRole("button", { name: "Start Lesson" }));
     expect(
-      screen.getByRole("heading", { name: "Your vocabulary topics" }),
+      screen.getByRole("heading", { name: "Practice Hub" }),
     ).toBeInTheDocument();
   });
 
-  it("exercises PracticeHub start buttons with an active folder", async () => {
+  it("exercises PracticeHub modes (flashcards, quiz, AI generator) with active folder", async () => {
     const timestamp = "2026-08-28T00:00:00.000Z";
     const folder = {
       id: "folder-3",
@@ -436,13 +449,19 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     });
 
     render(<App />);
-    fireEvent.click(screen.getByRole("button", { name: "Library" }));
+    fireEvent.click(screen.getByRole("button", { name: "Vocabulary" }));
     await screen.findByText("Academics");
     fireEvent.click(screen.getByRole("button", { name: "Open" }));
     await screen.findByText("hypothesis");
 
-    // Go to AI stories
-    fireEvent.click(screen.getByRole("button", { name: "AI Stories" }));
+    // Go to Practice Hub
+    fireEvent.click(screen.getByRole("button", { name: "Practice" }));
+    expect(
+      screen.getByRole("heading", { name: "Practice Hub" }),
+    ).toBeInTheDocument();
+
+    // Start AI story
+    fireEvent.click(screen.getByRole("button", { name: "Start AI story" }));
     expect(
       screen.getByRole("heading", { name: "AI Story Generator" }),
     ).toBeInTheDocument();
@@ -456,13 +475,14 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
       screen.getByRole("heading", { name: "Practice Hub" }),
     ).toBeInTheDocument();
 
-    // Click Start Quiz from PracticeHub
+    // Start Quiz from PracticeHub
     fireEvent.click(screen.getByRole("button", { name: "Start quiz" }));
     await screen.findByRole("heading", { name: "Test your knowledge" });
     fireEvent.click(screen.getByRole("button", { name: /Back to Academics/ }));
 
-    // Click Flashcards from Start Lesson
-    fireEvent.click(screen.getByRole("button", { name: "Start Lesson" }));
+    // Start Flashcards from PracticeHub
+    fireEvent.click(screen.getByRole("button", { name: "Practice" }));
+    fireEvent.click(screen.getByRole("button", { name: "Start flashcards" }));
     expect(
       screen.getByRole("heading", { name: "Flashcards", level: 1 }),
     ).toBeInTheDocument();

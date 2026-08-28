@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { z } from "zod";
 import {
   folderListResponseSchema,
@@ -86,6 +86,26 @@ export const App = () => {
   const [test, setTest] = useState<TestPayload | null>(null);
   const [studyError, setStudyError] = useState("");
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
+
+  // Click outside to close profile dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        profileMenuRef.current &&
+        !profileMenuRef.current.contains(event.target as Node)
+      ) {
+        setShowProfileMenu(false);
+      }
+    };
+    if (showProfileMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showProfileMenu]);
 
   const loadDashboard = useCallback(
     async (): Promise<DashboardData> =>
@@ -263,14 +283,10 @@ export const App = () => {
         Skip to content
       </a>
 
-      {/* Side Navigation Bar (Desktop) */}
+      {/* Left Navigation — Strict Structure */}
       <aside className="side-navbar">
-        <button
-          className="side-brand"
-          type="button"
-          onClick={() => navigate("dashboard")}
-          aria-label="English Learning home"
-        >
+        {/* Brand Area */}
+        <div className="side-brand">
           <span
             className="material-symbols-outlined brand-icon"
             aria-hidden="true"
@@ -278,30 +294,12 @@ export const App = () => {
             language
           </span>
           <div style={{ textAlign: "left" }}>
-            <span className="brand-title" style={{ display: "block" }}>
-              LinguistPro
-            </span>
-            <span className="brand-subtitle">English Mastery</span>
+            <h1 className="brand-title">LinguistPro</h1>
+            <p className="brand-subtitle">English Mastery</p>
           </div>
-        </button>
+        </div>
 
-        <button
-          className="side-cta-btn"
-          type="button"
-          onClick={() =>
-            folder ? navigate("flashcards") : navigate("library")
-          }
-        >
-          <span
-            className="material-symbols-outlined"
-            aria-hidden="true"
-            style={{ fontSize: "20px" }}
-          >
-            play_arrow
-          </span>
-          Start Lesson
-        </button>
-
+        {/* Primary Navigation (1. Dashboard, 2. Vocabulary, 3. Practice, 4. Progress) */}
         <nav aria-label="Primary navigation" className="side-nav-links">
           <li
             className={`side-nav-item ${view === "dashboard" ? "active" : ""}`}
@@ -322,85 +320,72 @@ export const App = () => {
               <span className="material-symbols-outlined" aria-hidden="true">
                 menu_book
               </span>
-              Library
+              Vocabulary
             </button>
           </li>
           <li
-            className={`side-nav-item ${view === "practice" || view === "flashcards" ? "active" : ""}`}
+            className={`side-nav-item ${
+              view === "practice" || view === "ai_generator" ? "active" : ""
+            }`}
           >
-            <button
-              type="button"
-              onClick={() =>
-                folder ? navigate("flashcards") : navigate("library")
-              }
-            >
+            <button type="button" onClick={() => navigate("practice")}>
               <span className="material-symbols-outlined" aria-hidden="true">
                 fitness_center
               </span>
-              Study
+              Practice
             </button>
           </li>
-          <li
-            className={`side-nav-item ${view === "ai_generator" ? "active" : ""}`}
-          >
-            <button type="button" onClick={() => navigate("ai_generator")}>
+          <li className="side-nav-item">
+            <button type="button" onClick={() => {}}>
               <span className="material-symbols-outlined" aria-hidden="true">
-                auto_stories
+                leaderboard
               </span>
-              AI Stories
+              Progress
             </button>
           </li>
         </nav>
 
+        {/* Dedicated Start Lesson CTA */}
+        <button
+          className="side-cta-btn"
+          type="button"
+          onClick={() =>
+            folder ? navigate("flashcards") : navigate("practice")
+          }
+        >
+          <span
+            className="material-symbols-outlined"
+            aria-hidden="true"
+            style={{ fontSize: "20px" }}
+          >
+            play_arrow
+          </span>
+          Start Lesson
+        </button>
+
+        {/* Secondary Navigation (1. Settings, 2. Help) */}
         <div className="side-nav-footer">
-          <button
-            type="button"
-            className="btn-ghost"
-            style={{
-              width: "100%",
-              justifyContent: "flex-start",
-              gap: "12px",
-              fontSize: "14px",
-            }}
-            onClick={() => navigate("login")}
-          >
-            <span className="material-symbols-outlined" aria-hidden="true">
-              login
-            </span>
-            Login Screen
-          </button>
-          <button
-            type="button"
-            className="btn-ghost"
-            style={{
-              width: "100%",
-              justifyContent: "flex-start",
-              gap: "12px",
-              fontSize: "14px",
-            }}
-            onClick={() => navigate("register")}
-          >
-            <span className="material-symbols-outlined" aria-hidden="true">
-              person_add
-            </span>
-            Register Screen
-          </button>
+          <li className="side-nav-item">
+            <button type="button" onClick={() => {}}>
+              <span className="material-symbols-outlined" aria-hidden="true">
+                settings
+              </span>
+              Settings
+            </button>
+          </li>
+          <li className="side-nav-item">
+            <button type="button" onClick={() => {}}>
+              <span className="material-symbols-outlined" aria-hidden="true">
+                help
+              </span>
+              Help
+            </button>
+          </li>
         </div>
       </aside>
 
-      {/* Top App Bar */}
+      {/* Top User Bar (Notification + Profile Only) */}
       <header className="top-app-bar">
-        <div className="top-bar-search">
-          <span className="material-symbols-outlined" aria-hidden="true">
-            search
-          </span>
-          <input
-            type="search"
-            placeholder="Search dictionary..."
-            aria-label="Search dictionary"
-          />
-        </div>
-
         <div className="top-bar-actions">
           <button
             className="btn-ghost"
@@ -418,20 +403,12 @@ export const App = () => {
             </span>
           </button>
 
-          <button
-            className="btn-primary"
-            type="button"
-            onClick={() => navigate("library")}
-            style={{ padding: "8px 14px", fontSize: "13px" }}
-          >
-            + Add vocabulary
-          </button>
-
-          <div style={{ position: "relative" }}>
+          <div className="profile-menu-container" ref={profileMenuRef}>
             <button
               className="user-profile-pill"
               type="button"
               onClick={() => setShowProfileMenu(!showProfileMenu)}
+              aria-expanded={showProfileMenu}
               aria-label="User profile"
             >
               <span
@@ -453,66 +430,103 @@ export const App = () => {
 
             {showProfileMenu && (
               <div
-                className="card"
-                style={{
-                  position: "absolute",
-                  right: 0,
-                  top: "44px",
-                  width: "180px",
-                  padding: "8px",
-                  boxShadow: "var(--shadow-level-2)",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "4px",
-                  zIndex: 100,
-                  backgroundColor: "var(--surface-white)",
-                }}
+                className="profile-dropdown-menu"
+                role="menu"
+                aria-label="Profile options"
               >
                 <button
                   type="button"
-                  className="btn-ghost"
-                  style={{
-                    width: "100%",
-                    justifyContent: "flex-start",
-                    fontSize: "13px",
-                    padding: "8px 12px",
+                  role="menuitem"
+                  className="dropdown-item"
+                  onClick={() => {
+                    setShowProfileMenu(false);
+                    setShowInfoModal(true);
                   }}
-                  onClick={() => navigate("login")}
                 >
                   <span
                     className="material-symbols-outlined"
                     aria-hidden="true"
-                    style={{ fontSize: "18px" }}
                   >
-                    login
+                    info
                   </span>
-                  Log In
+                  Information
                 </button>
                 <button
                   type="button"
-                  className="btn-ghost"
-                  style={{
-                    width: "100%",
-                    justifyContent: "flex-start",
-                    fontSize: "13px",
-                    padding: "8px 12px",
+                  role="menuitem"
+                  className="dropdown-item"
+                  onClick={() => {
+                    setShowProfileMenu(false);
+                    navigate("login");
                   }}
-                  onClick={() => navigate("register")}
                 >
                   <span
                     className="material-symbols-outlined"
                     aria-hidden="true"
-                    style={{ fontSize: "18px" }}
                   >
-                    person_add
+                    logout
                   </span>
-                  Register
+                  Log out
                 </button>
               </div>
             )}
           </div>
         </div>
       </header>
+
+      {/* Information Modal */}
+      {showInfoModal && (
+        <div
+          className="modal-backdrop"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="info-modal-title"
+          onClick={() => setShowInfoModal(false)}
+        >
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                marginBottom: "12px",
+              }}
+            >
+              <span
+                className="material-symbols-outlined"
+                aria-hidden="true"
+                style={{ color: "var(--primary)" }}
+              >
+                info
+              </span>
+              <h2
+                id="info-modal-title"
+                className="text-headline-md"
+                style={{ margin: 0 }}
+              >
+                User Information
+              </h2>
+            </div>
+            <p
+              className="text-body-md"
+              style={{
+                color: "var(--on-surface-variant)",
+                marginBottom: "16px",
+              }}
+            >
+              You are logged in as a <strong>LinguistPro Learner</strong>.
+            </p>
+            <button
+              className="btn-primary"
+              type="button"
+              style={{ width: "100%" }}
+              onClick={() => setShowInfoModal(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Main Content Area */}
       <main id="main" className="main-wrapper" tabIndex={-1}>
@@ -605,7 +619,11 @@ export const App = () => {
             />
             {studyError && <p role="alert">{studyError}</p>}
             <div
-              style={{ display: "flex", flexDirection: "column", gap: "24px" }}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "24px",
+              }}
             >
               <VocabularyPanel api={vocabularyApi} onChanged={setWords} />
               <div
