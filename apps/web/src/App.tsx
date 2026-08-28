@@ -16,9 +16,23 @@ import { CsvImportPanel } from "./CsvImportPanel";
 import { Flashcards } from "./Flashcards";
 import { TestSession, type Question } from "./TestSession";
 import { AiPanel } from "./AiPanel";
+import { PracticeHub } from "./PracticeHub";
+import { Login } from "./Login";
+import { Register } from "./Register";
 
-type View = "dashboard" | "library" | "folder" | "flashcards" | "quiz";
+export type View =
+  | "dashboard"
+  | "library"
+  | "folder"
+  | "practice"
+  | "flashcards"
+  | "quiz"
+  | "ai_generator"
+  | "login"
+  | "register";
+
 type TestPayload = { testToken: string; questions: Question[] };
+
 const dashboardSchema = z.object({
   data: z.object({
     folderCount: z.number(),
@@ -29,6 +43,7 @@ const dashboardSchema = z.object({
     accuracyPercent: z.number(),
   }),
 });
+
 const importSchema = z.object({
   data: z.object({
     importedCount: z.number(),
@@ -36,6 +51,7 @@ const importSchema = z.object({
     skipped: z.array(z.object({ row: z.number(), message: z.string() })),
   }),
 });
+
 const testSchema = z.object({
   data: z.object({
     testToken: z.string(),
@@ -48,6 +64,7 @@ const testSchema = z.object({
     ),
   }),
 });
+
 const resultSchema = z.object({
   data: z.object({
     correctCount: z.number(),
@@ -55,6 +72,7 @@ const resultSchema = z.object({
     totalCount: z.number(),
   }),
 });
+
 const aiSchema = z.object({ data: z.object({ text: z.string() }) });
 
 export const App = () => {
@@ -67,11 +85,23 @@ export const App = () => {
   const [words, setWords] = useState<VocabularyItem[]>([]);
   const [test, setTest] = useState<TestPayload | null>(null);
   const [studyError, setStudyError] = useState("");
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [cachedDashboard, setCachedDashboard] = useState<DashboardData | null>(null);
+
   const loadDashboard = useCallback(
-    async (): Promise<DashboardData> =>
-      (await client.request("dashboard", dashboardSchema)).data,
-    [client],
+    async (): Promise<DashboardData> => {
+      try {
+        const data = (await client.request("dashboard", dashboardSchema)).data;
+        setCachedDashboard(data);
+        return data;
+      } catch (err) {
+        if (cachedDashboard) return cachedDashboard;
+        throw err;
+      }
+    },
+    [client, cachedDashboard],
   );
+
   const loadWords = useCallback(async () => {
     if (!folder) return [];
     const data = (
@@ -83,13 +113,17 @@ export const App = () => {
     setWords(data);
     return data;
   }, [client, folder]);
+
   useEffect(() => {
     if (folder) void loadWords();
   }, [folder, loadWords]);
+
   const navigate = (next: View) => {
     setStudyError("");
+    setShowProfileMenu(false);
     setView(next);
   };
+
   const startQuiz = async () => {
     if (!folder) return;
     setStudyError("");
@@ -107,6 +141,7 @@ export const App = () => {
       );
     }
   };
+
   const folderApi = {
     list: async () =>
       (await client.request("folders", folderListResponseSchema)).data.folders,
@@ -118,6 +153,7 @@ export const App = () => {
         })
       ).data,
   };
+
   const vocabularyApi = useMemo(
     () =>
       folder
@@ -140,63 +176,273 @@ export const App = () => {
     [client, folder, loadWords],
   );
 
+  // Standalone Auth Views
+  if (view === "login") {
+    return (
+      <Login
+        onLogin={() => navigate("dashboard")}
+        onNavigateRegister={() => navigate("register")}
+      />
+    );
+  }
+  if (view === "register") {
+    return (
+      <Register
+        onRegister={() => navigate("dashboard")}
+        onNavigateLogin={() => navigate("login")}
+      />
+    );
+  }
+
+  // Full Screen Focus Mode for Flashcards and Quiz
+  if (view === "flashcards" && folder) {
+    return (
+      <div className="focus-shell">
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
+        <main id="main" style={{ flex: 1, padding: "24px 16px" }}>
+          <button
+            className="btn-ghost"
+            style={{ marginBottom: "16px", color: "var(--primary)", fontWeight: 600 }}
+            onClick={() => navigate("folder")}
+          >
+            ← Back to {folder.name}
+          </button>
+          <PageHeader eyebrow="Study" title="Flashcards" text={folder.name} />
+          <Flashcards items={words} onClose={() => navigate("folder")} />
+        </main>
+      </div>
+    );
+  }
+
+  if (view === "quiz" && folder && test) {
+    return (
+      <div className="focus-shell">
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
+        <main id="main" style={{ flex: 1, padding: "24px 16px" }}>
+          <button
+            className="btn-ghost"
+            style={{ marginBottom: "16px", color: "var(--primary)", fontWeight: 600 }}
+            onClick={() => navigate("folder")}
+          >
+            ← Back to {folder.name}
+          </button>
+          <PageHeader
+            eyebrow="Quiz"
+            title="Test your knowledge"
+            text={folder.name}
+          />
+          <TestSession
+            questions={test.questions}
+            api={{
+              submit: async (answers) =>
+                (
+                  await client.request("test-sessions", resultSchema, {
+                    method: "POST",
+                    body: JSON.stringify({
+                      testToken: test.testToken,
+                      answers,
+                    }),
+                  })
+                ).data,
+            }}
+            onNavigate={(target) =>
+              navigate(target === "dashboard" ? "dashboard" : "folder")
+            }
+          />
+        </main>
+      </div>
+    );
+  }
+
   return (
-    <div className="app-shell">
+    <div className="app-container">
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <header className="app-header">
-        <div className="header-inner">
-          <button
-            className="brand"
-            type="button"
-            onClick={() => navigate("dashboard")}
-            aria-label="English Learning home"
-          >
-            <span className="brand-mark" aria-hidden="true">
-              Aa
+
+      {/* Side Navigation Bar (Desktop) */}
+      <aside className="side-navbar">
+        <button
+          className="side-brand"
+          type="button"
+          onClick={() => navigate("dashboard")}
+          aria-label="English Learning home"
+        >
+          <span className="material-symbols-outlined brand-icon" aria-hidden="true">
+            language
+          </span>
+          <div style={{ textAlign: "left" }}>
+            <span className="brand-title" style={{ display: "block" }}>
+              LinguistPro
             </span>
-            <span>
-              <strong>English Learning</strong>
-              <small>Learn with clarity</small>
-            </span>
-          </button>
-          <nav aria-label="Primary navigation">
-            <button
-              className={view === "dashboard" ? "nav-link active" : "nav-link"}
-              onClick={() => navigate("dashboard")}
-            >
+            <span className="brand-subtitle">English Mastery</span>
+          </div>
+        </button>
+
+        <button
+          className="side-cta-btn"
+          type="button"
+          onClick={() => (folder ? navigate("flashcards") : navigate("library"))}
+        >
+          <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "20px" }}>
+            play_arrow
+          </span>
+          Start Lesson
+        </button>
+
+        <nav aria-label="Primary navigation" className="side-nav-links">
+          <li className={`side-nav-item ${view === "dashboard" ? "active" : ""}`}>
+            <button type="button" onClick={() => navigate("dashboard")}>
+              <span className="material-symbols-outlined" aria-hidden="true">dashboard</span>
               Dashboard
             </button>
-            <button
-              className={
-                view === "library" || view === "folder"
-                  ? "nav-link active"
-                  : "nav-link"
-              }
-              onClick={() => navigate("library")}
-            >
+          </li>
+          <li
+            className={`side-nav-item ${
+              view === "library" || view === "folder" ? "active" : ""
+            }`}
+          >
+            <button type="button" onClick={() => navigate("library")}>
+              <span className="material-symbols-outlined" aria-hidden="true">menu_book</span>
               Library
             </button>
+          </li>
+          <li className={`side-nav-item ${view === "practice" || view === "flashcards" ? "active" : ""}`}>
             <button
-              className={
-                view === "flashcards" || view === "quiz"
-                  ? "nav-link active"
-                  : "nav-link"
-              }
-              onClick={() =>
-                folder ? navigate("flashcards") : navigate("library")
-              }
+              type="button"
+              onClick={() => (folder ? navigate("flashcards") : navigate("library"))}
             >
+              <span className="material-symbols-outlined" aria-hidden="true">fitness_center</span>
               Study
             </button>
-          </nav>
-          <button className="header-cta" onClick={() => navigate("library")}>
-            + Add vocabulary
+          </li>
+          <li className={`side-nav-item ${view === "ai_generator" ? "active" : ""}`}>
+            <button type="button" onClick={() => navigate("ai_generator")}>
+              <span className="material-symbols-outlined" aria-hidden="true">auto_stories</span>
+              AI Stories
+            </button>
+          </li>
+        </nav>
+
+        <div className="side-nav-footer">
+          <button
+            type="button"
+            className="btn-ghost"
+            style={{ width: "100%", justifyContent: "flex-start", gap: "12px", fontSize: "14px" }}
+            onClick={() => navigate("login")}
+          >
+            <span className="material-symbols-outlined" aria-hidden="true">login</span>
+            Login Screen
+          </button>
+          <button
+            type="button"
+            className="btn-ghost"
+            style={{ width: "100%", justifyContent: "flex-start", gap: "12px", fontSize: "14px" }}
+            onClick={() => navigate("register")}
+          >
+            <span className="material-symbols-outlined" aria-hidden="true">person_add</span>
+            Register Screen
           </button>
         </div>
+      </aside>
+
+      {/* Top App Bar */}
+      <header className="top-app-bar">
+        <div className="top-bar-search">
+          <span className="material-symbols-outlined" aria-hidden="true">search</span>
+          <input type="search" placeholder="Search dictionary..." aria-label="Search dictionary" />
+        </div>
+
+        <div className="top-bar-actions">
+          <button
+            className="btn-ghost"
+            type="button"
+            aria-label="Notifications"
+            style={{ width: "36px", height: "36px", borderRadius: "50%", padding: 0 }}
+          >
+            <span className="material-symbols-outlined" aria-hidden="true">notifications</span>
+          </button>
+
+          <button
+            className="btn-primary"
+            type="button"
+            onClick={() => navigate("library")}
+            style={{ padding: "8px 14px", fontSize: "13px" }}
+          >
+            + Add vocabulary
+          </button>
+
+          <div style={{ position: "relative" }}>
+            <button
+              className="user-profile-pill"
+              type="button"
+              onClick={() => setShowProfileMenu(!showProfileMenu)}
+              aria-label="User profile"
+            >
+              <span
+                className="material-symbols-outlined"
+                aria-hidden="true"
+                style={{ fontSize: "28px", color: "var(--primary)" }}
+              >
+                account_circle
+              </span>
+              <span className="user-name">Profile</span>
+              <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px", color: "var(--outline)" }}>
+                expand_more
+              </span>
+            </button>
+
+            {showProfileMenu && (
+              <div
+                className="card"
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  top: "44px",
+                  width: "180px",
+                  padding: "8px",
+                  boxShadow: "var(--shadow-level-2)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "4px",
+                  zIndex: 100,
+                  backgroundColor: "var(--surface-white)",
+                }}
+              >
+                <button
+                  type="button"
+                  className="btn-ghost"
+                  style={{ width: "100%", justifyContent: "flex-start", fontSize: "13px", padding: "8px 12px" }}
+                  onClick={() => navigate("login")}
+                >
+                  <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+                    login
+                  </span>
+                  Log In
+                </button>
+                <button
+                  type="button"
+                  className="btn-ghost"
+                  style={{ width: "100%", justifyContent: "flex-start", fontSize: "13px", padding: "8px 12px" }}
+                  onClick={() => navigate("register")}
+                >
+                  <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+                    person_add
+                  </span>
+                  Register
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
       </header>
-      <main id="main" tabIndex={-1}>
+
+      {/* Main Content Area */}
+      <main id="main" className="main-wrapper" tabIndex={-1}>
         {view === "dashboard" && (
           <>
             <PageHeader
@@ -204,7 +450,7 @@ export const App = () => {
               title="Welcome back"
               text="Keep your vocabulary growing, one focused session at a time."
               action={
-                <button onClick={() => navigate("library")}>
+                <button className="btn-primary" type="button" onClick={() => navigate("library")}>
                   Start learning
                 </button>
               }
@@ -212,6 +458,7 @@ export const App = () => {
             <Dashboard load={loadDashboard} onAction={navigate} />
           </>
         )}
+
         {view === "library" && (
           <>
             <PageHeader
@@ -228,9 +475,14 @@ export const App = () => {
             />
           </>
         )}
+
         {view === "folder" && folder && vocabularyApi && (
           <>
-            <button className="back-link" onClick={() => navigate("library")}>
+            <button
+              className="btn-ghost"
+              style={{ marginBottom: "16px", color: "var(--primary)", fontWeight: 600 }}
+              onClick={() => navigate("library")}
+            >
               ← Back to library
             </button>
             <PageHeader
@@ -238,23 +490,30 @@ export const App = () => {
               title={folder.name}
               text={`${words.length} ${words.length === 1 ? "word" : "words"} in this topic`}
               action={
-                <div className="action-row">
-                  <button onClick={() => navigate("flashcards")}>
+                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                  <button className="btn-primary" type="button" onClick={() => navigate("flashcards")}>
+                    <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+                      style
+                    </span>
                     Flashcards
                   </button>
                   <button
-                    className="secondary"
+                    className="btn-secondary"
+                    type="button"
                     onClick={() => void startQuiz()}
                   >
+                    <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+                      quiz
+                    </span>
                     Quiz
                   </button>
                 </div>
               }
             />
             {studyError && <p role="alert">{studyError}</p>}
-            <div className="folder-layout">
+            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
               <VocabularyPanel api={vocabularyApi} onChanged={setWords} />
-              <aside>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
                 <CsvImportPanel
                   api={{
                     import: async (file) => {
@@ -290,57 +549,46 @@ export const App = () => {
                     ).data.text
                   }
                 />
-              </aside>
+              </div>
             </div>
           </>
         )}
-        {view === "flashcards" && folder && (
-          <>
-            <button className="back-link" onClick={() => navigate("folder")}>
-              ← Back to {folder.name}
-            </button>
-            <PageHeader eyebrow="Study" title="Flashcards" text={folder.name} />
-            <Flashcards items={words} />
-          </>
+
+        {view === "practice" && (
+          <PracticeHub
+            wordCount={words.length}
+            onStartFlashcards={() => (folder ? navigate("flashcards") : navigate("library"))}
+            onStartQuiz={() => (folder ? void startQuiz() : navigate("library"))}
+            onStartAi={() => navigate("ai_generator")}
+          />
         )}
-        {view === "quiz" && folder && test && (
+
+        {view === "ai_generator" && (
           <>
-            <button className="back-link" onClick={() => navigate("folder")}>
-              ← Back to {folder.name}
-            </button>
             <PageHeader
-              eyebrow="Quiz"
-              title="Test your knowledge"
-              text={folder.name}
+              eyebrow="AI Practice"
+              title="AI Story Generator"
+              text="Generate custom stories and reinforce vocabulary contextually."
             />
-            <TestSession
-              questions={test.questions}
-              api={{
-                submit: async (answers) =>
-                  (
-                    await client.request("test-sessions", resultSchema, {
-                      method: "POST",
-                      body: JSON.stringify({
-                        testToken: test.testToken,
-                        answers,
-                      }),
-                    })
-                  ).data,
-              }}
-              onNavigate={(target) =>
-                navigate(target === "dashboard" ? "dashboard" : "folder")
+            <AiPanel
+              words={words}
+              generate={async (ids) =>
+                (
+                  await client.request("ai/text", aiSchema, {
+                    method: "POST",
+                    body: JSON.stringify({ vocabularyIds: ids }),
+                  })
+                ).data.text
               }
+              onFinish={() => navigate("practice")}
             />
           </>
         )}
       </main>
-      <footer className="app-footer">
-        <strong>English Learning</strong>
-        <span>Simple tools for steady progress.</span>
-      </footer>
     </div>
   );
 };
+
 const PageHeader = ({
   eyebrow,
   title,
@@ -352,11 +600,36 @@ const PageHeader = ({
   text: string;
   action?: React.ReactNode;
 }) => (
-  <section className="page-header">
+  <section
+    style={{
+      display: "flex",
+      alignItems: "flex-end",
+      justifyContent: "space-between",
+      flexWrap: "wrap",
+      gap: "16px",
+      marginBottom: "28px",
+    }}
+  >
     <div>
-      <span className="eyebrow">{eyebrow}</span>
-      <h1>{title}</h1>
-      <p>{text}</p>
+      <span
+        style={{
+          display: "block",
+          fontSize: "12px",
+          fontWeight: 700,
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+          color: "var(--primary)",
+          marginBottom: "4px",
+        }}
+      >
+        {eyebrow}
+      </span>
+      <h1 className="text-headline-lg" style={{ color: "var(--on-surface)", margin: "0 0 6px 0" }}>
+        {title}
+      </h1>
+      <p className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: 0 }}>
+        {text}
+      </p>
     </div>
     {action}
   </section>

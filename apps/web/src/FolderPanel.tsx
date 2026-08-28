@@ -5,6 +5,7 @@ export type FolderApi = {
   list: () => Promise<FolderSummary[]>;
   create: (name: string) => Promise<FolderSummary>;
 };
+
 export const FolderPanel = ({
   api,
   onOpen,
@@ -16,6 +17,7 @@ export const FolderPanel = ({
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+
   const load = async () => {
     setError("");
     try {
@@ -24,9 +26,11 @@ export const FolderPanel = ({
       setError("Unable to load folders. Try again.");
     }
   };
+
   useEffect(() => {
     void load();
   }, []);
+
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
     const trimmed = name.trim();
@@ -48,21 +52,54 @@ export const FolderPanel = ({
       setBusy(false);
     }
   };
+
   return (
     <section
-      className="folder-panel"
+      className="card"
       id="folders"
       aria-labelledby="folders-title"
+      style={{ display: "flex", flexDirection: "column", gap: "24px" }}
     >
-      <div className="folder-panel-header">
-        <div>
-          <span className="folder-icon" aria-hidden="true" />
+      {/* Header & Creation Form */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "16px",
+          paddingBottom: "20px",
+          borderBottom: "1px solid var(--surface-variant)",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <div
+            style={{
+              width: "44px",
+              height: "44px",
+              borderRadius: "12px",
+              backgroundColor: "rgba(0, 88, 190, 0.1)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "var(--primary)",
+            }}
+          >
+            <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "24px" }}>
+              folder
+            </span>
+          </div>
           <div>
-            <h2 id="folders-title">Folders</h2>
-            <p>Group words by topic and keep your learning organized.</p>
+            <h2 id="folders-title" className="text-headline-md" style={{ margin: 0 }}>
+              Folders
+            </h2>
+            <p className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: "2px 0 0 0" }}>
+              Group words by topic and keep your learning organized.
+            </p>
           </div>
         </div>
-        <form className="folder-form" onSubmit={submit}>
+
+        <form onSubmit={submit} style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
           <label className="sr-only" htmlFor="folder-name">
             Folder name
           </label>
@@ -71,54 +108,88 @@ export const FolderPanel = ({
             value={name}
             onChange={(e) => setName(e.target.value)}
             maxLength={50}
-            placeholder="e.g. Travel English"
+            placeholder="e.g. Business English"
             disabled={busy}
+            style={{ minWidth: "220px", height: "42px" }}
           />
-          <button type="submit" disabled={busy}>
-            <span aria-hidden="true">+</span>
+          <button className="btn-primary" type="submit" disabled={busy} style={{ height: "42px" }}>
+            <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+              add
+            </span>
             {busy ? "Saving…" : "Create folder"}
           </button>
         </form>
       </div>
+
       {error && (
         <p role="alert">
           {error}{" "}
-          <button type="button" onClick={() => void load()}>
+          <button className="btn-secondary" type="button" onClick={() => void load()} style={{ marginLeft: "8px", padding: "4px 8px" }}>
             Retry
           </button>
         </p>
       )}
+
       {folders === null && !error && (
         <p className="panel-state" role="status">
           Loading folders…
         </p>
       )}
+
       {folders?.length === 0 && (
-        <div className="empty-state" role="status">
-          <span aria-hidden="true">Aa</span>
-          <h3>No folders yet.</h3>
-          <p>Create your first topic to start collecting vocabulary.</p>
+        <div
+          className="empty-state"
+          role="status"
+          style={{
+            textAlign: "center",
+            padding: "48px 24px",
+            backgroundColor: "var(--surface-container-low)",
+            borderRadius: "16px",
+          }}
+        >
+          <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "48px", color: "var(--primary)", marginBottom: "12px" }}>
+            create_new_folder
+          </span>
+          <h3 className="text-headline-md" style={{ margin: "0 0 8px 0" }}>
+            No folders yet.
+          </h3>
+          <p className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: 0 }}>
+            Create your first topic to start collecting vocabulary.
+          </p>
         </div>
       )}
+
       {folders && folders.length > 0 && (
         <ul className="folder-grid" aria-label="Folder list">
           {folders.map((folder) => (
-            <li key={folder.id}>
-              <span className="folder-card-icon" aria-hidden="true" />
-              <div>
-                <strong>{folder.name}</strong>
-                <span>{folder.vocabularyCount} words</span>
+            <li
+              key={folder.id}
+              className="folder-card"
+            >
+              <div className="folder-card-icon">
+                <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "28px" }}>
+                  topic
+                </span>
               </div>
-              <button
-                className="open-folder"
-                type="button"
-                onClick={() => onOpen?.(folder)}
-              >
-                Open
-              </button>
-              <span className="folder-arrow" aria-hidden="true">
-                →
-              </span>
+              <h3 className="text-headline-md" style={{ fontSize: "20px", margin: "0 0 6px 0", color: "var(--on-surface)" }}>
+                {folder.name}
+              </h3>
+              <p className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: "0 0 16px 0" }}>
+                Curated collection for focused study.
+              </p>
+              <div className="folder-card-footer">
+                <span className="text-label-md" style={{ color: "var(--on-surface-variant)", fontWeight: 600 }}>
+                  {folder.vocabularyCount} words
+                </span>
+                <button
+                  className="open-folder btn-primary"
+                  type="button"
+                  onClick={() => onOpen?.(folder)}
+                  style={{ padding: "6px 14px", fontSize: "13px" }}
+                >
+                  Open
+                </button>
+              </div>
             </li>
           ))}
         </ul>
