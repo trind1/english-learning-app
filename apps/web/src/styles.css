@@ -60,8 +60,10 @@
   --text-muted: #64748b;
 
   /* Typography */
-  --font-headline: "Be Vietnam Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-headline: "Be Vietnam Pro", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
 
   /* Spacing */
   --spacing-xs: 8px;
@@ -78,7 +80,9 @@
   --btn-primary-shadow: 0 2px 0 0 var(--on-primary-fixed-variant);
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -119,19 +123,34 @@ body {
   direction: ltr;
   font-feature-settings: "liga";
   -webkit-font-smoothing: antialiased;
-  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
   vertical-align: middle;
 }
 
 .material-symbols-outlined.fill,
 .material-symbols-outlined[data-weight="fill"] {
-  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
 }
 
 /* Typography Utility Classes */
-.font-headline { font-family: var(--font-headline); }
-.font-body { font-family: var(--font-body); }
-.font-ipa { font-family: var(--font-body); letter-spacing: 0.05em; }
+.font-headline {
+  font-family: var(--font-headline);
+}
+.font-body {
+  font-family: var(--font-body);
+}
+.font-ipa {
+  font-family: var(--font-body);
+  letter-spacing: 0.05em;
+}
 
 .text-headline-lg {
   font-family: var(--font-headline);
@@ -273,7 +292,9 @@ textarea {
   border-radius: 10px;
   padding: 10px 14px;
   width: 100%;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
   outline: none;
 }
 
@@ -798,7 +819,9 @@ textarea:focus {
   justify-content: center;
   color: var(--primary);
   margin-bottom: var(--spacing-md);
-  transition: background-color 0.2s, color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
 }
 .folder-card:hover .folder-card-icon {
   background-color: var(--primary);
@@ -1148,4 +1171,3 @@ textarea:focus {
     border-radius: 16px;
   }
 }
-

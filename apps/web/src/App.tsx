@@ -86,20 +86,11 @@ export const App = () => {
   const [test, setTest] = useState<TestPayload | null>(null);
   const [studyError, setStudyError] = useState("");
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const [cachedDashboard, setCachedDashboard] = useState<DashboardData | null>(null);
 
   const loadDashboard = useCallback(
-    async (): Promise<DashboardData> => {
-      try {
-        const data = (await client.request("dashboard", dashboardSchema)).data;
-        setCachedDashboard(data);
-        return data;
-      } catch (err) {
-        if (cachedDashboard) return cachedDashboard;
-        throw err;
-      }
-    },
-    [client, cachedDashboard],
+    async (): Promise<DashboardData> =>
+      (await client.request("dashboard", dashboardSchema)).data,
+    [client],
   );
 
   const loadWords = useCallback(async () => {
@@ -204,7 +195,11 @@ export const App = () => {
         <main id="main" style={{ flex: 1, padding: "24px 16px" }}>
           <button
             className="btn-ghost"
-            style={{ marginBottom: "16px", color: "var(--primary)", fontWeight: 600 }}
+            style={{
+              marginBottom: "16px",
+              color: "var(--primary)",
+              fontWeight: 600,
+            }}
             onClick={() => navigate("folder")}
           >
             ← Back to {folder.name}
@@ -225,7 +220,11 @@ export const App = () => {
         <main id="main" style={{ flex: 1, padding: "24px 16px" }}>
           <button
             className="btn-ghost"
-            style={{ marginBottom: "16px", color: "var(--primary)", fontWeight: 600 }}
+            style={{
+              marginBottom: "16px",
+              color: "var(--primary)",
+              fontWeight: 600,
+            }}
             onClick={() => navigate("folder")}
           >
             ← Back to {folder.name}
@@ -272,7 +271,10 @@ export const App = () => {
           onClick={() => navigate("dashboard")}
           aria-label="English Learning home"
         >
-          <span className="material-symbols-outlined brand-icon" aria-hidden="true">
+          <span
+            className="material-symbols-outlined brand-icon"
+            aria-hidden="true"
+          >
             language
           </span>
           <div style={{ textAlign: "left" }}>
@@ -286,18 +288,28 @@ export const App = () => {
         <button
           className="side-cta-btn"
           type="button"
-          onClick={() => (folder ? navigate("flashcards") : navigate("library"))}
+          onClick={() =>
+            folder ? navigate("flashcards") : navigate("library")
+          }
         >
-          <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "20px" }}>
+          <span
+            className="material-symbols-outlined"
+            aria-hidden="true"
+            style={{ fontSize: "20px" }}
+          >
             play_arrow
           </span>
           Start Lesson
         </button>
 
         <nav aria-label="Primary navigation" className="side-nav-links">
-          <li className={`side-nav-item ${view === "dashboard" ? "active" : ""}`}>
+          <li
+            className={`side-nav-item ${view === "dashboard" ? "active" : ""}`}
+          >
             <button type="button" onClick={() => navigate("dashboard")}>
-              <span className="material-symbols-outlined" aria-hidden="true">dashboard</span>
+              <span className="material-symbols-outlined" aria-hidden="true">
+                dashboard
+              </span>
               Dashboard
             </button>
           </li>
@@ -307,22 +319,34 @@ export const App = () => {
             }`}
           >
             <button type="button" onClick={() => navigate("library")}>
-              <span className="material-symbols-outlined" aria-hidden="true">menu_book</span>
+              <span className="material-symbols-outlined" aria-hidden="true">
+                menu_book
+              </span>
               Library
             </button>
           </li>
-          <li className={`side-nav-item ${view === "practice" || view === "flashcards" ? "active" : ""}`}>
+          <li
+            className={`side-nav-item ${view === "practice" || view === "flashcards" ? "active" : ""}`}
+          >
             <button
               type="button"
-              onClick={() => (folder ? navigate("flashcards") : navigate("library"))}
+              onClick={() =>
+                folder ? navigate("flashcards") : navigate("library")
+              }
             >
-              <span className="material-symbols-outlined" aria-hidden="true">fitness_center</span>
+              <span className="material-symbols-outlined" aria-hidden="true">
+                fitness_center
+              </span>
               Study
             </button>
           </li>
-          <li className={`side-nav-item ${view === "ai_generator" ? "active" : ""}`}>
+          <li
+            className={`side-nav-item ${view === "ai_generator" ? "active" : ""}`}
+          >
             <button type="button" onClick={() => navigate("ai_generator")}>
-              <span className="material-symbols-outlined" aria-hidden="true">auto_stories</span>
+              <span className="material-symbols-outlined" aria-hidden="true">
+                auto_stories
+              </span>
               AI Stories
             </button>
           </li>
@@ -332,19 +356,33 @@ export const App = () => {
           <button
             type="button"
             className="btn-ghost"
-            style={{ width: "100%", justifyContent: "flex-start", gap: "12px", fontSize: "14px" }}
+            style={{
+              width: "100%",
+              justifyContent: "flex-start",
+              gap: "12px",
+              fontSize: "14px",
+            }}
             onClick={() => navigate("login")}
           >
-            <span className="material-symbols-outlined" aria-hidden="true">login</span>
+            <span className="material-symbols-outlined" aria-hidden="true">
+              login
+            </span>
             Login Screen
           </button>
           <button
             type="button"
             className="btn-ghost"
-            style={{ width: "100%", justifyContent: "flex-start", gap: "12px", fontSize: "14px" }}
+            style={{
+              width: "100%",
+              justifyContent: "flex-start",
+              gap: "12px",
+              fontSize: "14px",
+            }}
             onClick={() => navigate("register")}
           >
-            <span className="material-symbols-outlined" aria-hidden="true">person_add</span>
+            <span className="material-symbols-outlined" aria-hidden="true">
+              person_add
+            </span>
             Register Screen
           </button>
         </div>
@@ -353,8 +391,14 @@ export const App = () => {
       {/* Top App Bar */}
       <header className="top-app-bar">
         <div className="top-bar-search">
-          <span className="material-symbols-outlined" aria-hidden="true">search</span>
-          <input type="search" placeholder="Search dictionary..." aria-label="Search dictionary" />
+          <span className="material-symbols-outlined" aria-hidden="true">
+            search
+          </span>
+          <input
+            type="search"
+            placeholder="Search dictionary..."
+            aria-label="Search dictionary"
+          />
         </div>
 
         <div className="top-bar-actions">
@@ -362,9 +406,16 @@ export const App = () => {
             className="btn-ghost"
             type="button"
             aria-label="Notifications"
-            style={{ width: "36px", height: "36px", borderRadius: "50%", padding: 0 }}
+            style={{
+              width: "36px",
+              height: "36px",
+              borderRadius: "50%",
+              padding: 0,
+            }}
           >
-            <span className="material-symbols-outlined" aria-hidden="true">notifications</span>
+            <span className="material-symbols-outlined" aria-hidden="true">
+              notifications
+            </span>
           </button>
 
           <button
@@ -391,7 +442,11 @@ export const App = () => {
                 account_circle
               </span>
               <span className="user-name">Profile</span>
-              <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px", color: "var(--outline)" }}>
+              <span
+                className="material-symbols-outlined"
+                aria-hidden="true"
+                style={{ fontSize: "18px", color: "var(--outline)" }}
+              >
                 expand_more
               </span>
             </button>
@@ -416,10 +471,19 @@ export const App = () => {
                 <button
                   type="button"
                   className="btn-ghost"
-                  style={{ width: "100%", justifyContent: "flex-start", fontSize: "13px", padding: "8px 12px" }}
+                  style={{
+                    width: "100%",
+                    justifyContent: "flex-start",
+                    fontSize: "13px",
+                    padding: "8px 12px",
+                  }}
                   onClick={() => navigate("login")}
                 >
-                  <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+                  <span
+                    className="material-symbols-outlined"
+                    aria-hidden="true"
+                    style={{ fontSize: "18px" }}
+                  >
                     login
                   </span>
                   Log In
@@ -427,10 +491,19 @@ export const App = () => {
                 <button
                   type="button"
                   className="btn-ghost"
-                  style={{ width: "100%", justifyContent: "flex-start", fontSize: "13px", padding: "8px 12px" }}
+                  style={{
+                    width: "100%",
+                    justifyContent: "flex-start",
+                    fontSize: "13px",
+                    padding: "8px 12px",
+                  }}
                   onClick={() => navigate("register")}
                 >
-                  <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+                  <span
+                    className="material-symbols-outlined"
+                    aria-hidden="true"
+                    style={{ fontSize: "18px" }}
+                  >
                     person_add
                   </span>
                   Register
@@ -450,7 +523,11 @@ export const App = () => {
               title="Welcome back"
               text="Keep your vocabulary growing, one focused session at a time."
               action={
-                <button className="btn-primary" type="button" onClick={() => navigate("library")}>
+                <button
+                  className="btn-primary"
+                  type="button"
+                  onClick={() => navigate("library")}
+                >
                   Start learning
                 </button>
               }
@@ -480,7 +557,11 @@ export const App = () => {
           <>
             <button
               className="btn-ghost"
-              style={{ marginBottom: "16px", color: "var(--primary)", fontWeight: 600 }}
+              style={{
+                marginBottom: "16px",
+                color: "var(--primary)",
+                fontWeight: 600,
+              }}
               onClick={() => navigate("library")}
             >
               ← Back to library
@@ -491,8 +572,16 @@ export const App = () => {
               text={`${words.length} ${words.length === 1 ? "word" : "words"} in this topic`}
               action={
                 <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                  <button className="btn-primary" type="button" onClick={() => navigate("flashcards")}>
-                    <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+                  <button
+                    className="btn-primary"
+                    type="button"
+                    onClick={() => navigate("flashcards")}
+                  >
+                    <span
+                      className="material-symbols-outlined"
+                      aria-hidden="true"
+                      style={{ fontSize: "18px" }}
+                    >
                       style
                     </span>
                     Flashcards
@@ -502,7 +591,11 @@ export const App = () => {
                     type="button"
                     onClick={() => void startQuiz()}
                   >
-                    <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+                    <span
+                      className="material-symbols-outlined"
+                      aria-hidden="true"
+                      style={{ fontSize: "18px" }}
+                    >
                       quiz
                     </span>
                     Quiz
@@ -511,9 +604,17 @@ export const App = () => {
               }
             />
             {studyError && <p role="alert">{studyError}</p>}
-            <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "24px" }}
+            >
               <VocabularyPanel api={vocabularyApi} onChanged={setWords} />
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                  gap: "24px",
+                }}
+              >
                 <CsvImportPanel
                   api={{
                     import: async (file) => {
@@ -557,8 +658,12 @@ export const App = () => {
         {view === "practice" && (
           <PracticeHub
             wordCount={words.length}
-            onStartFlashcards={() => (folder ? navigate("flashcards") : navigate("library"))}
-            onStartQuiz={() => (folder ? void startQuiz() : navigate("library"))}
+            onStartFlashcards={() =>
+              folder ? navigate("flashcards") : navigate("library")
+            }
+            onStartQuiz={() =>
+              folder ? void startQuiz() : navigate("library")
+            }
             onStartAi={() => navigate("ai_generator")}
           />
         )}
@@ -624,10 +729,16 @@ const PageHeader = ({
       >
         {eyebrow}
       </span>
-      <h1 className="text-headline-lg" style={{ color: "var(--on-surface)", margin: "0 0 6px 0" }}>
+      <h1
+        className="text-headline-lg"
+        style={{ color: "var(--on-surface)", margin: "0 0 6px 0" }}
+      >
         {title}
       </h1>
-      <p className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: 0 }}>
+      <p
+        className="text-body-md"
+        style={{ color: "var(--on-surface-variant)", margin: 0 }}
+      >
         {text}
       </p>
     </div>

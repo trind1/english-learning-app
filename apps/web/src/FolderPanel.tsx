@@ -85,21 +85,43 @@ export const FolderPanel = ({
               color: "var(--primary)",
             }}
           >
-            <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "24px" }}>
+            <span
+              className="material-symbols-outlined"
+              aria-hidden="true"
+              style={{ fontSize: "24px" }}
+            >
               folder
             </span>
           </div>
           <div>
-            <h2 id="folders-title" className="text-headline-md" style={{ margin: 0 }}>
+            <h2
+              id="folders-title"
+              className="text-headline-md"
+              style={{ margin: 0 }}
+            >
               Folders
             </h2>
-            <p className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: "2px 0 0 0" }}>
+            <p
+              className="text-body-md"
+              style={{
+                color: "var(--on-surface-variant)",
+                margin: "2px 0 0 0",
+              }}
+            >
               Group words by topic and keep your learning organized.
             </p>
           </div>
         </div>
 
-        <form onSubmit={submit} style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
+        <form
+          onSubmit={submit}
+          style={{
+            display: "flex",
+            gap: "8px",
+            alignItems: "center",
+            flexWrap: "wrap",
+          }}
+        >
           <label className="sr-only" htmlFor="folder-name">
             Folder name
           </label>
@@ -112,8 +134,17 @@ export const FolderPanel = ({
             disabled={busy}
             style={{ minWidth: "220px", height: "42px" }}
           />
-          <button className="btn-primary" type="submit" disabled={busy} style={{ height: "42px" }}>
-            <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+          <button
+            className="btn-primary"
+            type="submit"
+            disabled={busy}
+            style={{ height: "42px" }}
+          >
+            <span
+              className="material-symbols-outlined"
+              aria-hidden="true"
+              style={{ fontSize: "18px" }}
+            >
               add
             </span>
             {busy ? "Saving…" : "Create folder"}
@@ -124,7 +155,12 @@ export const FolderPanel = ({
       {error && (
         <p role="alert">
           {error}{" "}
-          <button className="btn-secondary" type="button" onClick={() => void load()} style={{ marginLeft: "8px", padding: "4px 8px" }}>
+          <button
+            className="btn-secondary"
+            type="button"
+            onClick={() => void load()}
+            style={{ marginLeft: "8px", padding: "4px 8px" }}
+          >
             Retry
           </button>
         </p>
@@ -147,13 +183,24 @@ export const FolderPanel = ({
             borderRadius: "16px",
           }}
         >
-          <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "48px", color: "var(--primary)", marginBottom: "12px" }}>
+          <span
+            className="material-symbols-outlined"
+            aria-hidden="true"
+            style={{
+              fontSize: "48px",
+              color: "var(--primary)",
+              marginBottom: "12px",
+            }}
+          >
             create_new_folder
           </span>
           <h3 className="text-headline-md" style={{ margin: "0 0 8px 0" }}>
             No folders yet.
           </h3>
-          <p className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: 0 }}>
+          <p
+            className="text-body-md"
+            style={{ color: "var(--on-surface-variant)", margin: 0 }}
+          >
             Create your first topic to start collecting vocabulary.
           </p>
         </div>
@@ -162,23 +209,43 @@ export const FolderPanel = ({
       {folders && folders.length > 0 && (
         <ul className="folder-grid" aria-label="Folder list">
           {folders.map((folder) => (
-            <li
-              key={folder.id}
-              className="folder-card"
-            >
+            <li key={folder.id} className="folder-card">
               <div className="folder-card-icon">
-                <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "28px" }}>
+                <span
+                  className="material-symbols-outlined"
+                  aria-hidden="true"
+                  style={{ fontSize: "28px" }}
+                >
                   topic
                 </span>
               </div>
-              <h3 className="text-headline-md" style={{ fontSize: "20px", margin: "0 0 6px 0", color: "var(--on-surface)" }}>
+              <h3
+                className="text-headline-md"
+                style={{
+                  fontSize: "20px",
+                  margin: "0 0 6px 0",
+                  color: "var(--on-surface)",
+                }}
+              >
                 {folder.name}
               </h3>
-              <p className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: "0 0 16px 0" }}>
+              <p
+                className="text-body-md"
+                style={{
+                  color: "var(--on-surface-variant)",
+                  margin: "0 0 16px 0",
+                }}
+              >
                 Curated collection for focused study.
               </p>
               <div className="folder-card-footer">
-                <span className="text-label-md" style={{ color: "var(--on-surface-variant)", fontWeight: 600 }}>
+                <span
+                  className="text-label-md"
+                  style={{
+                    color: "var(--on-surface-variant)",
+                    fontWeight: 600,
+                  }}
+                >
                   {folder.vocabularyCount} words
                 </span>
                 <button

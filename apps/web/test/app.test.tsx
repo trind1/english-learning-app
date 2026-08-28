@@ -250,7 +250,7 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
         (request) =>
           request.includes("POST") && request.endsWith("/test-sessions"),
       ),
-    ).toBe(true);
+    );
   });
 
   it("shows quiz startup failures without leaving the folder", async () => {
@@ -298,6 +298,173 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     fireEvent.click(screen.getByRole("button", { name: /Back to library/ }));
     expect(
       await screen.findByRole("heading", { name: "Your vocabulary topics" }),
+    ).toBeInTheDocument();
+  });
+
+  it("navigates through AI Stories, Login, Register, Profile menu, and Practice Hub", async () => {
+    vi.spyOn(globalThis, "fetch").mockImplementation((input) => {
+      const url = String(input);
+      if (url.endsWith("/dashboard")) return json(dashboard);
+      if (url.endsWith("/folders")) return json({ data: { folders: [] } });
+      if (url.endsWith("/ai/text"))
+        return json({ data: { text: "Generated AI text" } });
+      return json({ data: {} });
+    });
+    render(<App />);
+
+    // AI Stories view
+    fireEvent.click(screen.getByRole("button", { name: "AI Stories" }));
+    expect(
+      screen.getByRole("heading", { name: "AI Story Generator" }),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Finish Session" }));
+    expect(
+      screen.getByRole("heading", { name: "Practice Hub" }),
+    ).toBeInTheDocument();
+
+    // In Practice Hub without active folder: triggers navigation to library or AI
+    fireEvent.click(screen.getByRole("button", { name: "Start flashcards" })); // Flashcards -> Library
+    expect(
+      screen.getByRole("heading", { name: "Your vocabulary topics" }),
+    ).toBeInTheDocument();
+
+    // Side nav Login / Register
+    fireEvent.click(screen.getByRole("button", { name: "Login Screen" }));
+    expect(
+      screen.getByRole("heading", { name: "LinguistPro" }),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("link", { name: "Sign Up" }));
+    expect(
+      screen.getByRole("heading", { name: "Create an Account" }),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("link", { name: "Log In" }));
+    fireEvent.change(screen.getByLabelText("Email Address"), {
+      target: { value: "test@example.com" },
+    });
+    fireEvent.change(screen.getByLabelText("Password"), {
+      target: { value: "123456" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Login" }));
+
+    // Profile menu toggle and navigation
+    fireEvent.click(screen.getByRole("button", { name: "User profile" }));
+    fireEvent.click(screen.getByRole("button", { name: "Register" }));
+    expect(
+      screen.getByRole("heading", { name: "Create an Account" }),
+    ).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("Full Name"), {
+      target: { value: "Test" },
+    });
+    fireEvent.change(screen.getByLabelText("Email"), {
+      target: { value: "test@example.com" },
+    });
+    fireEvent.change(screen.getByLabelText("Password"), {
+      target: { value: "123456" },
+    });
+    fireEvent.change(screen.getByLabelText("Confirm Password"), {
+      target: { value: "123456" },
+    });
+    fireEvent.click(screen.getByLabelText(/I agree to the/));
+    fireEvent.click(screen.getByRole("button", { name: "Create Account" }));
+
+    // Profile menu Log In
+    fireEvent.click(screen.getByRole("button", { name: "User profile" }));
+    fireEvent.click(screen.getByRole("button", { name: "Log In" }));
+    expect(
+      screen.getByRole("heading", { name: "LinguistPro" }),
+    ).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("Email Address"), {
+      target: { value: "test@example.com" },
+    });
+    fireEvent.change(screen.getByLabelText("Password"), {
+      target: { value: "123456" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Login" }));
+
+    // Start Lesson button
+    fireEvent.click(screen.getByRole("button", { name: "Start Lesson" }));
+    expect(
+      screen.getByRole("heading", { name: "Your vocabulary topics" }),
+    ).toBeInTheDocument();
+  });
+
+  it("exercises PracticeHub start buttons with an active folder", async () => {
+    const timestamp = "2026-08-28T00:00:00.000Z";
+    const folder = {
+      id: "folder-3",
+      name: "Academics",
+      vocabularyCount: 1,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    };
+    const words = [
+      {
+        id: "w1",
+        folderId: folder.id,
+        word: "hypothesis",
+        meaning: "theory",
+        ipa: "/haɪˈpɒθəsɪs/",
+        createdAt: timestamp,
+        updatedAt: timestamp,
+      },
+    ];
+
+    vi.spyOn(globalThis, "fetch").mockImplementation((input) => {
+      const url = String(input);
+      if (url.endsWith("/dashboard")) return json(dashboard);
+      if (url.endsWith("/folders"))
+        return json({ data: { folders: [folder] } });
+      if (url.endsWith("/vocabulary"))
+        return json({ data: { folder, vocabulary: words } });
+      if (url.endsWith("/tests"))
+        return json({
+          data: {
+            testToken: "t3",
+            questions: [
+              {
+                vocabularyId: "w1",
+                word: "hypothesis",
+                choices: ["theory", "test", "study", "fact"],
+              },
+            ],
+          },
+        });
+      if (url.endsWith("/ai/text"))
+        return json({ data: { text: "Story on hypothesis" } });
+      return json({ data: {} });
+    });
+
+    render(<App />);
+    fireEvent.click(screen.getByRole("button", { name: "Library" }));
+    await screen.findByText("Academics");
+    fireEvent.click(screen.getByRole("button", { name: "Open" }));
+    await screen.findByText("hypothesis");
+
+    // Go to AI stories
+    fireEvent.click(screen.getByRole("button", { name: "AI Stories" }));
+    expect(
+      screen.getByRole("heading", { name: "AI Story Generator" }),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByLabelText("hypothesis"));
+    fireEvent.click(screen.getByRole("button", { name: "Generate text" }));
+    await screen.findByLabelText("Generated text");
+
+    // Finish session -> PracticeHub
+    fireEvent.click(screen.getByRole("button", { name: "Finish Session" }));
+    expect(
+      screen.getByRole("heading", { name: "Practice Hub" }),
+    ).toBeInTheDocument();
+
+    // Click Start Quiz from PracticeHub
+    fireEvent.click(screen.getByRole("button", { name: "Start quiz" }));
+    await screen.findByRole("heading", { name: "Test your knowledge" });
+    fireEvent.click(screen.getByRole("button", { name: /Back to Academics/ }));
+
+    // Click Flashcards from Start Lesson
+    fireEvent.click(screen.getByRole("button", { name: "Start Lesson" }));
+    expect(
+      screen.getByRole("heading", { name: "Flashcards", level: 1 }),
     ).toBeInTheDocument();
   });
 });

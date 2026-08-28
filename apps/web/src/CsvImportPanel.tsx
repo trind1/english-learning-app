@@ -44,21 +44,43 @@ export const CsvImportPanel = ({ api }: { api: CsvImportApi }) => {
         borderRadius: "16px",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
-        <span className="material-symbols-outlined" aria-hidden="true" style={{ color: "var(--primary)" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          marginBottom: "16px",
+        }}
+      >
+        <span
+          className="material-symbols-outlined"
+          aria-hidden="true"
+          style={{ color: "var(--primary)" }}
+        >
           upload_file
         </span>
-        <h2 id="import-title" className="text-headline-md" style={{ fontSize: "18px", margin: 0 }}>
+        <h2
+          id="import-title"
+          className="text-headline-md"
+          style={{ fontSize: "18px", margin: 0 }}
+        >
           Import CSV
         </h2>
       </div>
 
-      <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+      <form
+        onSubmit={submit}
+        style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+      >
         <div>
           <label
             htmlFor="csv"
             className="text-label-md"
-            style={{ color: "var(--on-surface-variant)", display: "block", marginBottom: "6px" }}
+            style={{
+              color: "var(--on-surface-variant)",
+              display: "block",
+              marginBottom: "6px",
+            }}
           >
             CSV file
           </label>
@@ -78,7 +100,11 @@ export const CsvImportPanel = ({ api }: { api: CsvImportApi }) => {
           disabled={busy}
           style={{ width: "100%", padding: "10px 16px" }}
         >
-          <span className="material-symbols-outlined" aria-hidden="true" style={{ fontSize: "18px" }}>
+          <span
+            className="material-symbols-outlined"
+            aria-hidden="true"
+            style={{ fontSize: "18px" }}
+          >
             upload
           </span>
           {busy ? "Importing…" : "Import"}
@@ -110,9 +136,23 @@ export const CsvImportPanel = ({ api }: { api: CsvImportApi }) => {
             fontSize: "14px",
           }}
         >
-          <div style={{ display: "flex", gap: "16px", marginBottom: "8px", fontWeight: 600 }}>
-            <span style={{ color: "var(--secondary)" }}>Imported: {report.imported}</span>
-            <span style={{ color: report.skipped > 0 ? "var(--error)" : "var(--text-muted)" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "16px",
+              marginBottom: "8px",
+              fontWeight: 600,
+            }}
+          >
+            <span style={{ color: "var(--secondary)" }}>
+              Imported: {report.imported}
+            </span>
+            <span
+              style={{
+                color:
+                  report.skipped > 0 ? "var(--error)" : "var(--text-muted)",
+              }}
+            >
               Skipped: {report.skipped}
             </span>
           </div>

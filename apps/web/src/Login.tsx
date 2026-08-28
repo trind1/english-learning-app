@@ -23,29 +23,69 @@ export const Login = ({
         <div className="login-glow-blob" />
 
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "32px", position: "relative", zIndex: 10 }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginBottom: "12px" }}>
-            <span className="material-symbols-outlined" style={{ color: "var(--primary)", fontSize: "32px" }}>
+        <div
+          style={{
+            textAlign: "center",
+            marginBottom: "32px",
+            position: "relative",
+            zIndex: 10,
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+              marginBottom: "12px",
+            }}
+          >
+            <span
+              className="material-symbols-outlined"
+              aria-hidden="true"
+              style={{ color: "var(--primary)", fontSize: "32px" }}
+            >
               language
             </span>
-            <h1 className="text-headline-lg" style={{ color: "var(--primary)", margin: 0 }}>
+            <h1
+              className="text-headline-lg"
+              style={{ color: "var(--primary)", margin: 0 }}
+            >
               LinguistPro
             </h1>
           </div>
-          <p className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: 0 }}>
+          <p
+            className="text-body-md"
+            style={{ color: "var(--on-surface-variant)", margin: 0 }}
+          >
             Welcome back. Let's continue your journey.
           </p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} style={{ position: "relative", zIndex: 10, display: "flex", flexDirection: "column", gap: "16px" }}>
+        <form
+          onSubmit={handleSubmit}
+          style={{
+            position: "relative",
+            zIndex: 10,
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px",
+          }}
+        >
           {/* Email Input */}
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <label className="text-label-md" htmlFor="email" style={{ color: "var(--on-surface)", display: "block" }}>
+            <label
+              className="text-label-md"
+              htmlFor="email"
+              style={{ color: "var(--on-surface)", display: "block" }}
+            >
               Email Address
             </label>
             <div className="input-icon-wrapper">
-              <span className="material-symbols-outlined">mail</span>
+              <span className="material-symbols-outlined" aria-hidden="true">
+                mail
+              </span>
               <input
                 id="email"
                 name="email"
@@ -60,8 +100,18 @@ export const Login = ({
 
           {/* Password Input */}
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <label className="text-label-md" htmlFor="password" style={{ color: "var(--on-surface)", display: "block" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <label
+                className="text-label-md"
+                htmlFor="password"
+                style={{ color: "var(--on-surface)", display: "block" }}
+              >
                 Password
               </label>
               <a
@@ -74,7 +124,9 @@ export const Login = ({
               </a>
             </div>
             <div className="input-icon-wrapper">
-              <span className="material-symbols-outlined">lock</span>
+              <span className="material-symbols-outlined" aria-hidden="true">
+                lock
+              </span>
               <input
                 id="password"
                 name="password"
@@ -91,24 +143,39 @@ export const Login = ({
           <button
             className="btn-primary"
             type="submit"
-            style={{ width: "100%", padding: "12px", marginTop: "16px", borderRadius: "8px" }}
+            style={{
+              width: "100%",
+              padding: "12px",
+              marginTop: "16px",
+              borderRadius: "8px",
+            }}
           >
             <span>Login</span>
-            <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
+            <span
+              className="material-symbols-outlined"
+              aria-hidden="true"
+              style={{ fontSize: "20px" }}
+            >
               arrow_forward
             </span>
           </button>
         </form>
 
         {/* Divider */}
-        <div className="auth-divider" style={{ position: "relative", zIndex: 10 }}>
+        <div
+          className="auth-divider"
+          style={{ position: "relative", zIndex: 10 }}
+        >
           <div className="line" />
           <span>Or continue with</span>
           <div className="line" />
         </div>
 
         {/* Social Logins */}
-        <div className="social-grid" style={{ position: "relative", zIndex: 10 }}>
+        <div
+          className="social-grid"
+          style={{ position: "relative", zIndex: 10 }}
+        >
           <button className="social-btn" type="button">
             <svg width="20" height="20" viewBox="0 0 24 24">
               <path
@@ -131,7 +198,11 @@ export const Login = ({
             <span>Google</span>
           </button>
           <button className="social-btn" type="button">
-            <span className="material-symbols-outlined" style={{ fontSize: "20px" }}>
+            <span
+              className="material-symbols-outlined"
+              aria-hidden="true"
+              style={{ fontSize: "20px" }}
+            >
               file_download
             </span>
             <span>Apple</span>
@@ -139,13 +210,27 @@ export const Login = ({
         </div>
 
         {/* Sign Up Link */}
-        <div style={{ marginTop: "32px", textAlign: "center", position: "relative", zIndex: 10 }}>
-          <p className="text-body-md" style={{ color: "var(--on-surface-variant)", margin: 0 }}>
+        <div
+          style={{
+            marginTop: "32px",
+            textAlign: "center",
+            position: "relative",
+            zIndex: 10,
+          }}
+        >
+          <p
+            className="text-body-md"
+            style={{ color: "var(--on-surface-variant)", margin: 0 }}
+          >
             Don't have an account?{" "}
             <a
               href="#register"
               className="text-label-md"
-              style={{ color: "var(--primary)", textDecoration: "none", fontWeight: 600 }}
+              style={{
+                color: "var(--primary)",
+                textDecoration: "none",
+                fontWeight: 600,
+              }}
               onClick={(e) => {
                 e.preventDefault();
                 onNavigateRegister?.();
