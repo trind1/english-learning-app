@@ -5,6 +5,7 @@
 Vocabulary UI redesign representative responsive verification is **PASS** at 1440px, 768px, and 390px. No browser errors or overflow were observed.
 Vocabulary visual refinement remains **PASS** with the existing page structure and behavior preserved.
 Folder Detail UI redesign is **PASS** with representative browser verification complete.
+Dashboard visual redesign is **PASS** with representative browser verification complete.
 
 | Field | Value |
 | --- | --- |
@@ -18,7 +19,7 @@ Folder Detail UI redesign is **PASS** with representative browser verification c
 
 Testing Verification is **PASS**: frontend 99.57/95.41/100/99.57 and backend 95.01/95.00/97.22/95.01 for statements/branches/functions/lines. The sequential full suite passes 127/127. Implementation remediation is verified by EVID-503–EVID-509. Browser evidence EVID-512 is incomplete, so it cannot satisfy Final Acceptance.
 
-The [UI/UX review](05-review/ui-review.md) is complete and the [UI remediation plan](05-review/ui-remediation-plan.md) is in progress. Runtime bootstrap verification is now PASS: the earlier blank screenshots were caused by the short-lived dev-server process ending before browser inspection, not an application bootstrap exception. UI task acceptance remains pending visual workflow review.
+The [UI/UX review](05-review/ui-review.md) is complete. Folder Detail UI redesign and representative browser verification are PASS.
 
 ## Current authoritative redesign status
 

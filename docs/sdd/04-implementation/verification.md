@@ -2,7 +2,7 @@
 
 ## Final Acceptance remediation verification — 2026-08-28
 
-STATUS: **PASS** — Final Acceptance accepted
+STATUS: **PASS** — Folder Detail redesign accepted
 
 | Evidence | Command or source | Exit code | Result |
 | --- | --- | ---: | --- |
@@ -568,3 +568,6 @@ STATUS: **PASS**. The existing Vocabulary information architecture was preserved
 ## Folder detail visual redesign — 2026-08-28
 
 STATUS: **PASS**. Folder detail retains all existing controls while presenting a stronger topic header, study actions, vocabulary content, and responsive layout. Browser workflow passed at 1440px, 768px, and 390px with zero errors.
+## Dashboard visual redesign — 2026-08-28
+
+STATUS: **PASS**. Dashboard hierarchy, metric cards, progress area, actions, and responsive card styling were refined without changing data logic or section order. Browser verification passed at 1440px, 768px, and 390px with zero errors and no overflow.

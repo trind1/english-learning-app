@@ -258,3 +258,4 @@ Authentication and Routing Remediation tasks AUTH-REM-001 through AUTH-REM-008 a
 Vocabulary UI redesign verification (1440/768/390 representative viewports) PASS; functional interactions and browser console checks passed.
 Vocabulary visual refinement PASS; existing vocabulary, CSV, pronunciation, and study-flow behavior retained.
 Folder Detail redesign PASS; folder, study-mode, and vocabulary requirements remain traceable to existing behavior.
+Dashboard visual redesign PASS; metric, progress, action, and responsive requirements remain traceable to existing behavior.

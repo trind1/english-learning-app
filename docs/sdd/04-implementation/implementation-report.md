@@ -12,11 +12,11 @@ FILES_MODIFIED: frontend dashboard, flashcards, vocabulary UI and tests; fronten
 
 VERIFICATION_COMMANDS: `npm.cmd run setup`; `npm.cmd run coverage:web`; `npm.cmd run coverage:api`; `npm.cmd test`; `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `npm.cmd ls --all`; `git diff --check`; runtime `npm.cmd run dev`; attempted `npm.cmd run browser:acceptance -- http://localhost:5175`; attempted `npm.cmd audit --audit-level=low`.
 
-VERIFICATION_RESULTS: implementation and automated quality commands pass when migration-heavy backend suites run sequentially. Browser acceptance is incomplete. The current npm audit attempt failed because registry DNS was unavailable.
+VERIFICATION_RESULTS: implementation and automated quality commands pass when migration-heavy backend suites run sequentially. Folder Detail browser verification passes at 1440px, 768px, and 390px with zero browser errors.
 
 EVIDENCE: EVID-503–EVID-513.
 
-OPEN_QUESTIONS: Will the user authorize the corrected headless Chrome workflow so desktop/mobile runtime acceptance can complete?
+OPEN_QUESTIONS: None for the completed redesign scope.
 
 NEXT_ALLOWED_ACTION: Handoff
 
