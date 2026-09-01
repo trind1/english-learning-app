@@ -1,5 +1,75 @@
 # Code Generation Implementation Report
 
+## Folder Detail layout and action redesign — 2026-09-01
+
+STAGE: Folder Detail Layout + Action Redesign
+
+STATUS: PASS
+
+FILES_CREATED: `apps/web/test/setup.ts`, `docs/sdd/evidence/browser-folder-detail-desktop.png`, `docs/sdd/evidence/browser-folder-detail-tablet.png`, `docs/sdd/evidence/browser-folder-detail-mobile.png`.
+
+FILES_MODIFIED: `apps/web/src/App.tsx`, `apps/web/src/VocabularyPanel.tsx`, `apps/web/src/CsvImportPanel.tsx`, `apps/web/src/styles.css`, `apps/web/test/app.test.tsx`, `apps/web/vitest.config.ts`, `scripts/browser-acceptance.mjs`, responsive browser evidence, and current SDD governance reports.
+
+VERIFICATION_COMMANDS: focused and complete frontend Vitest commands; `npm.cmd run coverage:web`; `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `git diff --check`; `npm.cmd run browser:acceptance` against the running application.
+
+VERIFICATION_RESULTS: 16 frontend files and 61/61 tests pass. Frontend coverage is 99.83% statements, 95.11% branches, 96.40% functions, and 99.83% lines. Typecheck, lint, formatting, production build, and diff checks pass. The complete persisted Chrome journey passes at 1440px, 768px, and 390px with no document overflow and zero browser errors.
+
+EVIDENCE: EVID-530–EVID-535 and the three folder-detail screenshots.
+
+OPEN_QUESTIONS: None.
+
+NEXT_ALLOWED_ACTION: Handoff / normal maintenance.
+
+USER_APPROVAL_REQUIRED: No.
+
+### Scoped presentation changes
+
+- The compact 44px back control always reads `← Back to Folders`; the dynamic folder name is rendered only as the hero heading. The generated long-name case wraps naturally at 390px without clipping or overflow.
+- A soft folder hero groups the real folder icon, name, and live vocabulary count.
+- Flashcards and Multiple Choice are emphasized learning-mode cards; AI Generator is a visually secondary card in the same study group. Their existing callbacks and learning logic are unchanged.
+- The Vocabulary toolbar groups Add Vocabulary and Import CSV. These controls focus the existing manual-add and CSV inputs; the original forms, validation, persistence, loading, error/retry, and report behavior remain.
+- Vocabulary entries use responsive study cards with word, IPA fallback, meaning, and pronunciation controls. Desktop uses a list-plus-editor layout; tablet and mobile stack without overlap.
+- A test-only Vitest setup restores deterministic browser-like storage under Node 26, whose experimental global storage shadows jsdom. Production authentication and storage code are unchanged.
+
+### Database explanation
+
+This is a presentation-only frontend maintenance change. Folder and vocabulary data still live in the ignored local SQLite file at `apps/api/prisma/dev.db`; for example, adding `hello` still creates the same vocabulary record linked to the open folder through the existing REST API. No Prisma schema, migration, database query, API contract, or persistence rule changed. Inspect data safely with Prisma Studio or the existing API rather than editing the `.db` file manually. The technical term is **no schema migration**.
+
+## Left Navigation visual redesign — 2026-09-01
+
+STAGE: Left Navigation Visual Redesign
+
+STATUS: PASS
+
+FILES_CREATED: `docs/sdd/evidence/browser-sidebar-tablet.png`, `docs/sdd/evidence/browser-sidebar-mobile.png`.
+
+FILES_MODIFIED: `apps/web/src/App.tsx`, `apps/web/src/styles.css`, `apps/web/test/app.test.tsx`, `scripts/browser-acceptance.mjs`, responsive browser evidence, and current SDD governance reports.
+
+VERIFICATION_COMMANDS: sequential frontend Vitest and coverage commands with Node 26 web storage disabled; `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `git diff --check`; `npm.cmd run browser:acceptance -- http://localhost:5173`.
+
+VERIFICATION_RESULTS: 61/61 frontend tests pass. Frontend coverage is 99.83% statements, 95.02% branches, 96.35% functions, and 99.83% lines. Static checks and the production build pass. Instrumented Chrome verification passes at 1440px, 768px, and 390px with zero browser errors and no page overflow.
+
+EVIDENCE: EVID-525–EVID-529 and the desktop/tablet/mobile sidebar screenshots.
+
+OPEN_QUESTIONS: None.
+
+NEXT_ALLOWED_ACTION: Handoff / normal maintenance.
+
+USER_APPROVAL_REQUIRED: No.
+
+### Scoped design changes
+
+- Primary navigation content is consistently left aligned: button x=12px, icon x=27px, and label x=64px in both the desktop sidebar and responsive drawer.
+- Dashboard, Vocabulary, Practice, and Progress targets are 52px tall with 24px icon boxes, 15px semibold labels, 13px icon-label gaps, 12px corners, and 8px vertical gaps.
+- The active item uses a soft primary background, primary icon/text, and a 3px left accent. `aria-current="page"` identifies active functional destinations.
+- Inactive items receive a restrained primary-tinted hover background. Keyboard focus has a visible 3px outline.
+- Existing Material Symbol spans and semantic names remain. Local vector masks guarantee the four navigation icons still render when the external Google font is unavailable.
+- The existing desktop sidebar width, main-content position, routes, authentication, page components, CTA, Settings, Help, and Progress placeholder behavior are unchanged.
+
+### Database explanation
+
+This visual-only maintenance did not change the SQLite schema, migration, persistence code, or API. Application data remains in the ignored `apps/api/prisma/dev.db`; no migration is required. The technical term is **presentation-only frontend change**.
+
 ## Learning Consistency logic and UI redesign — 2026-09-01
 
 STAGE: Learning Consistency Logic + UI Redesign

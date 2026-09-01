@@ -1,5 +1,54 @@
 # TASK-001 through TASK-009 Implementation Verification
 
+## Folder Detail maintenance verification — 2026-09-01
+
+STATUS: **PASS**
+
+Working directory: `D:\Work\english-learning-app`
+
+| Evidence | Command or source | Exit code | Result |
+| --- | --- | ---: | --- |
+| EVID-530 | `npm.cmd run test:web` | 0 | 16 files and 61/61 frontend tests pass. Integrated coverage verifies the exact back label, separated folder heading, grouped study modes, management focus actions, and all existing learning journeys. |
+| EVID-531 | `npm.cmd run coverage:web` | 0 | 61/61 tests pass; 99.83% statements, 95.11% branches, 96.40% functions, and 99.83% lines. Every configured 95% threshold passes. |
+| EVID-532 | `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `git diff --check` | 0 | All final static checks pass. Vite emits the production bundle and the diff has no whitespace errors. |
+| EVID-533 | `npm.cmd run browser:acceptance` against `http://localhost:5173` | 0 | The real persistent workflow passes Back, Add, CSV, pronunciation, Flashcards, Multiple Choice, AI, and dashboard continuation with zero browser errors. |
+| EVID-534 | Instrumented responsive measurements and screenshot inspection | 0 | At 1440/768/390 the back control is 163×44px and excludes the dynamic name. The long heading stays within the viewport, study and management controls do not overlap, and document widths are 1425≤1440, 753≤768, and 390=390. |
+| EVID-535 | Initial focused, coverage, and browser attempts | 1, then remediated | The first focused command used paths relative to the wrong workspace; Node 26 storage shadowed jsdom; initial function coverage was 94.96%; early browser assertions exposed semantic spacing and an asynchronous card wait. Each issue was corrected and the final commands passed. |
+
+FUNCTIONAL VERIFICATION: `Back to Folders` returned to the folder library and reopened the generated folder. Add Vocabulary focused and submitted the existing form. Import CSV focused the existing file input and reported one import plus one duplicate skip. Pronunciation, Flashcards, Multiple Choice/results, and AI generated text all passed.
+
+RESPONSIVE EVIDENCE: `browser-folder-detail-desktop.png`, `browser-folder-detail-tablet.png`, and `browser-folder-detail-mobile.png`. The three study cards are one row on desktop, two rows on tablet, and stacked on mobile. Management actions share a row on desktop/tablet and stack at 390px. The 32-character generated folder name wraps to two lines only on mobile.
+
+LIMITATIONS: One pre-existing non-failing React `act(...)` warning remains in the Practice Hub integrated test. It does not affect assertions, coverage, or browser behavior.
+
+NEXT_ALLOWED_ACTION: Handoff / normal maintenance.
+
+USER_APPROVAL_REQUIRED: No.
+
+## Left Navigation maintenance verification — 2026-09-01
+
+STATUS: **PASS**
+
+Working directory: `D:\Work\english-learning-app`
+
+| Evidence | Command or source | Exit code | Result |
+| --- | --- | ---: | --- |
+| EVID-525 | `$env:NODE_OPTIONS='--no-experimental-webstorage'; npm.cmd run test --workspace @english-learning/web -- --maxWorkers=1 --minWorkers=1` | 0 | 16 files and 61 tests pass. Integrated assertions verify four primary icons and active-page semantics on desktop and in the mobile drawer. |
+| EVID-526 | `$env:NODE_OPTIONS='--no-experimental-webstorage'; npm.cmd run coverage --workspace @english-learning/web -- --maxWorkers=1 --minWorkers=1` | 0 | 61/61 tests pass; 99.83% statements, 95.02% branches, 96.35% functions, and 99.83% lines. |
+| EVID-527 | `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `git diff --check` | 0 | All checks pass; Vite production assets are emitted. |
+| EVID-528 | `npm.cmd run browser:acceptance -- http://localhost:5173` plus instrumented layout/state assertions | 0 | 1440px desktop and 768px/390px drawers pass. Four items are 52px tall; icons are 24px; labels are 15px; all left coordinates match; hover changes background; focus outline is 3px; active accent is 3px; document overflow and browser errors are zero. |
+| EVID-529 | Initial visual and instrumented browser attempts | 0, then 1, then remediated | Visual inspection found the external icon font unavailable, so local masks were added. The first instrumented rerun detected two mis-scoped and two missing mobile icon classes. The narrowed final assignments passed. |
+
+NAVIGATION VERIFICATION: Dashboard, Vocabulary, and Practice update `aria-current` and the active visual state. Progress remains the existing non-routing placeholder and does not change the current path. No route or navigation callback changed.
+
+RESPONSIVE EVIDENCE: `browser-desktop.png`, `browser-sidebar-tablet.png`, and `browser-sidebar-mobile.png` show the final design. Drawer right edge is 296px at both responsive widths, within 768px and 390px viewports.
+
+LIMITATIONS: The pre-existing non-failing React `act(...)` warning remains in one integrated test. It predates this visual change and does not affect assertions, coverage, or browser behavior.
+
+NEXT_ALLOWED_ACTION: Handoff / normal maintenance.
+
+USER_APPROVAL_REQUIRED: No.
+
 ## Learning Consistency maintenance verification — 2026-09-01
 
 STATUS: **PASS**

@@ -20,9 +20,11 @@ export type VocabularyApi = {
 export const VocabularyPanel = ({
   api,
   onChanged,
+  showSummary = true,
 }: {
   api: VocabularyApi;
   onChanged?: (items: VocabularyItem[]) => void;
+  showSummary?: boolean;
 }) => {
   const [items, setItems] = useState<VocabularyItem[] | null>(null);
   const [word, setWord] = useState("");
@@ -75,39 +77,46 @@ export const VocabularyPanel = ({
   };
 
   return (
-    <section aria-labelledby="vocabulary-title" className="vocabulary-detail">
+    <section
+      aria-labelledby={showSummary ? "vocabulary-title" : undefined}
+      aria-label={showSummary ? undefined : "Vocabulary entries"}
+      className="vocabulary-detail"
+    >
       {/* Action Bar & Summary Header */}
-      <div
-        className="card vocabulary-summary"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "16px",
-          padding: "16px 20px",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <div>
-            <h2
-              id="vocabulary-title"
-              className="text-headline-md"
-              style={{ margin: 0 }}
-            >
-              Vocabulary
-            </h2>
-            <span
-              className="text-label-md"
-              style={{ color: "var(--on-surface-variant)" }}
-            >
-              {items?.length ?? 0} total
-            </span>
+      {showSummary && (
+        <div
+          className="card vocabulary-summary"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "16px",
+            padding: "16px 20px",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div>
+              <h2
+                id="vocabulary-title"
+                className="text-headline-md"
+                style={{ margin: 0 }}
+              >
+                Vocabulary
+              </h2>
+              <span
+                className="text-label-md"
+                style={{ color: "var(--on-surface-variant)" }}
+              >
+                {items?.length ?? 0} total
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <div
+        className="vocabulary-layout"
         style={{
           display: "flex",
           flexDirection: "row",
@@ -118,6 +127,7 @@ export const VocabularyPanel = ({
       >
         {/* Left Column: Vocabulary List / Table */}
         <div
+          className="vocabulary-content"
           style={{
             flex: "1 1 500px",
             display: "flex",
@@ -191,6 +201,7 @@ export const VocabularyPanel = ({
                     }}
                   >
                     <div
+                      className="vocabulary-item-copy"
                       style={{
                         display: "flex",
                         flexDirection: "column",
@@ -199,6 +210,7 @@ export const VocabularyPanel = ({
                       }}
                     >
                       <div
+                        className="vocabulary-item-heading"
                         style={{
                           display: "flex",
                           alignItems: "baseline",
@@ -229,6 +241,7 @@ export const VocabularyPanel = ({
                       </p>
                     </div>
                     <div
+                      className="vocabulary-pronunciation"
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -248,6 +261,7 @@ export const VocabularyPanel = ({
         {/* Right Column: Add Entry Panel */}
         <aside
           className="card vocabulary-editor"
+          id="add-vocabulary-panel"
           style={{
             flex: "0 0 320px",
             backgroundColor: "var(--surface-white)",
@@ -257,6 +271,7 @@ export const VocabularyPanel = ({
           }}
         >
           <div
+            className="vocabulary-editor-heading"
             style={{
               display: "flex",
               alignItems: "center",
@@ -281,6 +296,7 @@ export const VocabularyPanel = ({
 
           <form
             onSubmit={submit}
+            className="vocabulary-editor-form"
             style={{ display: "flex", flexDirection: "column", gap: "16px" }}
           >
             <div>

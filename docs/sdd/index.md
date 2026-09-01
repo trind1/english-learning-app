@@ -1,5 +1,37 @@
 # SDD Project Dashboard
 
+## Current authoritative maintenance status — Folder Detail — 2026-09-01
+
+Folder Detail Layout + Action Redesign is **PASS**. The opened-folder page now separates the compact `Back to Folders` control from the dynamic folder heading, presents real folder data in a responsive hero, groups Flashcards/Multiple Choice/AI Generator by learning purpose, and groups Add Vocabulary/Import CSV beside the vocabulary section. Existing REST calls, persistence, validation, pronunciation, CSV, study, AI, authentication, and routing behavior remain intact.
+
+Frontend tests pass 61/61 with 99.83/95.11/96.40/99.83 coverage for statements/branches/functions/lines. The persistent real-browser workflow and instrumented long-name layout pass at 1440px, 768px, and 390px with no overlap, no document overflow, and zero browser errors (EVID-530–EVID-535).
+
+| Field | Value |
+| --- | --- |
+| Current stage | Post-acceptance maintenance — Folder Detail Layout + Action Redesign |
+| Gate status | **PASS** |
+| Current blockers | None |
+| Next allowed action | Handoff / normal maintenance |
+| User approval status | User-authorized maintenance complete |
+
+This section supersedes older current-state summaries below without rewriting their historical evidence.
+
+## Current authoritative maintenance status — Left Navigation — 2026-09-01
+
+Left Navigation Visual Redesign is **PASS**. Only Dashboard, Vocabulary, Practice, and Progress navigation presentation changed. The desktop sidebar and existing responsive drawer now use consistently left-aligned 52px items, 24px semantic icons, 15px labels, 12px corners, 8px gaps, restrained hover feedback, visible keyboard focus, and a soft active state with a 3px left accent.
+
+Frontend tests pass 61/61 with 99.83/95.02/96.35/99.83 coverage for statements/branches/functions/lines. Instrumented browser verification passes at 1440px, 768px, and 390px with no page overflow, no layout shift, and zero browser errors (EVID-525–EVID-529).
+
+| Field | Value |
+| --- | --- |
+| Current stage | Post-acceptance maintenance — Left Navigation Visual Redesign |
+| Gate status | **PASS** |
+| Current blockers | None |
+| Next allowed action | Handoff / normal maintenance |
+| User approval status | User-authorized maintenance complete |
+
+This section supersedes older current-state summaries below without rewriting their historical evidence.
+
 ## Current authoritative maintenance status — 2026-09-01
 
 Learning Consistency Logic + UI Redesign is **PASS**. The dashboard now derives unique active local calendar days from persisted completed test sessions and calculates current-week consistency as active elapsed days divided by elapsed days from Monday through today. Future days are explicitly `Upcoming` and do not reduce the score.

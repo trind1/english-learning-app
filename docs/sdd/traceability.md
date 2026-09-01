@@ -1,5 +1,30 @@
 # Specification Traceability Matrix
 
+## Current Folder Detail maintenance traceability — 2026-09-01
+
+| Change | Requirements / rules | Existing tasks | Tests / evidence | Status |
+| --- | --- | --- | --- | --- |
+| Compact `Back to Folders` control separated from dynamic, wrapping folder heading and live word count | FR-001–FR-002, FR-014, NFR-011–NFR-013, AC-001–AC-002, AC-010, AC-022 | TASK-011–TASK-013, TASK-021 | TEST-011, TEST-013, EVID-530–EVID-535 | PASS |
+| Purpose-grouped Flashcards, Multiple Choice, and AI Generator actions with unchanged callbacks | FR-006–FR-009, FR-015–FR-016, NFR-011–NFR-013 | TASK-015–TASK-017, TASK-021 | TEST-011, TEST-015–TEST-017, EVID-530–EVID-534 | PASS |
+| Vocabulary toolbar, responsive word cards, manual-add and CSV focus actions, IPA/meaning/pronunciation preservation | FR-002–FR-005, BR-001–BR-007, NFR-011–NFR-013 | TASK-013–TASK-014, TASK-021 | TEST-011, TEST-013–TEST-014, EVID-530–EVID-534 | PASS |
+| 1440px, 768px, and 390px long-name, alignment, overlap, focus, and overflow verification | NFR-011–NFR-013, AC-010, AC-022 | TASK-021–TASK-022 | EVID-532–EVID-535 | PASS |
+
+Code mapping: `App.tsx` owns the folder hero and action composition while preserving the existing navigation/API callbacks. `VocabularyPanel.tsx` and `CsvImportPanel.tsx` retain their feature logic and expose scoped presentation hooks. `styles.css` owns responsive layout and states. `app.test.tsx` and `browser-acceptance.mjs` verify semantics, focus targets, functionality, long-name geometry, responsive screenshots, and console cleanliness. `test/setup.ts` is test-only Node 26/jsdom compatibility; production storage is unchanged. No backend, database, migration, REST contract, or authentication mapping changed.
+
+Gate: **PASS**. Next allowed action: handoff / normal maintenance. Evidence: EVID-530–EVID-535.
+
+## Current Left Navigation maintenance traceability — 2026-09-01
+
+| Change | Requirements / rules | Existing tasks | Tests / evidence | Status |
+| --- | --- | --- | --- | --- |
+| Larger, left-aligned primary navigation with consistent icon-label geometry | FR-014, NFR-011–NFR-013, AC-010, AC-022 | TASK-011, TASK-021 | TEST-011, EVID-525–EVID-528 | PASS |
+| Active, hover, and keyboard-focus treatments with `aria-current` | FR-014, NFR-011–NFR-013 | TASK-011, TASK-021 | TEST-011, EVID-525–EVID-528 | PASS |
+| Desktop/sidebar and responsive drawer parity without overflow | NFR-011–NFR-013, AC-022 | TASK-011, TASK-021 | TEST-011, EVID-528–EVID-529 | PASS |
+
+Code mapping: `App.tsx` preserves navigation callbacks and semantic Material Symbol names while adding labels, active-page semantics, and drawer icons. `styles.css` owns the scoped primary-navigation geometry and states. `browser-acceptance.mjs` verifies navigation behavior, measurements, interaction states, and responsive screenshots. No backend, API, database, authentication, route, or business-logic mapping changed.
+
+Gate: **PASS**. Next allowed action: handoff / normal maintenance. Evidence: EVID-525–EVID-529.
+
 ## Current Learning Consistency maintenance traceability — 2026-09-01
 
 | Change | Requirements / rules | Existing tasks | Tests / evidence | Status |

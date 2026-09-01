@@ -35,7 +35,8 @@ export const CsvImportPanel = ({ api }: { api: CsvImportApi }) => {
 
   return (
     <section
-      className="card"
+      className="card csv-import-panel"
+      id="csv-import-panel"
       aria-labelledby="import-title"
       style={{
         backgroundColor: "var(--surface-white)",
@@ -45,6 +46,7 @@ export const CsvImportPanel = ({ api }: { api: CsvImportApi }) => {
       }}
     >
       <div
+        className="csv-import-heading"
         style={{
           display: "flex",
           alignItems: "center",
@@ -70,6 +72,7 @@ export const CsvImportPanel = ({ api }: { api: CsvImportApi }) => {
 
       <form
         onSubmit={submit}
+        className="csv-import-form"
         style={{ display: "flex", flexDirection: "column", gap: "16px" }}
       >
         <div>

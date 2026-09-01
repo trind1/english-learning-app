@@ -431,9 +431,10 @@ textarea:focus {
 .side-nav-links {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--spacing-xs);
   flex: 1;
   list-style: none;
+  margin-inline: -4px;
 }
 
 .side-nav-item button,
@@ -466,6 +467,116 @@ textarea:focus {
   background-color: rgba(33, 112, 228, 0.1);
   border-right: 4px solid var(--primary);
   border-radius: 8px 0 0 8px;
+}
+
+/* Primary sidebar navigation */
+.side-nav-links > .side-nav-item button,
+.side-nav-links > .side-nav-item a {
+  position: relative;
+  min-height: 52px;
+  justify-content: flex-start;
+  gap: 13px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.side-nav-links > .side-nav-item .material-symbols-outlined {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  display: grid;
+  place-items: center;
+  font-size: 23px;
+  color: var(--outline);
+  line-height: 1;
+  transition: color 0.18s ease;
+}
+
+.side-nav-links > .side-nav-item .side-nav-icon {
+  background-color: currentColor;
+  font-size: 0;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 23px 23px;
+  mask-size: 23px 23px;
+}
+
+.side-nav-icon--dashboard {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='8' height='8' rx='1.5' fill='black'/%3E%3Crect x='13' y='3' width='8' height='5' rx='1.5' fill='black'/%3E%3Crect x='3' y='13' width='8' height='8' rx='1.5' fill='black'/%3E%3Crect x='13' y='10' width='8' height='11' rx='1.5' fill='black'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='8' height='8' rx='1.5' fill='black'/%3E%3Crect x='13' y='3' width='8' height='5' rx='1.5' fill='black'/%3E%3Crect x='3' y='13' width='8' height='8' rx='1.5' fill='black'/%3E%3Crect x='13' y='10' width='8' height='11' rx='1.5' fill='black'/%3E%3C/svg%3E");
+}
+
+.side-nav-icon--book {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 5.5c2.8-.8 5.4-.3 8 1.5v13c-2.6-1.8-5.2-2.3-8-1.5V5.5Zm18 0c-2.8-.8-5.4-.3-8 1.5v13c2.6-1.8 5.2-2.3 8-1.5V5.5Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 5.5c2.8-.8 5.4-.3 8 1.5v13c-2.6-1.8-5.2-2.3-8-1.5V5.5Zm18 0c-2.8-.8-5.4-.3-8 1.5v13c2.6-1.8 5.2-2.3 8-1.5V5.5Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.side-nav-icon--fitness {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 7v10M4 9v6M17 7v10M20 9v6M7 12h10' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 7v10M4 9v6M17 7v10M20 9v6M7 12h10' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+.side-nav-icon--leaderboard {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='13' width='5' height='8' rx='1.5' fill='black'/%3E%3Crect x='9.5' y='8' width='5' height='13' rx='1.5' fill='black'/%3E%3Crect x='16' y='3' width='5' height='18' rx='1.5' fill='black'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='13' width='5' height='8' rx='1.5' fill='black'/%3E%3Crect x='9.5' y='8' width='5' height='13' rx='1.5' fill='black'/%3E%3Crect x='16' y='3' width='5' height='18' rx='1.5' fill='black'/%3E%3C/svg%3E");
+}
+
+.side-nav-links > .side-nav-item button:hover,
+.side-nav-links > .side-nav-item a:hover {
+  border-color: rgba(0, 88, 190, 0.08);
+  background-color: rgba(0, 88, 190, 0.07);
+  color: var(--on-primary-fixed-variant);
+}
+
+.side-nav-links > .side-nav-item button:hover .material-symbols-outlined,
+.side-nav-links > .side-nav-item a:hover .material-symbols-outlined {
+  color: var(--primary);
+}
+
+.side-nav-links > .side-nav-item.active button,
+.side-nav-links > .side-nav-item.active a {
+  border: 1px solid rgba(0, 88, 190, 0.12);
+  border-radius: 12px;
+  background-color: var(--primary-fixed);
+  color: var(--on-primary-fixed-variant);
+  font-weight: 700;
+}
+
+.side-nav-links > .side-nav-item.active button::before,
+.side-nav-links > .side-nav-item.active a::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 13px;
+  bottom: 13px;
+  width: 3px;
+  border-radius: 999px;
+  background-color: var(--primary);
+}
+
+.side-nav-links > .side-nav-item.active .material-symbols-outlined {
+  color: var(--primary);
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 600,
+    "GRAD" 0,
+    "opsz" 24;
+}
+
+.side-nav-links > .side-nav-item button:focus-visible,
+.side-nav-links > .side-nav-item a:focus-visible {
+  outline: 3px solid var(--primary-fixed-dim);
+  outline-offset: 2px;
 }
 
 .side-nav-footer {
@@ -1324,6 +1435,405 @@ textarea:focus {
   }
   .consistency-percentage {
     font-size: 1.6rem;
+  }
+}
+
+/* Open-folder vocabulary workspace */
+.folder-detail-page {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.folder-back-button {
+  align-self: flex-start;
+  min-height: 44px;
+  gap: 0.55rem;
+  padding: 0.625rem 0.9rem;
+  border: 1px solid #dce5f2;
+  border-radius: 0.75rem;
+  background: #f8faff;
+  color: #334155;
+  font-size: 0.875rem;
+  font-weight: 650;
+}
+.folder-back-button:hover {
+  border-color: #b8c8df;
+  background: #eef4ff;
+  color: var(--primary);
+}
+.folder-back-button:active {
+  transform: translateY(1px);
+}
+.folder-back-arrow {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+.folder-detail-hero {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1.35rem;
+  overflow: hidden;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border: 1px solid #d9e5f7;
+  border-radius: 1.5rem;
+  background: radial-gradient(
+      circle at 92% 12%,
+      rgba(96, 165, 250, 0.18),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #ffffff, #f2f7ff);
+  box-shadow: 0 12px 30px rgba(30, 64, 125, 0.08);
+}
+.folder-detail-hero::after {
+  content: "";
+  position: absolute;
+  right: -2.5rem;
+  bottom: -4.5rem;
+  width: 12rem;
+  height: 12rem;
+  border: 1.5rem solid rgba(37, 99, 235, 0.045);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.folder-detail-hero-icon {
+  display: grid;
+  width: 4.25rem;
+  height: 4.25rem;
+  place-items: center;
+  border-radius: 1.15rem;
+  background: #e2edff;
+  color: #1d5fc1;
+}
+.folder-detail-hero-icon svg {
+  width: 2rem;
+  height: 2rem;
+  fill: currentColor;
+}
+.folder-detail-hero-copy {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+.folder-detail-eyebrow,
+.folder-section-eyebrow {
+  margin: 0 0 0.35rem;
+  color: #2563a9;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.folder-detail-hero h1 {
+  max-width: 100%;
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: #17223b;
+  font-family: var(--font-headline);
+  font-size: clamp(1.75rem, 3.4vw, 2.65rem);
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+}
+.folder-detail-count {
+  margin: 0.65rem 0 0;
+  color: #586780;
+  font-size: 0.95rem;
+  font-weight: 550;
+}
+.folder-study-section,
+.folder-vocabulary-section {
+  min-width: 0;
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  border: 1px solid #dfe7f3;
+  border-radius: 1.35rem;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(30, 64, 125, 0.055);
+}
+.folder-section-heading,
+.folder-vocabulary-toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.folder-section-heading h2,
+.folder-vocabulary-toolbar h2 {
+  margin: 0;
+  color: #17223b;
+  font-family: var(--font-headline);
+  font-size: 1.35rem;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+.folder-section-heading > p,
+.folder-vocabulary-toolbar > div:first-child > p:last-child {
+  max-width: 25rem;
+  margin: 0;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+.folder-vocabulary-toolbar > div:first-child > p:last-child {
+  margin-top: 0.3rem;
+}
+.folder-study-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+.study-mode-card {
+  min-width: 0;
+  min-height: 88px;
+  justify-content: flex-start;
+  gap: 0.8rem;
+  padding: 1rem;
+  border: 1px solid #d9e3f1;
+  border-radius: 0.9rem;
+  background: #f8faff;
+  color: #25324a;
+  text-align: left;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+.study-mode-card--primary {
+  border-color: #cbdcf5;
+  background: #f3f7ff;
+}
+.study-mode-card--primary .study-mode-icon {
+  background: #dceaff;
+  color: #175cb9;
+}
+.study-mode-card--secondary {
+  background: #fbfbfd;
+}
+.study-mode-card:hover {
+  transform: translateY(-2px);
+  border-color: #8eb2e5;
+  background: #edf4ff;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.1);
+}
+.study-mode-card:active {
+  transform: translateY(0);
+}
+.study-mode-icon {
+  display: grid;
+  width: 2.4rem;
+  height: 2.4rem;
+  flex: 0 0 2.4rem;
+  place-items: center;
+  border-radius: 0.7rem;
+  background: #edf0f6;
+  color: #536177;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+.study-mode-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.study-mode-copy strong {
+  color: #17223b;
+  font-size: 0.95rem;
+}
+.study-mode-copy span {
+  color: #64748b;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+.study-mode-arrow {
+  color: #4276bd;
+  font-size: 1.05rem;
+}
+.folder-study-error {
+  margin: 1rem 0 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: #fff1f1;
+  color: #9b2c2c;
+}
+.folder-vocabulary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.65rem;
+}
+.folder-action-button {
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  border-radius: 0.7rem;
+  white-space: nowrap;
+}
+.folder-action-button > span {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.folder-vocabulary-section .vocabulary-detail {
+  display: block;
+}
+.folder-vocabulary-section .vocabulary-layout {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(17rem, 20rem);
+  align-items: start !important;
+  gap: 1rem !important;
+}
+.folder-vocabulary-section .vocabulary-content {
+  min-width: 0;
+}
+.folder-vocabulary-section .vocabulary-list {
+  display: grid;
+  gap: 0.65rem;
+}
+.folder-vocabulary-section .vocabulary-list-card {
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.folder-vocabulary-section .vocabulary-list-card::before {
+  display: none;
+}
+.folder-vocabulary-section .vocabulary-item {
+  min-width: 0;
+  min-height: 5.25rem;
+  padding: 1rem 1.1rem !important;
+  border: 1px solid #e0e7f1 !important;
+  border-radius: 0.85rem;
+  background: #fbfcff;
+}
+.folder-vocabulary-section .vocabulary-item:last-child {
+  border-bottom: 1px solid #e0e7f1 !important;
+}
+.folder-vocabulary-section .vocabulary-item:hover {
+  border-color: #b7cceb !important;
+  background: #f4f8ff;
+}
+.vocabulary-item-copy {
+  min-width: 0;
+}
+.vocabulary-item-heading {
+  flex-wrap: wrap;
+}
+.vocabulary-item-heading strong {
+  overflow-wrap: anywhere;
+}
+.folder-vocabulary-section .vocabulary-editor,
+.csv-import-panel {
+  border: 1px solid #dfe7f3 !important;
+  border-radius: 1rem !important;
+  background: #f9fbff !important;
+  box-shadow: none;
+}
+.folder-vocabulary-section .vocabulary-editor {
+  width: 100%;
+  padding: 1.25rem !important;
+}
+.folder-vocabulary-section .vocabulary-editor-heading,
+.csv-import-heading {
+  margin-bottom: 1rem !important;
+}
+.folder-vocabulary-section .vocabulary-editor-form label,
+.csv-import-form label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: #536177 !important;
+}
+.folder-vocabulary-section .vocabulary-editor-form button,
+.csv-import-form button {
+  min-height: 44px;
+  margin-top: 0.25rem !important;
+}
+.folder-import-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(17rem, 20rem);
+  margin-top: 1rem;
+}
+.csv-import-panel {
+  grid-column: 2;
+  padding: 1.25rem !important;
+}
+.csv-import-form input[type="file"] {
+  max-width: 100%;
+}
+
+@media (max-width: 960px) {
+  .folder-study-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .study-mode-card--secondary {
+    grid-column: 1 / -1;
+  }
+  .folder-vocabulary-section .vocabulary-layout,
+  .folder-import-row {
+    grid-template-columns: 1fr;
+  }
+  .folder-vocabulary-section .vocabulary-editor,
+  .csv-import-panel {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .folder-detail-page {
+    gap: 1rem;
+  }
+  .folder-detail-hero {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1.25rem;
+    border-radius: 1.15rem;
+  }
+  .folder-detail-hero-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1rem;
+  }
+  .folder-detail-hero h1 {
+    font-size: 1.75rem;
+  }
+  .folder-study-section,
+  .folder-vocabulary-section {
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+  .folder-section-heading,
+  .folder-vocabulary-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .folder-study-actions {
+    grid-template-columns: 1fr;
+  }
+  .study-mode-card--secondary {
+    grid-column: auto;
+  }
+  .folder-vocabulary-actions {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .folder-action-button {
+    width: 100%;
+    padding-inline: 0.6rem;
+    white-space: normal;
+  }
+  .folder-vocabulary-section .vocabulary-item {
+    align-items: flex-start !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .folder-vocabulary-actions {
+    grid-template-columns: 1fr;
   }
 }
 

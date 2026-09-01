@@ -58,14 +58,24 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
         : json({ data: { folders: [] } }),
     );
     render(<App />);
+    const primaryNavigation = screen.getByRole("navigation", {
+      name: "Primary navigation",
+    });
+    expect(primaryNavigation).toBeInTheDocument();
     expect(
-      screen.getByRole("navigation", { name: "Primary navigation" }),
-    ).toBeInTheDocument();
+      within(primaryNavigation).getByRole("button", { name: "Dashboard" }),
+    ).toHaveAttribute("aria-current", "page");
+    expect(
+      primaryNavigation.querySelectorAll(".material-symbols-outlined"),
+    ).toHaveLength(4);
     await screen.findByLabelText("0% consistency");
     expect(
       screen.getByRole("heading", { name: "Welcome back" }),
     ).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Vocabulary" }));
+    expect(
+      within(primaryNavigation).getByRole("button", { name: "Vocabulary" }),
+    ).toHaveAttribute("aria-current", "page");
     expect(await screen.findByText("No folders yet.")).toBeInTheDocument();
   });
 
@@ -108,6 +118,9 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     expect(navigation).toHaveTextContent("Vocabulary");
     expect(navigation).toHaveTextContent("Practice");
     expect(navigation).toHaveTextContent("Progress");
+    expect(
+      navigation.querySelectorAll(".side-nav-links .material-symbols-outlined"),
+    ).toHaveLength(4);
     expect(navigation).toHaveTextContent("Start Lesson");
     expect(navigation).toHaveTextContent("Settings");
     expect(navigation).toHaveTextContent("Help");
@@ -343,9 +356,24 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     await screen.findByText("Travel");
     fireEvent.click(screen.getByRole("button", { name: "Open" }));
     await screen.findByText("hello");
+    expect(
+      screen.getByRole("button", { name: "Back to Folders" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /Back to Travel/ }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Travel" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("group", { name: "Vocabulary actions" }),
+    ).toContainElement(screen.getByRole("button", { name: "Add Vocabulary" }));
     expect(screen.getByLabelText("Vocabulary list")).toHaveTextContent(
       "greeting",
     );
+
+    fireEvent.click(screen.getByRole("button", { name: "Add Vocabulary" }));
+    expect(screen.getByLabelText("Word")).toHaveFocus();
+    fireEvent.click(screen.getByRole("button", { name: "Import CSV" }));
+    expect(screen.getByLabelText("CSV file")).toHaveFocus();
 
     fireEvent.change(screen.getByLabelText("Word"), {
       target: { value: "ticket" },
@@ -354,7 +382,7 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
       target: { value: "pass" },
     });
     fireEvent.click(screen.getByRole("button", { name: "Add vocabulary" }));
-    expect(await screen.findAllByText("ticket")).toHaveLength(2);
+    expect(await screen.findAllByText("ticket")).toHaveLength(1);
 
     fireEvent.change(screen.getByLabelText("CSV file"), {
       target: {
@@ -365,21 +393,15 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     await screen.findByText("Imported: 1");
     expect(screen.getByText("Row 3: Duplicate word.")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByLabelText("hello"));
-    fireEvent.click(screen.getByRole("button", { name: "Generate text" }));
-    expect(await screen.findByLabelText("Generated text")).toHaveTextContent(
-      "Hello, world!",
-    );
-
     fireEvent.click(screen.getByRole("button", { name: "Flashcards" }));
     expect(
       screen.getByRole("heading", { name: "Flashcards", level: 1 }),
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: /Back to Travel/ }));
-    fireEvent.click(screen.getByRole("button", { name: "Quiz" }));
+    fireEvent.click(screen.getByRole("button", { name: "Back to Folder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Multiple Choice" }));
     await screen.findByRole("heading", { name: "Test your knowledge" });
-    fireEvent.click(screen.getByRole("button", { name: /Back to Travel/ }));
-    fireEvent.click(screen.getByRole("button", { name: "Quiz" }));
+    fireEvent.click(screen.getByRole("button", { name: "Back to Folder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Multiple Choice" }));
     await screen.findByRole("heading", { name: "Test your knowledge" });
     fireEvent.click(screen.getByRole("button", { name: "greeting" }));
     fireEvent.click(screen.getByRole("button", { name: "Submit answer" }));
@@ -394,6 +416,13 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     expect(screen.getByRole("heading", { name: "Travel" })).toBeInTheDocument();
     await waitFor(() =>
       expect(vocabularyLoads()).toBeGreaterThan(loadsBeforeReturn),
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "AI Generator" }));
+    fireEvent.click(screen.getByLabelText("hello"));
+    fireEvent.click(screen.getByRole("button", { name: "Generate text" }));
+    expect(await screen.findByLabelText("Generated text")).toHaveTextContent(
+      "Hello, world!",
     );
 
     // Click Start Lesson with folder active
@@ -439,19 +468,19 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     await screen.findByText("Business");
     fireEvent.click(screen.getByRole("button", { name: "Open" }));
     await screen.findByText("No vocabulary yet.");
-    fireEvent.click(screen.getByRole("button", { name: "Quiz" }));
+    fireEvent.click(screen.getByRole("button", { name: "Multiple Choice" }));
     await waitFor(() =>
       expect(screen.getByRole("alert")).toHaveTextContent(
         "Unable to start the quiz",
       ),
     );
-    fireEvent.click(screen.getByRole("button", { name: "Quiz" }));
+    fireEvent.click(screen.getByRole("button", { name: "Multiple Choice" }));
     await waitFor(() =>
       expect(screen.getByRole("alert")).toHaveTextContent(
         "Network unavailable",
       ),
     );
-    fireEvent.click(screen.getByRole("button", { name: /Back to library/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Back to Folders" }));
     expect(
       await screen.findByRole("heading", { name: "Your vocabulary topics" }),
     ).toBeInTheDocument();
@@ -629,7 +658,7 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     expect(
       screen.getByRole("heading", { name: "Flashcards", level: 1 }),
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: /Back to Academics/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Back to Folder" }));
 
     // Go to Practice Hub
     fireEvent.click(screen.getByRole("button", { name: "Practice" }));
@@ -655,7 +684,7 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     // Start Quiz from PracticeHub
     fireEvent.click(screen.getByRole("button", { name: "Start quiz" }));
     await screen.findByRole("heading", { name: "Test your knowledge" });
-    fireEvent.click(screen.getByRole("button", { name: /Back to Academics/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Back to Folder" }));
 
     // Start Flashcards from PracticeHub
     fireEvent.click(screen.getByRole("button", { name: "Practice" }));

@@ -1,5 +1,37 @@
 # SDD Project Status
 
+## Current authoritative status — Folder Detail — 2026-09-01
+
+| Field | Value |
+| --- | --- |
+| Current stage | Post-acceptance maintenance — Folder Detail Layout + Action Redesign |
+| Gate status | **PASS** |
+| Completed maintenance | Back-label separation, dynamic folder hero, grouped study actions, grouped vocabulary actions, responsive vocabulary cards, long-name and browser verification |
+| Current blockers | None |
+| Current limitations | One pre-existing non-failing React `act(...)` warning in an integrated frontend test |
+| Next allowed action | Handoff / normal maintenance |
+| User approval status | Maintenance explicitly requested and complete |
+
+Frontend 61/61 tests pass and all four independent frontend coverage metrics exceed 95%. Chrome verified the persistent Back/Add/CSV/pronunciation/Flashcards/Multiple Choice/AI journey and exact layout geometry at 1440px, 768px, and 390px. The generated long folder name remains separate from `Back to Folders`, wraps safely on mobile, and causes no document overflow or browser errors (EVID-530–EVID-535). No backend, database, API contract, authentication, or business logic changed.
+
+This section supersedes older current-state summaries below while preserving their evidence.
+
+## Current authoritative status — Left Navigation — 2026-09-01
+
+| Field | Value |
+| --- | --- |
+| Current stage | Post-acceptance maintenance — Left Navigation Visual Redesign |
+| Gate status | **PASS** |
+| Completed maintenance | Left alignment, larger targets/icons/type, active and hover treatments, keyboard focus, responsive drawer icon parity, offline-safe icon rendering |
+| Current blockers | None |
+| Current limitations | One pre-existing non-failing React `act(...)` warning in an integrated frontend test |
+| Next allowed action | Handoff / normal maintenance |
+| User approval status | Maintenance explicitly requested and complete |
+
+Frontend 61/61 tests pass and every independent coverage metric exceeds 95%. Browser verification confirms exact navigation geometry and interaction states at 1440px, 768px, and 390px with zero browser errors and no page overflow (EVID-525–EVID-529). No route, authentication, backend, business rule, database schema, or application layout changed.
+
+This section supersedes older current-state summaries below while preserving their evidence.
+
 ## Current authoritative status — 2026-09-01
 
 | Field | Value |

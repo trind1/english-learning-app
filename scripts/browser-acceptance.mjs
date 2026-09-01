@@ -114,7 +114,7 @@ const hasText = (value) =>
   `[...document.querySelectorAll('body *')].some((element) => element.children.length === 0 && element.textContent.includes(${text(value)}))`;
 const clickButton = (label) =>
   evaluate(
-    `(() => { const button = [...document.querySelectorAll('button')].find((item) => { const value = item.textContent.trim(); return value === ${text(label)} || value.endsWith(${text(label)}) || value.startsWith(${text(label)}); }); if (!button) return false; button.click(); return true; })()`,
+    `(() => { const button = [...document.querySelectorAll('button')].find((item) => { const value = item.textContent.trim(); return item.getAttribute('aria-label') === ${text(label)} || value === ${text(label)} || value.endsWith(${text(label)}) || value.startsWith(${text(label)}); }); if (!button) return false; button.click(); return true; })()`,
   );
 const fill = (label, value) =>
   evaluate(
@@ -167,6 +167,107 @@ const capture = async (name, width, height) => {
   return layout;
 };
 
+const measureNavigation = (selector) =>
+  evaluate(`(() => {
+    const navigation = document.querySelector(${text(selector)});
+    const buttons = [...navigation.querySelectorAll('.side-nav-links > .side-nav-item > button')];
+    return {
+      labels: buttons.map((button) => button.querySelector('.side-nav-label').textContent),
+      heights: buttons.map((button) => Math.round(button.getBoundingClientRect().height)),
+      buttonLefts: buttons.map((button) => Math.round(button.getBoundingClientRect().left)),
+      iconLefts: buttons.map((button) => Math.round(button.querySelector('.side-nav-icon').getBoundingClientRect().left)),
+      labelLefts: buttons.map((button) => Math.round(button.querySelector('.side-nav-label').getBoundingClientRect().left)),
+      iconSizes: buttons.map((button) => getComputedStyle(button.querySelector('.side-nav-icon')).width),
+      labelSizes: buttons.map((button) => getComputedStyle(button).fontSize),
+      iconMasks: buttons.map((button) => getComputedStyle(button.querySelector('.side-nav-icon')).webkitMaskImage),
+      activeLabel: buttons.find((button) => button.getAttribute('aria-current') === 'page')?.querySelector('.side-nav-label').textContent ?? null,
+      activeBackground: getComputedStyle(buttons.find((button) => button.getAttribute('aria-current') === 'page')).backgroundColor,
+      activeAccentWidth: getComputedStyle(buttons.find((button) => button.getAttribute('aria-current') === 'page'), '::before').width,
+      navigationRight: Math.round(navigation.getBoundingClientRect().right),
+      viewportWidth: window.innerWidth,
+    };
+  })()`);
+
+const assertNavigation = (measurement, expectedActive) => {
+  if (
+    JSON.stringify(measurement.labels) !==
+      JSON.stringify(["Dashboard", "Vocabulary", "Practice", "Progress"]) ||
+    measurement.heights.some((height) => height !== 52) ||
+    measurement.iconSizes.some((size) => size !== "24px") ||
+    measurement.labelSizes.some((size) => size !== "15px") ||
+    measurement.iconMasks.some((mask) => mask === "none") ||
+    measurement.labelLefts.some(
+      (left, index) => left <= measurement.iconLefts[index],
+    ) ||
+    measurement.activeLabel !== expectedActive ||
+    measurement.activeBackground === "rgba(0, 0, 0, 0)" ||
+    measurement.activeAccentWidth !== "3px" ||
+    measurement.navigationRight > measurement.viewportWidth
+  )
+    throw new Error(
+      `Incorrect sidebar navigation: ${JSON.stringify(measurement)}`,
+    );
+};
+
+const measureFolderDetail = () =>
+  evaluate(`(() => {
+    const page = document.querySelector('.folder-detail-page');
+    const back = page.querySelector('.folder-back-button');
+    const title = page.querySelector('.folder-detail-hero h1');
+    const study = [...page.querySelectorAll('.study-mode-card')];
+    const actions = [...page.querySelectorAll('.folder-action-button')];
+    const rect = (element) => {
+      const box = element.getBoundingClientRect();
+      return { left: Math.round(box.left), right: Math.round(box.right), top: Math.round(box.top), bottom: Math.round(box.bottom), width: Math.round(box.width), height: Math.round(box.height) };
+    };
+    return {
+      viewportWidth: window.innerWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+      backLabel: back.textContent.trim().replace(/\\s+/g, ' '),
+      back: rect(back),
+      title: title.textContent.trim(),
+      titleRect: rect(title),
+      studyLabels: study.map((button) => button.getAttribute('aria-label')),
+      studyRects: study.map(rect),
+      actionLabels: actions.map((button) => button.textContent.trim().replace(/\\s+/g, ' ')),
+      actionRects: actions.map(rect),
+      focusOutline: getComputedStyle(back).outlineWidth,
+    };
+  })()`);
+
+const assertFolderDetail = (measurement, folderName) => {
+  const overlaps = (left, right) =>
+    left.left < right.right &&
+    left.right > right.left &&
+    left.top < right.bottom &&
+    left.bottom > right.top;
+  const allRects = [...measurement.studyRects, ...measurement.actionRects];
+  if (
+    measurement.backLabel !== "← Back to Folders" ||
+    measurement.backLabel.includes(folderName) ||
+    measurement.back.width >= measurement.viewportWidth * 0.75 ||
+    measurement.back.height < 42 ||
+    measurement.title !== folderName ||
+    measurement.titleRect.right > measurement.viewportWidth ||
+    (measurement.viewportWidth >= 1000 &&
+      Number.parseFloat(measurement.focusOutline) < 2) ||
+    JSON.stringify(measurement.studyLabels) !==
+      JSON.stringify(["Flashcards", "Multiple Choice", "AI Generator"]) ||
+    JSON.stringify(measurement.actionLabels) !==
+      JSON.stringify(["+ Add Vocabulary", "⇧ Import CSV"]) ||
+    allRects.some(
+      (rect) => rect.right > measurement.viewportWidth || rect.width < 120,
+    ) ||
+    allRects.some((rect, index) =>
+      allRects.slice(index + 1).some((other) => overlaps(rect, other)),
+    ) ||
+    measurement.scrollWidth > measurement.viewportWidth
+  )
+    throw new Error(
+      `Incorrect folder detail layout: ${JSON.stringify(measurement)}`,
+    );
+};
+
 try {
   await connect();
   await send("Runtime.enable");
@@ -212,6 +313,30 @@ try {
     `(() => { const card = [...document.querySelectorAll('li')].find((item) => item.textContent.includes(${text(folderName)})); card.querySelector('button').click(); return true; })()`,
   );
   await waitFor(hasText("No vocabulary yet."), "folder detail");
+  const emptyBackLabel = await evaluate(
+    `document.querySelector('.folder-back-button')?.textContent.trim().replace(/\\s+/g, ' ')`,
+  );
+  if (
+    emptyBackLabel !== "← Back to Folders" ||
+    emptyBackLabel.includes(folderName)
+  )
+    throw new Error(`Incorrect back label: ${emptyBackLabel}`);
+  await clickButton("Back to Folders");
+  await waitFor(
+    hasText("Your vocabulary topics"),
+    "folders after back navigation",
+  );
+  await waitFor(
+    `[...document.querySelectorAll('.folder-card')].some((item) => item.textContent.includes(${text(folderName)}))`,
+    "folder card after back navigation",
+  );
+  await evaluate(
+    `(() => { const card = [...document.querySelectorAll('.folder-card')].find((item) => item.textContent.includes(${text(folderName)})); card.querySelector('button').click(); return true; })()`,
+  );
+  await waitFor(hasText("No vocabulary yet."), "folder detail after reopening");
+  await clickButton("Add Vocabulary");
+  if ((await evaluate("document.activeElement?.id")) !== "word")
+    throw new Error("Add Vocabulary action did not focus the add form.");
 
   const vocabulary = [
     ["hello", "greeting", "/həˈləʊ/"],
@@ -230,11 +355,18 @@ try {
   await send("Page.reload", { ignoreCache: true });
   await delay(500);
   if (!(await clickButton("Library"))) await clickButton("Vocabulary");
-  await waitFor(hasText(folderName), "persisted folder");
+  await waitFor(
+    `[...document.querySelectorAll('.folder-card')].some((item) => item.textContent.includes(${text(folderName)}))`,
+    "persisted folder",
+  );
   await evaluate(
-    `(() => { const card = [...document.querySelectorAll('li')].find((item) => item.textContent.includes(${text(folderName)})); card.querySelector('button').click(); return true; })()`,
+    `(() => { const card = [...document.querySelectorAll('.folder-card')].find((item) => item.textContent.includes(${text(folderName)})); card.querySelector('button').click(); return true; })()`,
   );
   await waitFor(hasText("/həˈləʊ/"), "persisted IPA");
+
+  await clickButton("Import CSV");
+  if ((await evaluate("document.activeElement?.id")) !== "csv")
+    throw new Error("Import CSV action did not focus the CSV input.");
 
   const csvPath = join(profile, "browser.csv");
   await writeFile(
@@ -262,25 +394,20 @@ try {
   }
   await waitFor(hasText("Skipped: 1"), "CSV duplicate report");
 
+  const folderDesktop = await capture("folder-detail-desktop", 1440, 1000);
+  await evaluate(`document.querySelector('.folder-back-button').focus()`);
+  const folderDesktopDetail = await measureFolderDetail();
+  assertFolderDetail(folderDesktopDetail, folderName);
+  const folderTablet = await capture("folder-detail-tablet", 768, 1000);
+  const folderTabletDetail = await measureFolderDetail();
+  assertFolderDetail(folderTabletDetail, folderName);
+  const folderMobile = await capture("folder-detail-mobile", 390, 900);
+  const folderMobileDetail = await measureFolderDetail();
+  assertFolderDetail(folderMobileDetail, folderName);
+  await capture("folder-detail-desktop", 1440, 1000);
+
   if (!(await clickButton("Pronounce hello")))
     throw new Error("Pronunciation control was unavailable.");
-  const firstCheckbox = await evaluate(
-    `(() => { const input = document.querySelector('section[aria-label="AI text generation"] input[type=checkbox]'); input.click(); return true; })()`,
-  );
-  if (!firstCheckbox)
-    throw new Error("AI vocabulary selection was unavailable.");
-  await clickButton("Generate text");
-  try {
-    await waitFor(
-      `Boolean(document.querySelector('output[aria-label="Generated text"]'))`,
-      "AI text",
-    );
-  } catch (error) {
-    const state = await evaluate(
-      `({ alerts: [...document.querySelectorAll('[role=alert]')].map((item) => item.textContent), buttons: [...document.querySelectorAll('button')].filter((button) => button.textContent.includes('Generat')).map((button) => button.textContent), body: document.body.innerText })`,
-    );
-    throw new Error(`${error.message}: ${JSON.stringify(state)}`);
-  }
 
   await clickButton("Flashcards");
   await waitFor(hasText("Reveal meaning"), "flashcards");
@@ -294,7 +421,7 @@ try {
   );
   await waitFor(hasText(folderName), "folder after flashcards");
 
-  await clickButton("Quiz");
+  await clickButton("Multiple Choice");
   await waitFor(
     `Boolean(document.querySelector('section[aria-label="Multiple-choice test"]'))`,
     "quiz",
@@ -318,6 +445,31 @@ try {
   } catch (error) {
     const state = await evaluate(
       `({ body: document.body.innerText, buttons: [...document.querySelectorAll('section[aria-label="Multiple-choice test"] button')].map((button) => ({ text: button.textContent, disabled: button.disabled })) })`,
+    );
+    throw new Error(`${error.message}: ${JSON.stringify(state)}`);
+  }
+  await clickButton("Back to folder");
+  await waitFor(hasText(folderName), "folder after quiz");
+
+  await clickButton("AI Generator");
+  await waitFor(
+    `Boolean(document.querySelector('section[aria-label="AI text generation"]'))`,
+    "AI generator",
+  );
+  const firstCheckbox = await evaluate(
+    `(() => { const input = document.querySelector('section[aria-label="AI text generation"] input[type=checkbox]'); input.click(); return true; })()`,
+  );
+  if (!firstCheckbox)
+    throw new Error("AI vocabulary selection was unavailable.");
+  await clickButton("Generate text");
+  try {
+    await waitFor(
+      `Boolean(document.querySelector('output[aria-label="Generated text"]'))`,
+      "AI text",
+    );
+  } catch (error) {
+    const state = await evaluate(
+      `({ alerts: [...document.querySelectorAll('[role=alert]')].map((item) => item.textContent), buttons: [...document.querySelectorAll('button')].filter((button) => button.textContent.includes('Generat')).map((button) => button.textContent), body: document.body.innerText })`,
     );
     throw new Error(`${error.message}: ${JSON.stringify(state)}`);
   }
@@ -348,8 +500,82 @@ try {
       `Incorrect learning consistency: ${JSON.stringify(consistency)}`,
     );
   desktop = await capture("desktop", 1440, 900);
+  const desktopNavigation = await measureNavigation(
+    'nav[aria-label="Primary navigation"]',
+  );
+  assertNavigation(desktopNavigation, "Dashboard");
+  const vocabularyPoint = await evaluate(`(() => {
+    const button = [...document.querySelectorAll('nav[aria-label="Primary navigation"] .side-nav-item button')][1];
+    const rect = button.getBoundingClientRect();
+    return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2, before: getComputedStyle(button).backgroundColor };
+  })()`);
+  await send("Input.dispatchMouseEvent", {
+    type: "mouseMoved",
+    x: vocabularyPoint.x,
+    y: vocabularyPoint.y,
+  });
+  await delay(250);
+  const hoverBackground = await evaluate(
+    `getComputedStyle([...document.querySelectorAll('nav[aria-label="Primary navigation"] .side-nav-item button')][1]).backgroundColor`,
+  );
+  await evaluate(
+    `[...document.querySelectorAll('nav[aria-label="Primary navigation"] .side-nav-item button')][1].focus()`,
+  );
+  const focusOutlineWidth = await evaluate(
+    `getComputedStyle([...document.querySelectorAll('nav[aria-label="Primary navigation"] .side-nav-item button')][1]).outlineWidth`,
+  );
+  if (hoverBackground === vocabularyPoint.before || focusOutlineWidth !== "3px")
+    throw new Error(
+      `Sidebar interaction states failed: ${JSON.stringify({ hoverBackground, focusOutlineWidth })}`,
+    );
+  await clickButton("Vocabulary");
+  await waitFor(
+    `document.querySelector('nav[aria-label="Primary navigation"] [aria-current="page"]')?.textContent.includes('Vocabulary')`,
+    "Vocabulary navigation active state",
+  );
+  await clickButton("Practice");
+  await waitFor(
+    `document.querySelector('nav[aria-label="Primary navigation"] [aria-current="page"]')?.textContent.includes('Practice')`,
+    "Practice navigation active state",
+  );
+  const progressPath = await evaluate("location.pathname");
+  await clickButton("Progress");
+  if ((await evaluate("location.pathname")) !== progressPath)
+    throw new Error("Progress placeholder navigation changed unexpectedly.");
+  await clickButton("Dashboard");
+  await waitFor(
+    hasText("Completed sessions"),
+    "dashboard after navigation checks",
+  );
   tablet = await capture("tablet", 768, 900);
+  await evaluate(
+    `document.querySelector('[aria-label="Open navigation"]').click()`,
+  );
+  await waitFor(
+    `Boolean(document.querySelector('nav[aria-label="Mobile navigation"]'))`,
+    "tablet navigation drawer",
+  );
+  const tabletNavigation = await measureNavigation(
+    'nav[aria-label="Mobile navigation"]',
+  );
+  assertNavigation(tabletNavigation, "Dashboard");
+  const sidebarTablet = await capture("sidebar-tablet", 768, 900);
+  await evaluate(
+    `document.querySelector('[data-testid="mobile-navigation-backdrop"]').click()`,
+  );
   const mobile = await capture("mobile", 390, 800);
+  await evaluate(
+    `document.querySelector('[aria-label="Open navigation"]').click()`,
+  );
+  await waitFor(
+    `Boolean(document.querySelector('nav[aria-label="Mobile navigation"]'))`,
+    "mobile navigation drawer",
+  );
+  const mobileNavigation = await measureNavigation(
+    'nav[aria-label="Mobile navigation"]',
+  );
+  assertNavigation(mobileNavigation, "Dashboard");
+  const sidebarMobile = await capture("sidebar-mobile", 390, 800);
 
   if (browserErrors.length)
     throw new Error(`Browser errors: ${browserErrors.join(" | ")}`);
@@ -365,11 +591,25 @@ try {
         ai: true,
         flashcards: true,
         quiz: true,
+        folderDetail: {
+          desktop: { capture: folderDesktop, detail: folderDesktopDetail },
+          tablet: { capture: folderTablet, detail: folderTabletDetail },
+          mobile: { capture: folderMobile, detail: folderMobileDetail },
+        },
         dashboard: true,
         consistency,
         desktop,
         tablet,
         mobile,
+        navigation: {
+          desktop: desktopNavigation,
+          hoverBackground,
+          focusOutlineWidth,
+          tablet: tabletNavigation,
+          mobile: mobileNavigation,
+          sidebarTablet,
+          sidebarMobile,
+        },
         browserErrors: 0,
       },
       null,

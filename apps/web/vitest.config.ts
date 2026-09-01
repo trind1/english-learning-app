@@ -2,6 +2,7 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
+    setupFiles: ["./test/setup.ts"],
     coverage: {
       all: true,
       // main.tsx only mounts App into the browser-owned root element. Product

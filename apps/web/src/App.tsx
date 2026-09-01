@@ -289,6 +289,7 @@ export const App = () => {
         <main id="main" style={{ flex: 1, padding: "24px 16px" }}>
           <button
             className="btn-ghost"
+            aria-label="Back to Folder"
             style={{
               marginBottom: "16px",
               color: "var(--primary)",
@@ -296,7 +297,7 @@ export const App = () => {
             }}
             onClick={() => navigate("folder")}
           >
-            ← Back to {folder.name}
+            ← Back to Folder
           </button>
           <PageHeader eyebrow="Study" title="Flashcards" text={folder.name} />
           <Flashcards items={words} onClose={() => navigate("folder")} />
@@ -314,6 +315,7 @@ export const App = () => {
         <main id="main" style={{ flex: 1, padding: "24px 16px" }}>
           <button
             className="btn-ghost"
+            aria-label="Back to Folder"
             style={{
               marginBottom: "16px",
               color: "var(--primary)",
@@ -321,7 +323,7 @@ export const App = () => {
             }}
             onClick={() => navigate("folder")}
           >
-            ← Back to {folder.name}
+            ← Back to Folder
           </button>
           <PageHeader
             eyebrow="Quiz"
@@ -378,11 +380,18 @@ export const App = () => {
           <li
             className={`side-nav-item ${view === "dashboard" ? "active" : ""}`}
           >
-            <button type="button" onClick={() => navigate("dashboard")}>
-              <span className="material-symbols-outlined" aria-hidden="true">
+            <button
+              type="button"
+              aria-current={view === "dashboard" ? "page" : undefined}
+              onClick={() => navigate("dashboard")}
+            >
+              <span
+                className="material-symbols-outlined side-nav-icon side-nav-icon--dashboard"
+                aria-hidden="true"
+              >
                 dashboard
               </span>
-              Dashboard
+              <span className="side-nav-label">Dashboard</span>
             </button>
           </li>
           <li
@@ -390,11 +399,20 @@ export const App = () => {
               view === "library" || view === "folder" ? "active" : ""
             }`}
           >
-            <button type="button" onClick={() => navigate("library")}>
-              <span className="material-symbols-outlined" aria-hidden="true">
+            <button
+              type="button"
+              aria-current={
+                view === "library" || view === "folder" ? "page" : undefined
+              }
+              onClick={() => navigate("library")}
+            >
+              <span
+                className="material-symbols-outlined side-nav-icon side-nav-icon--book"
+                aria-hidden="true"
+              >
                 menu_book
               </span>
-              Vocabulary
+              <span className="side-nav-label">Vocabulary</span>
             </button>
           </li>
           <li
@@ -402,19 +420,33 @@ export const App = () => {
               view === "practice" || view === "ai_generator" ? "active" : ""
             }`}
           >
-            <button type="button" onClick={() => navigate("practice")}>
-              <span className="material-symbols-outlined" aria-hidden="true">
+            <button
+              type="button"
+              aria-current={
+                view === "practice" || view === "ai_generator"
+                  ? "page"
+                  : undefined
+              }
+              onClick={() => navigate("practice")}
+            >
+              <span
+                className="material-symbols-outlined side-nav-icon side-nav-icon--fitness"
+                aria-hidden="true"
+              >
                 fitness_center
               </span>
-              Practice
+              <span className="side-nav-label">Practice</span>
             </button>
           </li>
           <li className="side-nav-item">
             <button type="button" onClick={() => {}}>
-              <span className="material-symbols-outlined" aria-hidden="true">
+              <span
+                className="material-symbols-outlined side-nav-icon side-nav-icon--leaderboard"
+                aria-hidden="true"
+              >
                 leaderboard
               </span>
-              Progress
+              <span className="side-nav-label">Progress</span>
             </button>
           </li>
         </nav>
@@ -602,26 +634,70 @@ export const App = () => {
               <li
                 className={`side-nav-item ${view === "dashboard" ? "active" : ""}`}
               >
-                <button type="button" onClick={() => navigate("dashboard")}>
-                  Dashboard
+                <button
+                  type="button"
+                  aria-current={view === "dashboard" ? "page" : undefined}
+                  onClick={() => navigate("dashboard")}
+                >
+                  <span
+                    className="material-symbols-outlined side-nav-icon side-nav-icon--dashboard"
+                    aria-hidden="true"
+                  >
+                    dashboard
+                  </span>
+                  <span className="side-nav-label">Dashboard</span>
                 </button>
               </li>
               <li
                 className={`side-nav-item ${view === "library" || view === "folder" ? "active" : ""}`}
               >
-                <button type="button" onClick={() => navigate("library")}>
-                  Vocabulary
+                <button
+                  type="button"
+                  aria-current={
+                    view === "library" || view === "folder" ? "page" : undefined
+                  }
+                  onClick={() => navigate("library")}
+                >
+                  <span
+                    className="material-symbols-outlined side-nav-icon side-nav-icon--book"
+                    aria-hidden="true"
+                  >
+                    menu_book
+                  </span>
+                  <span className="side-nav-label">Vocabulary</span>
                 </button>
               </li>
               <li
                 className={`side-nav-item ${view === "practice" || view === "ai_generator" ? "active" : ""}`}
               >
-                <button type="button" onClick={() => navigate("practice")}>
-                  Practice
+                <button
+                  type="button"
+                  aria-current={
+                    view === "practice" || view === "ai_generator"
+                      ? "page"
+                      : undefined
+                  }
+                  onClick={() => navigate("practice")}
+                >
+                  <span
+                    className="material-symbols-outlined side-nav-icon side-nav-icon--fitness"
+                    aria-hidden="true"
+                  >
+                    fitness_center
+                  </span>
+                  <span className="side-nav-label">Practice</span>
                 </button>
               </li>
               <li className="side-nav-item">
-                <button type="button">Progress</button>
+                <button type="button">
+                  <span
+                    className="material-symbols-outlined side-nav-icon side-nav-icon--leaderboard"
+                    aria-hidden="true"
+                  >
+                    leaderboard
+                  </span>
+                  <span className="side-nav-label">Progress</span>
+                </button>
               </li>
             </ul>
             <button
@@ -735,71 +811,145 @@ export const App = () => {
         )}
 
         {view === "folder" && folder && vocabularyApi && (
-          <>
+          <div className="folder-detail-page">
             <button
-              className="btn-ghost"
-              style={{
-                marginBottom: "16px",
-                color: "var(--primary)",
-                fontWeight: 600,
-              }}
+              className="btn-ghost folder-back-button"
+              type="button"
               onClick={() => navigate("library")}
             >
-              ← Back to library
+              <span aria-hidden="true" className="folder-back-arrow">
+                ←
+              </span>{" "}
+              Back to Folders
             </button>
-            <PageHeader
-              eyebrow="Topic"
-              title={folder.name}
-              text={`${words.length} ${words.length === 1 ? "word" : "words"} in this topic`}
-              action={
-                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+
+            <header className="folder-detail-hero">
+              <span className="folder-detail-hero-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M3.75 6.5A1.75 1.75 0 0 1 5.5 4.75h4l2 2h7A1.75 1.75 0 0 1 20.25 8.5v9a1.75 1.75 0 0 1-1.75 1.75h-13a1.75 1.75 0 0 1-1.75-1.75v-11Z" />
+                </svg>
+              </span>
+              <div className="folder-detail-hero-copy">
+                <p className="folder-detail-eyebrow">Vocabulary folder</p>
+                <h1>{folder.name}</h1>
+                <p className="folder-detail-count">
+                  {words.length}{" "}
+                  {words.length === 1 ? "vocabulary word" : "vocabulary words"}
+                </p>
+              </div>
+            </header>
+
+            <section
+              className="folder-study-section"
+              aria-labelledby="folder-study-title"
+            >
+              <div className="folder-section-heading">
+                <div>
+                  <p className="folder-section-eyebrow">Learning modes</p>
+                  <h2 id="folder-study-title">Study this folder</h2>
+                </div>
+                <p>Choose a focused way to practise these words.</p>
+              </div>
+              <div className="folder-study-actions">
+                <button
+                  className="study-mode-card study-mode-card--primary"
+                  type="button"
+                  aria-label="Flashcards"
+                  onClick={() => navigate("flashcards")}
+                >
+                  <span className="study-mode-icon" aria-hidden="true">
+                    ▱
+                  </span>
+                  <span className="study-mode-copy">
+                    <strong>Flashcards</strong>
+                    <span>Review vocabulary one by one</span>
+                  </span>
+                  <span className="study-mode-arrow" aria-hidden="true">
+                    →
+                  </span>
+                </button>
+                <button
+                  className="study-mode-card study-mode-card--primary"
+                  type="button"
+                  aria-label="Multiple Choice"
+                  onClick={() => void startQuiz()}
+                >
+                  <span className="study-mode-icon" aria-hidden="true">
+                    ✓
+                  </span>
+                  <span className="study-mode-copy">
+                    <strong>Multiple Choice</strong>
+                    <span>Test what you remember</span>
+                  </span>
+                  <span className="study-mode-arrow" aria-hidden="true">
+                    →
+                  </span>
+                </button>
+                <button
+                  className="study-mode-card study-mode-card--secondary"
+                  type="button"
+                  aria-label="AI Generator"
+                  onClick={() => navigate("ai_generator")}
+                >
+                  <span className="study-mode-icon" aria-hidden="true">
+                    ✦
+                  </span>
+                  <span className="study-mode-copy">
+                    <strong>AI Generator</strong>
+                    <span>Practise vocabulary in context</span>
+                  </span>
+                  <span className="study-mode-arrow" aria-hidden="true">
+                    →
+                  </span>
+                </button>
+              </div>
+              {studyError && (
+                <p role="alert" className="folder-study-error">
+                  {studyError}
+                </p>
+              )}
+            </section>
+
+            <section
+              className="folder-vocabulary-section"
+              aria-labelledby="folder-vocabulary-title"
+            >
+              <div className="folder-vocabulary-toolbar">
+                <div>
+                  <p className="folder-section-eyebrow">Your collection</p>
+                  <h2 id="folder-vocabulary-title">Vocabulary</h2>
+                  <p>
+                    {words.length} {words.length === 1 ? "word" : "words"}
+                  </p>
+                </div>
+                <div
+                  className="folder-vocabulary-actions"
+                  role="group"
+                  aria-label="Vocabulary actions"
+                >
                   <button
-                    className="btn-primary study-action study-action-primary"
+                    className="btn-primary folder-action-button"
                     type="button"
-                    onClick={() => navigate("flashcards")}
+                    onClick={() => document.getElementById("word")?.focus()}
                   >
-                    <span
-                      className="material-symbols-outlined"
-                      aria-hidden="true"
-                      style={{ fontSize: "18px" }}
-                    >
-                      style
-                    </span>
-                    Flashcards
+                    <span aria-hidden="true">+</span> Add Vocabulary
                   </button>
                   <button
-                    className="btn-secondary study-action"
+                    className="btn-secondary folder-action-button"
                     type="button"
-                    onClick={() => void startQuiz()}
+                    onClick={() => document.getElementById("csv")?.focus()}
                   >
-                    <span
-                      className="material-symbols-outlined"
-                      aria-hidden="true"
-                      style={{ fontSize: "18px" }}
-                    >
-                      quiz
-                    </span>
-                    Quiz
+                    <span aria-hidden="true">⇧</span> Import CSV
                   </button>
                 </div>
-              }
-            />
-            {studyError && <p role="alert">{studyError}</p>}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "24px",
-              }}
-            >
-              <VocabularyPanel api={vocabularyApi} onChanged={setWords} />
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-                  gap: "24px",
-                }}
-              >
+              </div>
+
+              <VocabularyPanel
+                api={vocabularyApi}
+                onChanged={setWords}
+                showSummary={false}
+              />
+              <div className="folder-import-row">
                 <CsvImportPanel
                   api={{
                     import: async (file) => {
@@ -824,20 +974,9 @@ export const App = () => {
                     },
                   }}
                 />
-                <AiPanel
-                  words={words}
-                  generate={async (ids) =>
-                    (
-                      await client.request("ai/text", aiSchema, {
-                        method: "POST",
-                        body: JSON.stringify({ vocabularyIds: ids }),
-                      })
-                    ).data.text
-                  }
-                />
               </div>
-            </div>
-          </>
+            </section>
+          </div>
         )}
 
         {view === "practice" && (
