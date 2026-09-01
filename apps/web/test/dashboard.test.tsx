@@ -9,6 +9,7 @@ describe("TEST-018 dashboard UI", () => {
       folderCount: 1,
       vocabularyCount: 2,
       completedSessionCount: 3,
+      completedSessionDates: ["2026-09-02T08:00:00.000Z"],
       correctAnswerCount: 4,
       incorrectAnswerCount: 1,
       accuracyPercent: 80,
@@ -18,10 +19,23 @@ describe("TEST-018 dashboard UI", () => {
         load={load}
         loadFolders={vi.fn().mockResolvedValue([])}
         onAction={onAction}
+        now={new Date(2026, 8, 2, 12)}
       />,
     );
     await waitFor(() => expect(screen.getByText("80%")).toBeInTheDocument());
     expect(screen.getByText("Completed sessions")).toBeInTheDocument();
+    expect(screen.getByLabelText("33.3% consistency")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        (_, element) =>
+          element?.classList.contains("consistency-summary") === true &&
+          element.textContent === "1 of 3 elapsed days active",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(/Wednesday, September 2, 2026: Today/),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText("Upcoming")).toHaveLength(4);
     expect(
       screen.getByRole("heading", { name: "Topic Folders" }),
     ).toBeInTheDocument();
@@ -38,6 +52,7 @@ describe("TEST-018 dashboard UI", () => {
         folderCount: 0,
         vocabularyCount: 0,
         completedSessionCount: 0,
+        completedSessionDates: [],
         correctAnswerCount: 0,
         incorrectAnswerCount: 0,
         accuracyPercent: 0,
@@ -47,7 +62,9 @@ describe("TEST-018 dashboard UI", () => {
     );
     await waitFor(() => expect(screen.getByRole("alert")).toBeInTheDocument());
     fireEvent.click(screen.getByRole("button", { name: "Retry" }));
-    await waitFor(() => expect(screen.getByText("0%")).toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.getByLabelText("0% consistency")).toBeInTheDocument(),
+    );
   });
   it("opens a real topic folder from the dashboard carousel", async () => {
     const onOpenFolder = vi.fn();
@@ -57,6 +74,7 @@ describe("TEST-018 dashboard UI", () => {
           folderCount: 1,
           vocabularyCount: 2,
           completedSessionCount: 0,
+          completedSessionDates: [],
           correctAnswerCount: 0,
           incorrectAnswerCount: 0,
           accuracyPercent: 0,

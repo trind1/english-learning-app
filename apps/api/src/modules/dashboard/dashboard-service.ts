@@ -8,6 +8,9 @@ export class DashboardService {
     const answered = totals.correctAnswerCount + totals.incorrectAnswerCount;
     return {
       ...totals,
+      completedSessionDates: totals.completedSessionDates.map((date) =>
+        date.toISOString(),
+      ),
       accuracyPercent:
         answered === 0
           ? 0

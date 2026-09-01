@@ -1,5 +1,17 @@
 # Specification Traceability Matrix
 
+## Current Learning Consistency maintenance traceability — 2026-09-01
+
+| Change | Requirements / rules | Existing tasks | Tests / evidence | Status |
+| --- | --- | --- | --- | --- |
+| Persisted qualifying activity timestamps in dashboard response | FR-012–FR-013, BR-025, AC-009 | TASK-008–TASK-009 | TEST-009, EVID-517–EVID-520 | PASS |
+| Monday–Sunday local week, unique active days, elapsed-day percentage, and future-day exclusion | User-authorized maintenance semantics; FR-012–FR-014, BR-025 | TASK-009, TASK-018 | TEST-018 current-week deterministic tests, EVID-518–EVID-520 | PASS |
+| Accessible seven-day activity timeline and responsive internal mobile scrolling | FR-014, NFR-011–NFR-013, AC-010, AC-022 | TASK-018, TASK-021 | TEST-018 dashboard UI, EVID-518, EVID-522–EVID-523 | PASS |
+
+Code mapping: `prisma-dashboard-repository.ts` reads existing `TestSession.completedAt` values; `dashboard-service.ts` serializes them; `App.tsx` validates them; `current-week-consistency.ts` performs local-calendar aggregation; `Dashboard.tsx` and `styles.css` render the component. No database schema or migration changed. The dashboard REST response was additively extended with `completedSessionDates`; its SDD contract is synchronized.
+
+Gate: **PASS**. Next allowed action: handoff / normal maintenance. Evidence: EVID-517–EVID-524.
+
 ## Current remediation traceability — 2026-08-28
 
 | Change | Requirements / rules | Tasks | Tests / evidence | Status |

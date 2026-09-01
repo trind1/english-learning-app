@@ -22,6 +22,7 @@ const dashboard = {
     folderCount: 0,
     vocabularyCount: 0,
     completedSessionCount: 0,
+    completedSessionDates: [],
     correctAnswerCount: 0,
     incorrectAnswerCount: 0,
     accuracyPercent: 0,
@@ -60,7 +61,7 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     expect(
       screen.getByRole("navigation", { name: "Primary navigation" }),
     ).toBeInTheDocument();
-    await screen.findByText("0%");
+    await screen.findByLabelText("0% consistency");
     expect(
       screen.getByRole("heading", { name: "Welcome back" }),
     ).toBeInTheDocument();
@@ -158,7 +159,7 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     );
     window.history.replaceState({}, "", "/login");
     render(<App />);
-    await screen.findByText("0%");
+    await screen.findByLabelText("0% consistency");
     expect(
       screen.getByRole("heading", { name: "Welcome back" }),
     ).toBeInTheDocument();
@@ -172,7 +173,7 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     );
     window.history.replaceState({}, "", "/");
     render(<App />);
-    await screen.findByText("0%");
+    await screen.findByLabelText("0% consistency");
     expect(window.location.pathname).toBe("/dashboard");
   });
 
@@ -184,7 +185,7 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
     );
     window.history.replaceState({}, "", "/register");
     render(<App />);
-    await screen.findByText("0%");
+    await screen.findByLabelText("0% consistency");
     expect(window.location.pathname).toBe("/dashboard");
   });
 
@@ -233,7 +234,7 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
         : json({ data: { folders: [] } }),
     );
     render(<App />);
-    await screen.findByText("0%");
+    await screen.findByLabelText("0% consistency");
     fireEvent.click(screen.getByRole("button", { name: "Start learning" }));
     expect(
       await screen.findByRole("heading", { name: "Your vocabulary topics" }),
@@ -255,7 +256,7 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
 
     // Dashboard
     fireEvent.click(screen.getByRole("button", { name: "Dashboard" }));
-    await screen.findByText("0%");
+    await screen.findByLabelText("0% consistency");
 
     // Vocabulary
     fireEvent.click(screen.getByRole("button", { name: "Vocabulary" }));

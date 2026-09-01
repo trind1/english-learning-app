@@ -12,6 +12,7 @@ describe("TEST-009 dashboard aggregation", () => {
         folderCount: 0,
         vocabularyCount: 0,
         completedSessionCount: 0,
+        completedSessionDates: [],
         correctAnswerCount: 0,
         incorrectAnswerCount: 0,
       }),
@@ -25,6 +26,7 @@ describe("TEST-009 dashboard aggregation", () => {
         folderCount: 2,
         vocabularyCount: 5,
         completedSessionCount: 2,
+        completedSessionDates: [new Date("2026-09-01T01:00:00.000Z")],
         correctAnswerCount: 2,
         incorrectAnswerCount: 1,
       }),
@@ -33,6 +35,7 @@ describe("TEST-009 dashboard aggregation", () => {
       folderCount: 2,
       vocabularyCount: 5,
       completedSessionCount: 2,
+      completedSessionDates: ["2026-09-01T01:00:00.000Z"],
       correctAnswerCount: 2,
       incorrectAnswerCount: 1,
       accuracyPercent: 66.7,
@@ -43,9 +46,22 @@ describe("TEST-009 dashboard aggregation", () => {
     const client = {
       folder: { count: () => "folders" },
       vocabulary: { count: () => "vocabulary" },
-      testSession: { count: () => "sessions" },
+      testSession: {
+        count: () => "sessions",
+        findMany: () => "sessionDates",
+      },
       testAnswer: { count: (arg: unknown) => arg },
-      $transaction: async () => [2, 5, 3, 7, 2],
+      $transaction: async () => [
+        2,
+        5,
+        3,
+        [
+          { completedAt: new Date("2026-09-01T01:00:00.000Z") },
+          { completedAt: new Date("2026-09-01T08:00:00.000Z") },
+        ],
+        7,
+        2,
+      ],
     } as never;
     await expect(
       new PrismaDashboardRepository(client).totals(),
@@ -53,6 +69,10 @@ describe("TEST-009 dashboard aggregation", () => {
       folderCount: 2,
       vocabularyCount: 5,
       completedSessionCount: 3,
+      completedSessionDates: [
+        new Date("2026-09-01T01:00:00.000Z"),
+        new Date("2026-09-01T08:00:00.000Z"),
+      ],
       correctAnswerCount: 7,
       incorrectAnswerCount: 2,
     });

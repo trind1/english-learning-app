@@ -1,5 +1,21 @@
 # SDD Project Dashboard
 
+## Current authoritative maintenance status — 2026-09-01
+
+Learning Consistency Logic + UI Redesign is **PASS**. The dashboard now derives unique active local calendar days from persisted completed test sessions and calculates current-week consistency as active elapsed days divided by elapsed days from Monday through today. Future days are explicitly `Upcoming` and do not reduce the score.
+
+The fabricated percentage-bar chart was replaced by an accessible seven-day timeline with weekday names, calendar dates, today/active/inactive/upcoming text and shape states, a percentage, and an explanatory active-day count. Frontend coverage is 99.86/95.10/96.35/99.86 and backend coverage is 97.39/95.08/98.61/97.39 for statements/branches/functions/lines. Persisted browser verification passes at 1440px, 768px, and 390px with zero browser errors and no page overflow (EVID-517–EVID-524).
+
+| Field | Value |
+| --- | --- |
+| Current stage | Post-acceptance maintenance |
+| Gate status | **PASS** |
+| Current blockers | None |
+| Next allowed action | Handoff / normal maintenance |
+| User approval status | User-authorized maintenance complete |
+
+This section supersedes older current-state summaries below without rewriting their historical evidence.
+
 ## Current authoritative gate — 2026-08-28
 
 Authentication and Routing Remediation and Final Acceptance are **PASS**. The complete browser acceptance workflow passed with the persistent dev server, including auth routing, learning flow, CSV import, flashcards, quiz, AI, and logout/login persistence. Handoff is **READY**.

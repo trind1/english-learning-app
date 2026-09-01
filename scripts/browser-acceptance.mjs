@@ -129,9 +129,31 @@ const capture = async (name, width, height) => {
     mobile: width <= 480,
   });
   const layout = await evaluate(
-    `({ width: window.innerWidth, scrollWidth: document.documentElement.scrollWidth, mainVisible: Boolean(document.querySelector('main')?.getBoundingClientRect().height) })`,
+    `(() => {
+      const card = document.querySelector('.consistency-chart-card');
+      const percentage = card?.querySelector('.consistency-percentage');
+      const week = card?.querySelector('.consistency-week');
+      return {
+        width: window.innerWidth,
+        scrollWidth: document.documentElement.scrollWidth,
+        mainVisible: Boolean(document.querySelector('main')?.getBoundingClientRect().height),
+        consistency: card ? {
+          left: Math.round(card.getBoundingClientRect().left),
+          right: Math.round(card.getBoundingClientRect().right),
+          percentageRight: Math.round(percentage.getBoundingClientRect().right),
+          weekClientWidth: week.clientWidth,
+          weekScrollWidth: week.scrollWidth,
+        } : null,
+      };
+    })()`,
   );
-  if (layout.scrollWidth > layout.width || !layout.mainVisible)
+  if (
+    layout.scrollWidth > layout.width ||
+    !layout.mainVisible ||
+    (layout.consistency &&
+      (layout.consistency.right > layout.width ||
+        layout.consistency.percentageRight > layout.width))
+  )
     throw new Error(`Broken ${name} layout: ${JSON.stringify(layout)}`);
   const screenshot = await send("Page.captureScreenshot", {
     format: "png",
@@ -161,9 +183,16 @@ try {
     location.reload();
     return true;
   })()`);
-  await waitFor(hasText("Welcome back"), "dashboard");
-  const desktop = await capture("desktop", 1440, 900);
-  const tablet = await capture("tablet", 768, 900);
+  try {
+    await waitFor(hasText("Welcome back"), "dashboard");
+  } catch (error) {
+    const state = await evaluate(
+      `({ url: location.href, body: document.body.innerText, alerts: [...document.querySelectorAll('[role=alert]')].map((item) => item.textContent) })`,
+    );
+    throw new Error(`${error.message}: ${JSON.stringify(state)}`);
+  }
+  let desktop = await capture("desktop", 1440, 900);
+  let tablet = await capture("tablet", 768, 900);
 
   if (!(await clickButton("Library"))) await clickButton("Vocabulary");
   await waitFor(hasText("Your vocabulary topics"), "library");
@@ -294,6 +323,32 @@ try {
   }
   await clickButton("Dashboard");
   await waitFor(hasText("Completed sessions"), "updated dashboard");
+  const consistency = await evaluate(`(() => {
+    const card = document.querySelector('.consistency-chart-card');
+    const days = [...card.querySelectorAll('.consistency-day')];
+    const elapsed = days.filter((day) => !day.classList.contains('consistency-day--upcoming'));
+    const active = elapsed.filter((day) => day.classList.contains('consistency-day--active') || day.classList.contains('consistency-day--active-today'));
+    const percentage = Number(card.querySelector('.consistency-percentage').textContent.replace('%', ''));
+    return {
+      percentage,
+      expectedPercentage: Math.round((active.length / elapsed.length) * 1000) / 10,
+      elapsedDays: elapsed.length,
+      activeDays: active.length,
+      upcomingDays: days.length - elapsed.length,
+      todayDays: days.filter((day) => day.classList.contains('consistency-day--today')).length,
+      labels: days.map((day) => day.getAttribute('aria-label')),
+    };
+  })()`);
+  if (
+    consistency.percentage !== consistency.expectedPercentage ||
+    consistency.todayDays !== 1 ||
+    consistency.labels.length !== 7
+  )
+    throw new Error(
+      `Incorrect learning consistency: ${JSON.stringify(consistency)}`,
+    );
+  desktop = await capture("desktop", 1440, 900);
+  tablet = await capture("tablet", 768, 900);
   const mobile = await capture("mobile", 390, 800);
 
   if (browserErrors.length)
@@ -311,6 +366,7 @@ try {
         flashcards: true,
         quiz: true,
         dashboard: true,
+        consistency,
         desktop,
         tablet,
         mobile,

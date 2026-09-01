@@ -12,12 +12,17 @@ export class PrismaDashboardRepository implements DashboardRepository {
       folderCount,
       vocabularyCount,
       completedSessionCount,
+      completedSessions,
       correctAnswerCount,
       incorrectAnswerCount,
     ] = await this.client.$transaction([
       this.client.folder.count(),
       this.client.vocabulary.count(),
       this.client.testSession.count(),
+      this.client.testSession.findMany({
+        select: { completedAt: true },
+        orderBy: { completedAt: "asc" },
+      }),
       this.client.testAnswer.count({ where: { isCorrect: true } }),
       this.client.testAnswer.count({ where: { isCorrect: false } }),
     ]);
@@ -25,6 +30,9 @@ export class PrismaDashboardRepository implements DashboardRepository {
       folderCount,
       vocabularyCount,
       completedSessionCount,
+      completedSessionDates: completedSessions.map(
+        (session: { completedAt: Date }) => session.completedAt,
+      ),
       correctAnswerCount,
       incorrectAnswerCount,
     };

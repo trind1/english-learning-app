@@ -1,5 +1,45 @@
 # Code Generation Implementation Report
 
+## Learning Consistency logic and UI redesign — 2026-09-01
+
+STAGE: Learning Consistency Logic + UI Redesign
+
+STATUS: PASS
+
+FILES_CREATED: `apps/web/src/current-week-consistency.ts`, `apps/web/test/current-week-consistency.test.ts`.
+
+FILES_MODIFIED: dashboard repository/service/adapter and tests; dashboard API schema; `Dashboard.tsx`; dashboard styles and tests; integrated app fixtures/assertions; browser acceptance script; responsive evidence images; SDD dashboard, status, traceability, API contract, implementation report, and verification report.
+
+VERIFICATION_COMMANDS: focused API and web Vitest commands; `npm.cmd run coverage --workspace @english-learning/web -- --maxWorkers=1 --minWorkers=1` with `NODE_OPTIONS=--no-experimental-webstorage`; `npm.cmd run coverage:api`; `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `git diff --check`; isolated development servers on ports 3001/5174; `npm.cmd run browser:acceptance -- http://localhost:5174`.
+
+VERIFICATION_RESULTS: 14 focused tests pass. The complete frontend and backend coverage runs pass 61/61 and 98/98 tests. Both applications independently exceed every 95% coverage threshold. Static checks and the production build pass. The persisted browser workflow and responsive checks pass at 1440px, 768px, and 390px with zero browser errors and no page overflow.
+
+EVIDENCE: EVID-517–EVID-524 and `docs/sdd/evidence/browser-desktop.png`, `browser-tablet.png`, and `browser-mobile.png`.
+
+OPEN_QUESTIONS: None.
+
+NEXT_ALLOWED_ACTION: Handoff / normal maintenance.
+
+USER_APPROVAL_REQUIRED: No.
+
+### Logic correction
+
+- **Old logic:** the widget showed six hard-coded bar heights and one bar derived from all-time quiz accuracy. No session date, current week, elapsed-day denominator, or future-day state was used.
+- **Activity definition:** a unique local calendar day containing at least one persisted completed test session (`TestSession.completedAt`). Abandoned tests are not persisted and therefore do not count.
+- **Week definition:** the user-facing local Monday-through-Sunday calendar week.
+- **Active-day calculation:** completed-session timestamps are converted to local calendar keys and deduplicated, so multiple sessions on one date count once.
+- **Percentage formula:** unique active elapsed days divided by elapsed days from Monday through today, multiplied by 100 and rounded to one decimal place.
+- **Future-day handling:** future days are `Upcoming`, are never active or inactive, and are excluded from the denominator.
+- **Today handling:** today is included in elapsed days and is labeled either `Today · Studied` or `Today · Not studied`.
+
+### UI redesign
+
+The fabricated continuous chart was replaced by a seven-cell activity timeline with explicit `Mon`–`Sun` labels, calendar dates, text and shape state indicators, a prominent percentage, and an explanatory active-day count. Today has a blue outline; active days use a check marker; inactive elapsed days use `No activity`; upcoming days use dashed muted styling and `Upcoming`. On mobile, the header remains fully visible and only the week strip scrolls horizontally.
+
+### Database explanation
+
+Plain meaning: completed quiz sessions still live in the ignored local SQLite file at `apps/api/prisma/dev.db`. The dashboard now reads their existing `completedAt` timestamps; for example, two completed quizzes on Tuesday produce one active Tuesday. The committed Prisma schema and migration did not change, so there is no migration to run. The `.db` data file remains ignored while the schema and migration remain committed. Inspect data safely with Prisma Studio or the dashboard API; do not edit rows manually. The technical terms are **read-only aggregation**, **local calendar projection**, and **unique active-day deduplication**.
+
 ## Final Acceptance remediation — 2026-08-28
 
 STAGE: Code Generation remediation

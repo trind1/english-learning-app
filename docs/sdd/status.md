@@ -1,5 +1,21 @@
 # SDD Project Status
 
+## Current authoritative status — 2026-09-01
+
+| Field | Value |
+| --- | --- |
+| Current stage | Post-acceptance maintenance — Learning Consistency Logic + UI Redesign |
+| Gate status | **PASS** |
+| Completed maintenance | Current-week session aggregation, unique local active days, future-day exclusion, accessible seven-day UI, responsive/browser verification |
+| Current blockers | None |
+| Current limitations | Node 26 frontend tests require `NODE_OPTIONS=--no-experimental-webstorage`; product runtime is unaffected |
+| Next allowed action | Handoff / normal maintenance |
+| User approval status | Maintenance explicitly requested and complete |
+
+The authoritative current-week browser result for Tuesday, September 1, 2026 is Monday Aug 31 `No activity`, Tuesday Sep 1 `Today · Studied`, and Wednesday Sep 2 through Sunday Sep 6 `Upcoming`. The displayed 50% equals 1 unique active day out of 2 elapsed days. Frontend 61/61 and backend 98/98 tests pass under their coverage commands; every independent coverage metric exceeds 95%. Responsive browser verification passes at 1440px, 768px, and 390px with no page overflow and zero browser errors (EVID-517–EVID-524).
+
+This section supersedes inconsistent historical current-state summaries below while preserving their evidence.
+
 ## Current authoritative status — 2026-08-28
 
 Vocabulary UI redesign representative responsive verification is **PASS** at 1440px, 768px, and 390px. No browser errors or overflow were observed.

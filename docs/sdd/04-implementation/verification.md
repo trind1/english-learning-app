@@ -1,5 +1,30 @@
 # TASK-001 through TASK-009 Implementation Verification
 
+## Learning Consistency maintenance verification — 2026-09-01
+
+STATUS: **PASS**
+
+Working directory: `D:\Work\english-learning-app`
+
+| Evidence | Command or source | Exit code | Result |
+| --- | --- | ---: | --- |
+| EVID-517 | Source inspection of `Dashboard.tsx`, dashboard API/repository/service, Prisma schema, session persistence, approved specification, and API contract | 0 | Confirmed the old chart was fabricated and unrelated to session dates; persisted completed test sessions are the only approved qualifying activity. |
+| EVID-518 | Focused dashboard API tests and current-week/frontend dashboard tests | 0 | API 5/5 and web 9/9 pass. Deterministic coverage includes Monday start, seven dates, today, inactive, active, upcoming, future exclusion, same-day deduplication, empty activity, month/year boundaries, local-date conversion, percentage, and safe minimum denominator. |
+| EVID-519 | `$env:NODE_OPTIONS='--no-experimental-webstorage'; npm.cmd run coverage --workspace @english-learning/web -- --maxWorkers=1 --minWorkers=1` | 0 | 16 files and 61 tests pass; 99.86% statements, 95.10% branches, 96.35% functions, and 99.86% lines. |
+| EVID-520 | `npm.cmd run coverage:api` | 0 | 12 files and 98 tests pass; 97.39% statements, 95.08% branches, 98.61% functions, and 97.39% lines. Dashboard module coverage is 100%. |
+| EVID-521 | `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `git diff --check` | 0 | All static checks pass and Vite emits the production build. |
+| EVID-522 | Isolated API/web servers on 3001/5174 plus `npm.cmd run browser:acceptance -- http://localhost:5174` | 0 | Persisted workflow passes. Current week is Aug 31–Sep 6; Tuesday Sep 1 is today and active; Monday is inactive; five future days are upcoming; 1/2 equals the displayed 50%; browser errors are 0. |
+| EVID-523 | Responsive browser measurements and screenshot inspection | 0 | 1440px, 768px, and 390px pass. Card and percentage remain within each viewport. At 390px the 308px week viewport deliberately scrolls its 668px strip; document width remains exactly 390px. |
+| EVID-524 | Initial full frontend/coverage and browser attempts | 1, then remediated | Node 26 experimental web storage shadowed jsdom until disabled for tests; old app assertions expected a unique `0%`; the first isolated browser server used the wrong Vite proxy environment variable. Each issue was diagnosed and the final commands passed. |
+
+DATA VERIFICATION: Browser evidence used the real ignored SQLite development database. It contained persisted completed sessions only. After the workflow completed a quiz on Tuesday, the API returned real ISO `completedSessionDates`; the frontend converted them to local calendar days and produced one unique active elapsed day.
+
+LIMITATIONS: The Node 26 test command requires `NODE_OPTIONS=--no-experimental-webstorage` so jsdom owns `localStorage`. This affects test execution only, not product behavior. Existing unrelated application-header visual issues are outside this component-only maintenance scope.
+
+NEXT_ALLOWED_ACTION: Handoff / normal maintenance.
+
+USER_APPROVAL_REQUIRED: No.
+
 ## Final Acceptance remediation verification — 2026-08-28
 
 STATUS: **PASS** — Folder Detail redesign accepted

@@ -167,12 +167,15 @@ Returns:
     "folderCount": 0,
     "vocabularyCount": 0,
     "completedSessionCount": 0,
+    "completedSessionDates": [],
     "correctAnswerCount": 0,
     "incorrectAnswerCount": 0,
     "accuracyPercent": 0
   }
 }
 ```
+
+`completedSessionDates` contains ISO timestamps for persisted completed test sessions. The browser projects these instants into the user's local calendar before deduplicating active days for current-week Learning Consistency. This additive field does not change the meaning of the existing all-time totals or accuracy.
 
 Only persisted completed sessions count. Accuracy is rounded to one decimal in the application service.
 

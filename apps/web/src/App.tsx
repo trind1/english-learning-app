@@ -39,6 +39,7 @@ const dashboardSchema = z.object({
     folderCount: z.number(),
     vocabularyCount: z.number(),
     completedSessionCount: z.number(),
+    completedSessionDates: z.array(z.string().datetime()),
     correctAnswerCount: z.number(),
     incorrectAnswerCount: z.number(),
     accuracyPercent: z.number(),

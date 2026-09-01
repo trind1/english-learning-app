@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import type { FolderSummary } from "@english-learning/contracts";
+import { getCurrentWeekConsistency } from "./current-week-consistency";
 
 export type DashboardData = {
   folderCount: number;
   vocabularyCount: number;
   completedSessionCount: number;
+  completedSessionDates: readonly string[];
   correctAnswerCount: number;
   incorrectAnswerCount: number;
   accuracyPercent: number;
@@ -15,11 +17,13 @@ export const Dashboard = ({
   loadFolders,
   onAction,
   onOpenFolder,
+  now,
 }: {
   load: () => Promise<DashboardData>;
   loadFolders: () => Promise<readonly FolderSummary[]>;
   onAction?: (view: "library" | "flashcards") => void;
   onOpenFolder?: (folder: FolderSummary) => void;
+  now?: Date;
 }) => {
   const [data, setData] = useState<DashboardData>();
   const [folders, setFolders] = useState<readonly FolderSummary[]>([]);
@@ -74,6 +78,12 @@ export const Dashboard = ({
       </section>
     );
   }
+
+  const consistency = getCurrentWeekConsistency(
+    data.completedSessionDates,
+    now,
+  );
+  const consistencyPercent = `${consistency.percentage}%`;
 
   return (
     <section
@@ -175,66 +185,46 @@ export const Dashboard = ({
           </div>
         </div>
 
-        {/* Learning Consistency Chart Widget */}
+        {/* Learning Consistency Widget */}
         <div className="consistency-chart-card">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "20px",
-            }}
-          >
-            <h3 className="text-headline-md" style={{ margin: 0 }}>
-              Learning Consistency
-            </h3>
-            <span
-              style={{
-                fontSize: "13px",
-                fontWeight: 500,
-                padding: "4px 12px",
-                borderRadius: "20px",
-                backgroundColor: "var(--surface-container-low)",
-                color: "var(--on-surface-variant)",
-              }}
+          <div className="consistency-header">
+            <div>
+              <h3 className="text-headline-md">Learning Consistency</h3>
+              <p>Your study activity this week</p>
+            </div>
+            <strong
+              className="consistency-percentage"
+              aria-label={`${consistencyPercent} consistency`}
             >
-              This Week
-            </span>
+              {consistencyPercent}
+            </strong>
           </div>
-
-          <div className="chart-container" aria-hidden="true">
-            <div className="chart-y-axis">
-              <span>100%</span>
-              <span>50%</span>
-              <span>0</span>
-            </div>
-            <div className="chart-bars-group">
-              <div className="bar-column" style={{ height: "40%" }} />
+          <p className="consistency-summary">
+            <strong>{consistency.activeElapsedDays}</strong> of{" "}
+            {consistency.elapsedDays} elapsed{" "}
+            {consistency.elapsedDays === 1 ? "day" : "days"} active
+          </p>
+          <div
+            className="consistency-week"
+            aria-label="Current week study activity"
+            role="list"
+          >
+            {consistency.days.map((day) => (
               <div
-                className="bar-column highlighted"
-                style={{ height: "80%" }}
-              />
-              <div className="bar-column" style={{ height: "60%" }} />
-              <div
-                className="bar-column highlighted"
-                style={{ height: "100%" }}
-              />
-              <div className="bar-column" style={{ height: "30%" }} />
-              <div
-                className="bar-column highlighted"
-                style={{ height: `${Math.max(20, data.accuracyPercent)}%` }}
-              />
-              <div className="bar-column" style={{ height: "15%" }} />
-            </div>
-          </div>
-          <div className="chart-x-labels" aria-hidden="true">
-            <span>M</span>
-            <span>T</span>
-            <span>W</span>
-            <span>T</span>
-            <span>F</span>
-            <span>S</span>
-            <span>S</span>
+                className={`consistency-day consistency-day--${day.state}${day.isActive && day.isToday ? " consistency-day--active-today" : ""}`}
+                key={day.dateKey}
+                aria-label={`${day.fullLabel}: ${day.statusLabel}`}
+                title={`${day.fullLabel}: ${day.statusLabel}`}
+                role="listitem"
+              >
+                <span className="consistency-weekday">{day.weekday}</span>
+                <span className="consistency-date">{day.dateNumber}</span>
+                <span className="consistency-marker" aria-hidden="true">
+                  {day.isActive ? "✓" : day.state === "upcoming" ? "·" : "—"}
+                </span>
+                <span className="consistency-status">{day.statusLabel}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

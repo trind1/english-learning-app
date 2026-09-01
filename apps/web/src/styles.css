@@ -873,6 +873,7 @@ textarea:focus {
 }
 
 .consistency-chart-card {
+  min-width: 0;
   background-color: var(--surface-container-lowest);
   border-radius: 16px;
   border: 1px solid rgba(194, 198, 214, 0.35);
@@ -880,57 +881,124 @@ textarea:focus {
   padding: var(--spacing-lg);
 }
 
-.chart-container {
-  height: 200px;
-  position: relative;
+.consistency-header {
   display: flex;
-  align-items: flex-end;
-  border-bottom: 1px solid rgba(194, 198, 214, 0.5);
-  padding-bottom: 8px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-md);
 }
-.chart-y-axis {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
+.consistency-header h3 {
+  margin: 0;
+}
+.consistency-header p,
+.consistency-summary {
+  color: var(--on-surface-variant);
+}
+.consistency-header p {
+  margin-top: 4px;
+  font-size: 14px;
+}
+.consistency-percentage {
+  color: var(--primary);
+  font-family: var(--font-headline);
+  font-size: clamp(1.65rem, 3vw, 2.15rem);
+  line-height: 1;
+  white-space: nowrap;
+}
+.consistency-summary {
+  margin: var(--spacing-md) 0;
+  font-size: 14px;
+}
+.consistency-summary strong {
+  color: var(--on-surface);
+}
+.consistency-week {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(70px, 1fr));
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 8px;
+  scrollbar-width: thin;
+  scroll-snap-type: x proximity;
+}
+.consistency-day {
+  min-width: 0;
+  min-height: 126px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  font-size: 11px;
-  color: var(--outline);
-  width: 32px;
-  text-align: right;
-  padding-right: 8px;
-  pointer-events: none;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 10px 6px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 14px;
+  background: var(--surface-container-low);
+  color: var(--on-surface-variant);
+  text-align: center;
+  scroll-snap-align: start;
 }
-.chart-bars-group {
-  width: 100%;
-  height: 100%;
-  padding-left: 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-.bar-column {
-  width: 7%;
-  background-color: rgba(0, 88, 190, 0.2);
-  border-radius: 6px 6px 0 0;
-  transition:
-    background-color 0.2s,
-    height 0.3s;
-}
-.bar-column:hover {
-  background-color: rgba(0, 88, 190, 0.4);
-}
-.bar-column.highlighted {
-  background-color: var(--primary);
-}
-.chart-x-labels {
-  display: flex;
-  justify-content: space-between;
-  padding-left: 40px;
-  margin-top: 8px;
+.consistency-weekday {
   font-size: 13px;
+  font-weight: 700;
+}
+.consistency-date {
+  color: var(--on-surface);
+  font-family: var(--font-headline);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.consistency-marker {
+  width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  margin: 4px 0 2px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-weight: 800;
+  line-height: 1;
+}
+.consistency-status {
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.2;
+}
+.consistency-day--active {
+  border-color: #82c8ac;
+  background: #e8f7f0;
+  color: var(--secondary);
+}
+.consistency-day--active .consistency-date {
+  color: var(--on-secondary-fixed-variant);
+}
+.consistency-day--active .consistency-marker,
+.consistency-day--active-today .consistency-marker {
+  border-color: var(--secondary);
+  background: var(--secondary);
+  color: var(--on-secondary);
+}
+.consistency-day--inactive .consistency-marker {
+  border-style: dashed;
+}
+.consistency-day--today {
+  border: 2px solid var(--primary);
+  background: var(--primary-fixed);
+  color: var(--on-primary-fixed-variant);
+  box-shadow: 0 0 0 3px rgba(0, 88, 190, 0.09);
+}
+.consistency-day--today .consistency-date {
+  color: var(--on-primary-fixed);
+}
+.consistency-day--upcoming {
+  border-style: dashed;
+  background: var(--surface-container-lowest);
+  color: var(--outline);
+}
+.consistency-day--upcoming .consistency-date {
   color: var(--outline);
 }
 
@@ -1238,6 +1306,24 @@ textarea:focus {
   .dashboard-welcome-action {
     position: static;
     margin-top: var(--spacing-md);
+  }
+  .consistency-week {
+    grid-template-columns: repeat(7, 88px);
+  }
+  .consistency-day {
+    min-height: 122px;
+  }
+}
+
+@media (max-width: 480px) {
+  .consistency-header h3 {
+    font-size: 1.2rem;
+  }
+  .consistency-header p {
+    font-size: 13px;
+  }
+  .consistency-percentage {
+    font-size: 1.6rem;
   }
 }
 
