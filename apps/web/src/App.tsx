@@ -75,7 +75,15 @@ const resultSchema = z.object({
   }),
 });
 
-const aiSchema = z.object({ data: z.object({ text: z.string() }) });
+const aiSchema = z.object({
+  data: z.object({
+    story: z.string(),
+    usedWords: z.array(z.string()),
+    missingWords: z.array(z.string()),
+    vocabularyIds: z.array(z.string()),
+    source: z.enum(["local", "openai", "gemini"]),
+  }),
+});
 
 export const App = () => {
   const auth = useMemo(() => new AuthService(), []);
@@ -979,14 +987,16 @@ export const App = () => {
             />
             <AiPanel
               words={words}
-              generate={async (ids) =>
-                (
-                  await client.request("ai/text", aiSchema, {
-                    method: "POST",
-                    body: JSON.stringify({ vocabularyIds: ids }),
-                  })
-                ).data.text
-              }
+              generate={async (ids) => {
+                const response = await client.request("ai/text", aiSchema, {
+                  method: "POST",
+                  body: JSON.stringify({
+                    folderId: folder?.id,
+                    vocabularyIds: ids,
+                  }),
+                });
+                return response.data;
+              }}
               onFinish={() => navigate("practice")}
             />
           </>

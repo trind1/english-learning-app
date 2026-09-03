@@ -347,7 +347,15 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
           data: { correctCount: 1, incorrectCount: 0, totalCount: 1 },
         });
       if (url.endsWith("/ai/text"))
-        return json({ data: { text: "Hello, world!" } });
+        return json({
+          data: {
+            story: "Hello, world!",
+            usedWords: ["hello"],
+            missingWords: [],
+            vocabularyIds: ["word-1"],
+            source: "local",
+          },
+        });
       return json({ data: {} });
     });
 
@@ -420,8 +428,8 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "AI Generator" }));
     fireEvent.click(screen.getByLabelText("hello"));
-    fireEvent.click(screen.getByRole("button", { name: "Generate text" }));
-    expect(await screen.findByLabelText("Generated text")).toHaveTextContent(
+    fireEvent.click(screen.getByRole("button", { name: "Generate Story" }));
+    expect(await screen.findByLabelText("Generated story")).toHaveTextContent(
       "Hello, world!",
     );
 
@@ -637,7 +645,15 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
           },
         });
       if (url.endsWith("/ai/text"))
-        return json({ data: { text: "Story on hypothesis" } });
+        return json({
+          data: {
+            story: "Story on hypothesis",
+            usedWords: ["hypothesis"],
+            missingWords: [],
+            vocabularyIds: ["word-1"],
+            source: "local",
+          },
+        });
       return json({ data: {} });
     });
 
@@ -672,11 +688,11 @@ describe("TEST-011 and TEST-021 integrated web shell", () => {
       screen.getByRole("heading", { name: "AI Story Generator" }),
     ).toBeInTheDocument();
     fireEvent.click(screen.getByLabelText("hypothesis"));
-    fireEvent.click(screen.getByRole("button", { name: "Generate text" }));
-    await screen.findByLabelText("Generated text");
+    fireEvent.click(screen.getByRole("button", { name: "Generate Story" }));
+    await screen.findByLabelText("Generated story");
 
     // Finish session -> PracticeHub
-    fireEvent.click(screen.getByRole("button", { name: "Finish Session" }));
+    fireEvent.click(screen.getByRole("button", { name: "Back to Practice" }));
     expect(
       screen.getByRole("heading", { name: "Practice Hub" }),
     ).toBeInTheDocument();

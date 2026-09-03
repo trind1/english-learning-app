@@ -106,8 +106,8 @@ const evaluate = async (expression) => {
   return response.result.value;
 };
 
-const waitFor = (expression, description) =>
-  poll(() => evaluate(expression), description);
+const waitFor = (expression, description, timeout) =>
+  poll(() => evaluate(expression), description, timeout);
 
 const text = (value) => JSON.stringify(value);
 const hasText = (value) =>
@@ -465,19 +465,26 @@ try {
 
   await clickButton("AI Generator");
   await waitFor(
-    `Boolean(document.querySelector('section[aria-label="AI text generation"]'))`,
+    `Boolean(document.querySelector('section[aria-label="AI story generation"]'))`,
     "AI generator",
   );
-  const firstCheckbox = await evaluate(
-    `(() => { const input = document.querySelector('section[aria-label="AI text generation"] input[type=checkbox]'); input.click(); return true; })()`,
+  const selectedAiWords = await evaluate(
+    `(() => {
+      const inputs = [...document.querySelectorAll('section[aria-label="AI story generation"] input[type=checkbox]')].slice(0, 3);
+      inputs.forEach((input) => input.click());
+      return inputs.map((input) => input.getAttribute('aria-label'));
+    })()`,
   );
-  if (!firstCheckbox)
-    throw new Error("AI vocabulary selection was unavailable.");
-  await clickButton("Generate text");
+  if (selectedAiWords.length !== 3)
+    throw new Error(
+      `Expected three AI vocabulary selections, received ${selectedAiWords.length}.`,
+    );
+  await clickButton("Generate Story");
   try {
     await waitFor(
-      `Boolean(document.querySelector('output[aria-label="Generated text"]'))`,
+      `Boolean(document.querySelector('output[aria-label="Generated story"]'))`,
       "AI text",
+      35_000,
     );
   } catch (error) {
     const state = await evaluate(
@@ -485,6 +492,32 @@ try {
     );
     throw new Error(`${error.message}: ${JSON.stringify(state)}`);
   }
+  const aiResult = await evaluate(
+    `({
+      story: document.querySelector('output[aria-label="Generated story"]')?.textContent,
+      source: document.querySelector('output[aria-label="Generated story"]')?.dataset.source,
+      highlightedWords: [...document.querySelectorAll('output[aria-label="Generated story"] mark')].map((item) => item.textContent),
+      selectedCount: document.querySelector('.ai-picker-heading strong')?.textContent,
+      localPreview: Boolean(document.querySelector('.ai-local-badge')),
+    })`,
+  );
+  if (
+    !aiResult.story ||
+    aiResult.source !== "gemini" ||
+    aiResult.highlightedWords.length !== selectedAiWords.length ||
+    !selectedAiWords.every((word) =>
+      aiResult.highlightedWords.some(
+        (highlighted) => highlighted.toLowerCase() === word.toLowerCase(),
+      ),
+    )
+  )
+    throw new Error(
+      `AI result was not safely highlighted: ${JSON.stringify(aiResult)}`,
+    );
+  const aiDesktop = await capture("ai-generator-desktop", 1440, 900);
+  const aiTablet = await capture("ai-generator-tablet", 768, 900);
+  const aiMobile = await capture("ai-generator-mobile", 390, 800);
+  await capture("ai-generator-desktop", 1440, 900);
   await clickButton("Dashboard");
   await waitFor(hasText("Completed sessions"), "updated dashboard");
   const consistency = await evaluate(`(() => {
@@ -622,6 +655,12 @@ try {
           mobile: { capture: folderMobile, detail: folderMobileDetail },
         },
         dashboard: true,
+        aiGenerator: {
+          result: aiResult,
+          desktop: aiDesktop,
+          tablet: aiTablet,
+          mobile: aiMobile,
+        },
         consistency,
         desktop,
         tablet,

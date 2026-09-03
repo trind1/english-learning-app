@@ -1,5 +1,23 @@
 # Code Generation Implementation Report
 
+## Real AI Story Generator enhancement — 2026-09-03
+
+STAGE: Real AI Story Generator
+
+STATUS: PASS — implementation, automated verification, security, real Gemini integration/story evidence, and browser flow pass. Final browser acceptance is PASS WITH EXTERNAL AVAILABILITY NOTE under the user-approved training-project policy.
+
+FILES_CREATED: `apps/api/src/modules/ai/openai-provider.ts`, responsive AI browser screenshots.
+
+FILES_MODIFIED: `.env.example`, `package.json`, `package-lock.json`, AI environment/service/router/composition code, `AiPanel.tsx`, `App.tsx`, `styles.css`, AI tests, integrated browser harness, specification, architecture, and current SDD tracking.
+
+IMPLEMENTATION: The frontend sends the active folder ID and 1–10 selected vocabulary IDs. The backend reloads their real word/meaning values within that folder. `AiService` owns validation, timeout, normalized output, selected-word verification, and one controlled missing-word retry. `GeminiProvider`, selected only by `AI_PROVIDER=gemini`, owns the OpenAI-compatible call and the bounded primary/retry/fallback/retry sequence for transient HTTP 503 or retryable network failures. It never falls back for authentication, validation, configuration, or malformed-response failures. `LocalAiProvider` remains explicit and is never a hidden real-provider fallback. The UI safely highlights text with React nodes and never renders provider HTML.
+
+DATABASE: Vocabulary remains in `apps/api/prisma/dev.db` through the existing Prisma model. Stories are not stored, and no schema or migration changed. In plain terms, generation reads saved words and returns temporary text only.
+
+NEXT_ALLOWED_ACTION: Handoff / normal maintenance. A future live Gemini rerun is optional availability confirmation, not a release gate.
+
+USER_APPROVAL_REQUIRED: None for implementation. The backend credential must remain only in the ignored local `.env` and must not appear in SDD evidence.
+
 ## Focus-mode back-navigation refinement — 2026-09-03
 
 STAGE: UI refinement
@@ -183,34 +201,34 @@ Database note: development data is stored in the ignored `apps/api/prisma/dev.db
 
 The implementation review is **FAIL** pending frontend coverage remediation and real-browser viewport/workflow verification. Existing TASK-011–TASK-021 identifiers cover this maintenance scope; no historical task evidence was rewritten.
 
-| Evidence ID | Result |
-| --- | --- |
-| EVID-493 | Dependency installation completed; audit reported zero vulnerabilities. |
-| EVID-494 | Existing Prisma client generated and existing migration applied to the ignored local SQLite database. |
-| EVID-495 | Frontend regression passed: 11 files, 28 tests. |
-| EVID-496 | Backend coverage passed: 95.01% statements, 95.00% branches, 97.22% functions, 95.01% lines. |
-| EVID-497 | Frontend coverage failed: 97.41% statements, 89.71% branches, 65.21% functions, 97.41% lines. |
-| EVID-498 | Lint, typecheck, production build, and `git diff --check` passed. |
-| EVID-499 | Runtime HTTP verification passed: folder, four vocabulary items, four-question quiz, persisted 4/4 result, and dashboard update. |
-| EVID-500 | Real-browser interaction, pronunciation playback, console inspection, and viewport checks were NOT RUN because no browser tool was available. |
-| EVID-501 | Repository-wide `format:check` failed on 86 baseline files; changed frontend files were formatted directly. |
-| EVID-502 | Replaced the POSIX-only setup command with `scripts/setup.mjs`; Windows setup, migration, lint, typecheck, diff check, and a clean development-server start on ports 3000/5173 passed. Six verified stale project Node processes were stopped before verification. |
+| Evidence ID | Result                                                                                                                                                                                                                                                             |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| EVID-493    | Dependency installation completed; audit reported zero vulnerabilities.                                                                                                                                                                                            |
+| EVID-494    | Existing Prisma client generated and existing migration applied to the ignored local SQLite database.                                                                                                                                                              |
+| EVID-495    | Frontend regression passed: 11 files, 28 tests.                                                                                                                                                                                                                    |
+| EVID-496    | Backend coverage passed: 95.01% statements, 95.00% branches, 97.22% functions, 95.01% lines.                                                                                                                                                                       |
+| EVID-497    | Frontend coverage failed: 97.41% statements, 89.71% branches, 65.21% functions, 97.41% lines.                                                                                                                                                                      |
+| EVID-498    | Lint, typecheck, production build, and `git diff --check` passed.                                                                                                                                                                                                  |
+| EVID-499    | Runtime HTTP verification passed: folder, four vocabulary items, four-question quiz, persisted 4/4 result, and dashboard update.                                                                                                                                   |
+| EVID-500    | Real-browser interaction, pronunciation playback, console inspection, and viewport checks were NOT RUN because no browser tool was available.                                                                                                                      |
+| EVID-501    | Repository-wide `format:check` failed on 86 baseline files; changed frontend files were formatted directly.                                                                                                                                                        |
+| EVID-502    | Replaced the POSIX-only setup command with `scripts/setup.mjs`; Windows setup, migration, lint, typecheck, diff check, and a clean development-server start on ports 3000/5173 passed. Six verified stale project Node processes were stopped before verification. |
 
 ## Project-level review summary
 
 Implementation is complete and has been reviewed and verified against the approved SDD artifacts. Review/Verification: **PASS**. Final Acceptance: **ACCEPTED**. All 22 tasks are PASS; no unresolved Critical or Major findings remain. Handoff: **READY**.
 
-| Field                | Value                                                  |
-| -------------------- | ------------------------------------------------------ |
-| Stage                | Code Generation                                        |
+| Field                | Value                                                            |
+| -------------------- | ---------------------------------------------------------------- |
+| Stage                | Code Generation                                                  |
 | Current task         | TASK-022 — Operational documentation and implementation evidence |
-| Verified tasks       | TASK-001–TASK-022                                      |
-| Overall stage status | COMPLETE                                               |
-| Owner                | Frontend and Backend Leads                             |
-| Last updated         | 2026-08-27                                             |
-| Current requirements | FR-003, FR-014, BR-004–BR-006, BR-017, BR-019–BR-020   |
-| Current component    | PC-002                                                 |
-| Current test         | Final project verification suite                      |
+| Verified tasks       | TASK-001–TASK-022                                                |
+| Overall stage status | COMPLETE                                                         |
+| Owner                | Frontend and Backend Leads                                       |
+| Last updated         | 2026-08-27                                                       |
+| Current requirements | FR-003, FR-014, BR-004–BR-006, BR-017, BR-019–BR-020             |
+| Current component    | PC-002                                                           |
+| Current test         | Final project verification suite                                 |
 
 ## Outcome
 

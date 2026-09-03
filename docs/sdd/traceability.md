@@ -1,13 +1,25 @@
 # Specification Traceability Matrix
 
+## Current Real AI Story Generator traceability — 2026-09-03
+
+| Change                                                                                        | Requirements / rules                          | Tasks              | Tests / evidence                                  | Status                      |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------- | ------------------ | ------------------------------------------------- | --------------------------- |
+| Folder-scoped selection of 1–10 persisted vocabulary IDs                                      | FR-015–FR-016, BR-012–BR-013                  | TASK-010, TASK-019 | TEST-010, TEST-015, EVID-536–EVID-538             | PASS                        |
+| Backend-only Gemini adapter, safe prompt, timeout, normalized result, bounded transient retry | FR-015–FR-016, BR-027–BR-028, NFR-014–NFR-017 | TASK-010           | TEST-010, EVID-536–EVID-539, EVID-542–EVID-544    | PASS                        |
+| Safe story UI, IPA/meaning selection, count, loading/error/retry, React highlighting          | FR-014–FR-016, NFR-011–NFR-013                | TASK-019           | TEST-015, EVID-536, EVID-540                      | PASS                        |
+| Real Gemini provider integration and required-word result                                     | FR-015–FR-016, AC-011–AC-012                  | TASK-010, TASK-019 | EVID-542–EVID-543 — real HTTP 200, 152-word story | PASS                        |
+| Final Gemini browser flow with external-availability evidence                                 | FR-015–FR-016, AC-011–AC-012                  | TASK-010, TASK-019 | EVID-543–EVID-545 — real success plus latest 503  | PASS WITH AVAILABILITY NOTE |
+
+No persistence trace changed: generated stories remain intentionally absent from the data model. Implementation, real-provider integration, and the application browser flow are **PASS**. Under the user-approved training-project policy, transient Gemini HTTP 503 availability is a degraded external dependency and does not block acceptance because EVID-543 proves a real HTTP 200 story with all selected words. Historical OpenAI HTTP 429 and latest Gemini HTTP 503 evidence remain preserved.
+
 ## Current Folder Detail maintenance traceability — 2026-09-01
 
-| Change | Requirements / rules | Existing tasks | Tests / evidence | Status |
-| --- | --- | --- | --- | --- |
-| Compact `Back to Folders` control separated from dynamic, wrapping folder heading and live word count | FR-001–FR-002, FR-014, NFR-011–NFR-013, AC-001–AC-002, AC-010, AC-022 | TASK-011–TASK-013, TASK-021 | TEST-011, TEST-013, EVID-530–EVID-535 | PASS |
-| Purpose-grouped Flashcards, Multiple Choice, and AI Generator actions with unchanged callbacks | FR-006–FR-009, FR-015–FR-016, NFR-011–NFR-013 | TASK-015–TASK-017, TASK-021 | TEST-011, TEST-015–TEST-017, EVID-530–EVID-534 | PASS |
-| Vocabulary toolbar, responsive word cards, manual-add and CSV focus actions, IPA/meaning/pronunciation preservation | FR-002–FR-005, BR-001–BR-007, NFR-011–NFR-013 | TASK-013–TASK-014, TASK-021 | TEST-011, TEST-013–TEST-014, EVID-530–EVID-534 | PASS |
-| 1440px, 768px, and 390px long-name, alignment, overlap, focus, and overflow verification | NFR-011–NFR-013, AC-010, AC-022 | TASK-021–TASK-022 | EVID-532–EVID-535 | PASS |
+| Change                                                                                                              | Requirements / rules                                                  | Existing tasks              | Tests / evidence                               | Status |
+| ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | --------------------------- | ---------------------------------------------- | ------ |
+| Compact `Back to Folders` control separated from dynamic, wrapping folder heading and live word count               | FR-001–FR-002, FR-014, NFR-011–NFR-013, AC-001–AC-002, AC-010, AC-022 | TASK-011–TASK-013, TASK-021 | TEST-011, TEST-013, EVID-530–EVID-535          | PASS   |
+| Purpose-grouped Flashcards, Multiple Choice, and AI Generator actions with unchanged callbacks                      | FR-006–FR-009, FR-015–FR-016, NFR-011–NFR-013                         | TASK-015–TASK-017, TASK-021 | TEST-011, TEST-015–TEST-017, EVID-530–EVID-534 | PASS   |
+| Vocabulary toolbar, responsive word cards, manual-add and CSV focus actions, IPA/meaning/pronunciation preservation | FR-002–FR-005, BR-001–BR-007, NFR-011–NFR-013                         | TASK-013–TASK-014, TASK-021 | TEST-011, TEST-013–TEST-014, EVID-530–EVID-534 | PASS   |
+| 1440px, 768px, and 390px long-name, alignment, overlap, focus, and overflow verification                            | NFR-011–NFR-013, AC-010, AC-022                                       | TASK-021–TASK-022           | EVID-532–EVID-535                              | PASS   |
 
 Code mapping: `App.tsx` owns the folder hero and action composition while preserving the existing navigation/API callbacks. `VocabularyPanel.tsx` and `CsvImportPanel.tsx` retain their feature logic and expose scoped presentation hooks. `styles.css` owns responsive layout and states. `app.test.tsx` and `browser-acceptance.mjs` verify semantics, focus targets, functionality, long-name geometry, responsive screenshots, and console cleanliness. `test/setup.ts` is test-only Node 26/jsdom compatibility; production storage is unchanged. No backend, database, migration, REST contract, or authentication mapping changed.
 
@@ -15,11 +27,11 @@ Gate: **PASS**. Next allowed action: handoff / normal maintenance. Evidence: EVI
 
 ## Current Left Navigation maintenance traceability — 2026-09-01
 
-| Change | Requirements / rules | Existing tasks | Tests / evidence | Status |
-| --- | --- | --- | --- | --- |
-| Larger, left-aligned primary navigation with consistent icon-label geometry | FR-014, NFR-011–NFR-013, AC-010, AC-022 | TASK-011, TASK-021 | TEST-011, EVID-525–EVID-528 | PASS |
-| Active, hover, and keyboard-focus treatments with `aria-current` | FR-014, NFR-011–NFR-013 | TASK-011, TASK-021 | TEST-011, EVID-525–EVID-528 | PASS |
-| Desktop/sidebar and responsive drawer parity without overflow | NFR-011–NFR-013, AC-022 | TASK-011, TASK-021 | TEST-011, EVID-528–EVID-529 | PASS |
+| Change                                                                      | Requirements / rules                    | Existing tasks     | Tests / evidence            | Status |
+| --------------------------------------------------------------------------- | --------------------------------------- | ------------------ | --------------------------- | ------ |
+| Larger, left-aligned primary navigation with consistent icon-label geometry | FR-014, NFR-011–NFR-013, AC-010, AC-022 | TASK-011, TASK-021 | TEST-011, EVID-525–EVID-528 | PASS   |
+| Active, hover, and keyboard-focus treatments with `aria-current`            | FR-014, NFR-011–NFR-013                 | TASK-011, TASK-021 | TEST-011, EVID-525–EVID-528 | PASS   |
+| Desktop/sidebar and responsive drawer parity without overflow               | NFR-011–NFR-013, AC-022                 | TASK-011, TASK-021 | TEST-011, EVID-528–EVID-529 | PASS   |
 
 Code mapping: `App.tsx` preserves navigation callbacks and semantic Material Symbol names while adding labels, active-page semantics, and drawer icons. `styles.css` owns the scoped primary-navigation geometry and states. `browser-acceptance.mjs` verifies navigation behavior, measurements, interaction states, and responsive screenshots. No backend, API, database, authentication, route, or business-logic mapping changed.
 
@@ -27,11 +39,11 @@ Gate: **PASS**. Next allowed action: handoff / normal maintenance. Evidence: EVI
 
 ## Current Learning Consistency maintenance traceability — 2026-09-01
 
-| Change | Requirements / rules | Existing tasks | Tests / evidence | Status |
-| --- | --- | --- | --- | --- |
-| Persisted qualifying activity timestamps in dashboard response | FR-012–FR-013, BR-025, AC-009 | TASK-008–TASK-009 | TEST-009, EVID-517–EVID-520 | PASS |
-| Monday–Sunday local week, unique active days, elapsed-day percentage, and future-day exclusion | User-authorized maintenance semantics; FR-012–FR-014, BR-025 | TASK-009, TASK-018 | TEST-018 current-week deterministic tests, EVID-518–EVID-520 | PASS |
-| Accessible seven-day activity timeline and responsive internal mobile scrolling | FR-014, NFR-011–NFR-013, AC-010, AC-022 | TASK-018, TASK-021 | TEST-018 dashboard UI, EVID-518, EVID-522–EVID-523 | PASS |
+| Change                                                                                         | Requirements / rules                                         | Existing tasks     | Tests / evidence                                             | Status |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | ------------------ | ------------------------------------------------------------ | ------ |
+| Persisted qualifying activity timestamps in dashboard response                                 | FR-012–FR-013, BR-025, AC-009                                | TASK-008–TASK-009  | TEST-009, EVID-517–EVID-520                                  | PASS   |
+| Monday–Sunday local week, unique active days, elapsed-day percentage, and future-day exclusion | User-authorized maintenance semantics; FR-012–FR-014, BR-025 | TASK-009, TASK-018 | TEST-018 current-week deterministic tests, EVID-518–EVID-520 | PASS   |
+| Accessible seven-day activity timeline and responsive internal mobile scrolling                | FR-014, NFR-011–NFR-013, AC-010, AC-022                      | TASK-018, TASK-021 | TEST-018 dashboard UI, EVID-518, EVID-522–EVID-523           | PASS   |
 
 Code mapping: `prisma-dashboard-repository.ts` reads existing `TestSession.completedAt` values; `dashboard-service.ts` serializes them; `App.tsx` validates them; `current-week-consistency.ts` performs local-calendar aggregation; `Dashboard.tsx` and `styles.css` render the component. No database schema or migration changed. The dashboard REST response was additively extended with `completedSessionDates`; its SDD contract is synchronized.
 
@@ -39,18 +51,18 @@ Gate: **PASS**. Next allowed action: handoff / normal maintenance. Evidence: EVI
 
 ## Current remediation traceability — 2026-08-28
 
-| Change | Requirements / rules | Tasks | Tests / evidence | Status |
-| --- | --- | --- | --- | --- |
+| Change                                             | Requirements / rules                                                  | Tasks                                                     | Tests / evidence                           | Status                          |
+| -------------------------------------------------- | --------------------------------------------------------------------- | --------------------------------------------------------- | ------------------------------------------ | ------------------------------- |
 | Approved-design UI review and remediation planning | NFR-011–NFR-013, AC-010, AC-022; approved `UI/` visual specifications | UI-REM-001–UI-REM-008 (separate; not historical TASK IDs) | UI-FIND-001–UI-FIND-011; EVID-513–EVID-516 | ❌ FAIL — planned / not started |
 
-| Change | Requirements / rules | Tasks | Tests / evidence | Status |
-| --- | --- | --- | --- | --- |
-| Reachable pronunciation in vocabulary and flashcards | FR-005, BR-007, BR-022, AC-005, AC-025 | TASK-013, TASK-015, TASK-016 | TEST-013, TEST-015, TEST-016, EVID-504–EVID-507 | PASS |
-| Flashcard progress, previous, next, shuffle, and restart controls | FR-006, BR-008, BR-023, AC-006 | TASK-016 | TEST-016, EVID-504–EVID-507 | PASS |
-| Integrated navigation/API journeys and error branches | FR-001–FR-016, NFR-011–NFR-017 | TASK-011–TASK-021 | TEST-011, TEST-021, EVID-504–EVID-507 | PASS |
-| Dashboard metric label/value grouping | FR-012, AC-009, NFR-011–NFR-013 | TASK-018, TASK-021 | TEST-018, EVID-505, EVID-507–EVID-508 | PASS |
-| Node 26 Windows runtime compatibility | NFR-016–NFR-017 | TASK-001, TASK-021 | EVID-511 | PASS |
-| Full real-browser and responsive workflow | AC-022 and Final Acceptance runtime workflow | TASK-021–TASK-022 | EVID-512, EVID-517–EVID-535 | PASS |
+| Change                                                            | Requirements / rules                         | Tasks                        | Tests / evidence                                | Status |
+| ----------------------------------------------------------------- | -------------------------------------------- | ---------------------------- | ----------------------------------------------- | ------ |
+| Reachable pronunciation in vocabulary and flashcards              | FR-005, BR-007, BR-022, AC-005, AC-025       | TASK-013, TASK-015, TASK-016 | TEST-013, TEST-015, TEST-016, EVID-504–EVID-507 | PASS   |
+| Flashcard progress, previous, next, shuffle, and restart controls | FR-006, BR-008, BR-023, AC-006               | TASK-016                     | TEST-016, EVID-504–EVID-507                     | PASS   |
+| Integrated navigation/API journeys and error branches             | FR-001–FR-016, NFR-011–NFR-017               | TASK-011–TASK-021            | TEST-011, TEST-021, EVID-504–EVID-507           | PASS   |
+| Dashboard metric label/value grouping                             | FR-012, AC-009, NFR-011–NFR-013              | TASK-018, TASK-021           | TEST-018, EVID-505, EVID-507–EVID-508           | PASS   |
+| Node 26 Windows runtime compatibility                             | NFR-016–NFR-017                              | TASK-001, TASK-021           | EVID-511                                        | PASS   |
+| Full real-browser and responsive workflow                         | AC-022 and Final Acceptance runtime workflow | TASK-021–TASK-022            | EVID-512, EVID-517–EVID-535                     | PASS   |
 
 No database schema, migration, REST contract, or approved requirement changed. The local SQLite data remains in the ignored `apps/api/prisma/dev.db` file configured by `DATABASE_URL`; the committed migration remains unchanged.
 
@@ -69,7 +81,7 @@ EVID-502 maps the cross-platform setup remediation to TASK-022 and NFR-009–NFR
 | Version      | 1.7                                                                                                     |
 | Last updated | 2026-08-27                                                                                              |
 | Depends on   | [Product specification](01-spec/spec.md), [Technical plan](02-plan/plan.md), [Tasks](03-tasks/tasks.md) |
-| Next review  | Post-handoff maintenance                                                                                 |
+| Next review  | Post-handoff maintenance                                                                                |
 
 > **Executive summary**
 >
@@ -77,12 +89,12 @@ EVID-502 maps the cross-platform setup remediation to TASK-022 and NFR-009–NFR
 
 ## Governance state
 
-| Gate               | Verification   | User approval                                  | Downstream state              |
-| ------------------ | -------------- | ---------------------------------------------- | ----------------------------- |
-| Specification      | ✅ PASS        | Approved by the request authorizing Planning   | Planning authorized           |
-| Planning           | ✅ PASS        | Approved by current Task Decomposition request | Task Decomposition authorized |
-| Task Decomposition | ✅ PASS        | Approved                                       | TASK-001 authorized           |
-| Code Generation    | ✅ COMPLETE    | TASK-001–TASK-022 PASS                         | Final Acceptance             |
+| Gate               | Verification | User approval                                  | Downstream state              |
+| ------------------ | ------------ | ---------------------------------------------- | ----------------------------- |
+| Specification      | ✅ PASS      | Approved by the request authorizing Planning   | Planning authorized           |
+| Planning           | ✅ PASS      | Approved by current Task Decomposition request | Task Decomposition authorized |
+| Task Decomposition | ✅ PASS      | Approved                                       | TASK-001 authorized           |
+| Code Generation    | ✅ COMPLETE  | TASK-001–TASK-022 PASS                         | Final Acceptance              |
 
 ## Original request coverage
 
@@ -289,6 +301,7 @@ Post-acceptance UI/UX maintenance preserved the approved behavior and improved t
 | OQ-006        | Flashcard/test mechanics          | ✅ Resolved → BR-023–BR-024 |
 | OQ-007        | Sessions/dashboard                | ✅ Resolved → BR-025–BR-026 |
 | OQ-008        | AI provider/storage               | ✅ Resolved → BR-027–BR-028 |
+
 # Current authoritative acceptance state (2026-08-28)
 
 Focus-mode Back to Folder alignment preserves existing Flashcards and Multiple Choice navigation and accessibility behavior while matching the Vocabulary/Folder control; focused verification PASS.

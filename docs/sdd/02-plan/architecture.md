@@ -106,6 +106,6 @@ The token adapter signs canonical `v1` payloads with Node's built-in HMAC-SHA256
 
 **Context:** AI is optional, provider details are a Planning decision, generated text is not persisted, and core data must survive failures.
 
-**Decision:** Define an `AiTextPort`; enable a provider only when validated server configuration exists; send selected words only; enforce timeout; return display-only text. Initial provider remains configurable rather than hard-coded.
+**Decision:** Define an `AiProvider` port behind `AiService`. The browser sends the active folder ID plus one-to-ten selected vocabulary IDs; the service reloads stored word/meaning data within that folder, enforces timeout, verifies every word in normalized output, and retries at most once. `AI_PROVIDER=openai` selects an OpenAI-compatible backend adapter configured by `AI_API_KEY`, `AI_MODEL`, and `AI_BASE_URL`; `AI_PROVIDER=local` selects an explicitly labelled deterministic development provider. Credentials remain backend-only.
 
-**Consequences:** The application can run with AI disabled; provider-specific code stays isolated; no AI output table exists.
+**Consequences:** The application can run with AI disabled; provider-specific code stays isolated; provider errors become safe `AI_UNAVAILABLE` responses; no AI output table or schema migration exists.

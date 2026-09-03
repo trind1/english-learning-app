@@ -230,9 +230,10 @@ The rules below include OQ-001–OQ-008, explicitly approved by the user on 2026
 ### Optional AI text-generation behavior
 
 - The user explicitly selects one to ten vocabulary words.
-- The request contains only selected vocabulary needed for generation.
-- Generated text is identified as AI-generated and may be retried.
-- Generated text is not persisted; provider and prompt design are deferred architecture decisions under BR-028.
+- The browser sends the active folder ID and selected vocabulary IDs; the backend retrieves the corresponding stored words and meanings and rejects missing or cross-folder selections.
+- When external AI is configured, the backend-only provider generates a concise 100–250-word English story that uses every selected word. Provider credentials are never sent to the browser.
+- The backend verifies selected-word usage and permits one controlled retry when words are missing. It returns normalized story text and used-word data, never a raw provider response.
+- Generated text is identified as external AI output or as an explicit deterministic local preview. It is rendered as text, may be retried, and is not persisted.
 - AI failure is recoverable and does not block core workflows.
 
 ### Error and empty states

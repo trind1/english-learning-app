@@ -12,7 +12,11 @@ const validEnvironment = {
 describe("TEST-002 environment parsing", () => {
   it("parses required values and applies safe defaults", () => {
     expect(parseEnvironment(validEnvironment)).toEqual({
-      ai: { enabled: false, timeoutMs: 10_000 },
+      ai: {
+        baseUrl: "https://api.openai.com/v1",
+        enabled: false,
+        timeoutMs: 10_000,
+      },
       databaseUrl: "file:./dev.db",
       port: 3_000,
       testTokenSecret: validEnvironment.TEST_TOKEN_SECRET,
@@ -25,8 +29,10 @@ describe("TEST-002 environment parsing", () => {
       parseEnvironment({
         ...validEnvironment,
         AI_API_KEY: "provider-key",
+        AI_BASE_URL: "https://provider.example/v1",
         AI_ENABLED: "true",
-        AI_PROVIDER: "configured-provider",
+        AI_MODEL: "story-model",
+        AI_PROVIDER: "openai",
         AI_TIMEOUT_MS: "5000",
         API_PORT: "4000",
         UNRELATED_PROCESS_VALUE: "allowed",
@@ -34,11 +40,45 @@ describe("TEST-002 environment parsing", () => {
     ).toMatchObject({
       ai: {
         apiKey: "provider-key",
+        baseUrl: "https://provider.example/v1",
         enabled: true,
-        provider: "configured-provider",
+        model: "story-model",
+        provider: "openai",
         timeoutMs: 5_000,
       },
       port: 4_000,
+    });
+  });
+
+  it("allows an explicitly labelled local provider without external credentials", () => {
+    expect(
+      parseEnvironment({
+        ...validEnvironment,
+        AI_ENABLED: "true",
+        AI_PROVIDER: "local",
+      }).ai,
+    ).toMatchObject({ enabled: true, provider: "local" });
+  });
+
+  it("parses Gemini with the shared backend AI_API_KEY convention", () => {
+    expect(
+      parseEnvironment({
+        ...validEnvironment,
+        AI_API_KEY: "gemini-provider-key",
+        AI_BASE_URL: "https://generativelanguage.googleapis.com/v1beta/openai/",
+        AI_ENABLED: "true",
+        AI_FALLBACK_MODEL: "gemini-3.5-flash-lite",
+        AI_MODEL: "gemini-2.5-flash",
+        AI_PROVIDER: "gemini",
+      }).ai,
+    ).toEqual({
+      apiKey: "gemini-provider-key",
+      baseUrl: "https://generativelanguage.googleapis.com/v1beta/openai/",
+      enabled: true,
+      fallbackModel: "gemini-3.5-flash-lite",
+      model: "gemini-2.5-flash",
+      provider: "gemini",
+      timeoutMs: 10_000,
     });
   });
 
@@ -48,6 +88,24 @@ describe("TEST-002 environment parsing", () => {
     [{ ...validEnvironment, TEST_TOKEN_SECRET: "short" }, "TEST_TOKEN_SECRET"],
     [{ ...validEnvironment, AI_ENABLED: "yes" }, "AI_ENABLED"],
     [{ ...validEnvironment, AI_ENABLED: "true" }, "AI_PROVIDER"],
+    [
+      {
+        ...validEnvironment,
+        AI_ENABLED: "true",
+        AI_PROVIDER: "openai",
+        AI_MODEL: "story-model",
+      },
+      "AI_API_KEY",
+    ],
+    [
+      {
+        ...validEnvironment,
+        AI_ENABLED: "true",
+        AI_PROVIDER: "openai",
+        AI_API_KEY: "key",
+      },
+      "AI_MODEL",
+    ],
   ])("rejects invalid environment configuration", (environment, path) => {
     expect(() => parseEnvironment(environment)).toThrow(ZodError);
 

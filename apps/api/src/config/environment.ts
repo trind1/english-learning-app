@@ -7,8 +7,11 @@ const booleanString = z
 const environmentSchema = z
   .object({
     AI_API_KEY: z.string().min(1).optional(),
+    AI_BASE_URL: z.string().url().default("https://api.openai.com/v1"),
     AI_ENABLED: booleanString.default("false"),
-    AI_PROVIDER: z.string().min(1).optional(),
+    AI_FALLBACK_MODEL: z.string().min(1).optional(),
+    AI_MODEL: z.string().min(1).optional(),
+    AI_PROVIDER: z.enum(["local", "openai", "gemini"]).optional(),
     AI_TIMEOUT_MS: z.coerce
       .number()
       .int()
@@ -31,11 +34,26 @@ const environmentSchema = z
       });
     }
 
-    if (!environment.AI_API_KEY) {
+    if (
+      (environment.AI_PROVIDER === "openai" ||
+        environment.AI_PROVIDER === "gemini") &&
+      !environment.AI_API_KEY
+    ) {
       context.addIssue({
         code: z.ZodIssueCode.custom,
         message: "AI_API_KEY is required when AI_ENABLED is true.",
         path: ["AI_API_KEY"],
+      });
+    }
+    if (
+      (environment.AI_PROVIDER === "openai" ||
+        environment.AI_PROVIDER === "gemini") &&
+      !environment.AI_MODEL
+    ) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "AI_MODEL is required for the external AI provider.",
+        path: ["AI_MODEL"],
       });
     }
   });
@@ -43,8 +61,11 @@ const environmentSchema = z
 export type ApiConfig = Readonly<{
   ai: Readonly<{
     apiKey?: string;
+    baseUrl: string;
     enabled: boolean;
-    provider?: string;
+    fallbackModel?: string;
+    model?: string;
+    provider?: "local" | "openai" | "gemini";
     timeoutMs: number;
   }>;
   databaseUrl: string;
@@ -59,7 +80,12 @@ export const parseEnvironment = (source: NodeJS.ProcessEnv): ApiConfig => {
   return {
     ai: {
       ...(environment.AI_API_KEY ? { apiKey: environment.AI_API_KEY } : {}),
+      baseUrl: environment.AI_BASE_URL,
       enabled: environment.AI_ENABLED,
+      ...(environment.AI_FALLBACK_MODEL
+        ? { fallbackModel: environment.AI_FALLBACK_MODEL }
+        : {}),
+      ...(environment.AI_MODEL ? { model: environment.AI_MODEL } : {}),
       ...(environment.AI_PROVIDER ? { provider: environment.AI_PROVIDER } : {}),
       timeoutMs: environment.AI_TIMEOUT_MS,
     },

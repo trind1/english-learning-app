@@ -1,5 +1,20 @@
 # SDD Project Status
 
+## Current authoritative status — Real AI Story Generator — 2026-09-03
+
+| Field                  | Value                                                                                                                                                                               |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Current stage          | Gemini Final Acceptance                                                                                                                                                             |
+| Gate status            | **PASS WITH EXTERNAL AVAILABILITY NOTE**                                                                                                                                            |
+| Completed enhancement  | Gemini provider, bounded primary/fallback resilience, folder validation, safe timeout/errors, required-word verification, normalized response, selection/highlight UI               |
+| Real-provider evidence | **PASS** — Gemini returned real HTTP 200 and a 152-word story containing all selected words; no LocalProvider fallback or secret exposure                                           |
+| Automated verification | Focused tests PASS; 122/122 backend tests PASS; backend coverage 98.05/95.31/97.61/98.05 for statements/branches/functions/lines; typecheck, lint, format, and security checks PASS |
+| Final browser gate     | **PASS WITH EXTERNAL AVAILABILITY NOTE** — browser flow and safe handling pass; latest provider attempt remains HTTP 503                                                            |
+| External dependency    | **DEGRADED / TRANSIENT** — Gemini availability only                                                                                                                                 |
+| Next allowed action    | Handoff / normal maintenance                                                                                                                                                        |
+
+No application defect is currently known. The user-approved training-project policy accepts the existing real HTTP 200/story evidence together with the verified browser flow and safe HTTP 503 handling. No database schema or migration changed. Generated stories remain request/response-only. Historical OpenAI quota evidence, successful Gemini evidence, and the latest degraded-provider evidence are preserved below.
+
 Focus-mode Back to Folder visual alignment is **PASS**. Flashcards and Multiple Choice match the Vocabulary/Folder control, navigation logic is preserved, and focused automated checks pass. Current blockers: none. Next allowed action: Final Acceptance with explicit user approval.
 
 ## Current authoritative status — 2026-09-03
@@ -8,15 +23,15 @@ Flashcards Visual Redesign and Multiple Choice Visual Redesign are **PASS**. All
 
 ## Current authoritative status — Folder Detail — 2026-09-01
 
-| Field | Value |
-| --- | --- |
-| Current stage | Post-acceptance maintenance — Folder Detail Layout + Action Redesign |
-| Gate status | **PASS** |
+| Field                 | Value                                                                                                                                                          |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Current stage         | Post-acceptance maintenance — Folder Detail Layout + Action Redesign                                                                                           |
+| Gate status           | **PASS**                                                                                                                                                       |
 | Completed maintenance | Back-label separation, dynamic folder hero, grouped study actions, grouped vocabulary actions, responsive vocabulary cards, long-name and browser verification |
-| Current blockers | None |
-| Current limitations | One pre-existing non-failing React `act(...)` warning in an integrated frontend test |
-| Next allowed action | Handoff / normal maintenance |
-| User approval status | Maintenance explicitly requested and complete |
+| Current blockers      | None                                                                                                                                                           |
+| Current limitations   | One pre-existing non-failing React `act(...)` warning in an integrated frontend test                                                                           |
+| Next allowed action   | Handoff / normal maintenance                                                                                                                                   |
+| User approval status  | Maintenance explicitly requested and complete                                                                                                                  |
 
 Frontend 61/61 tests pass and all four independent frontend coverage metrics exceed 95%. Chrome verified the persistent Back/Add/CSV/pronunciation/Flashcards/Multiple Choice/AI journey and exact layout geometry at 1440px, 768px, and 390px. The generated long folder name remains separate from `Back to Folders`, wraps safely on mobile, and causes no document overflow or browser errors (EVID-530–EVID-535). No backend, database, API contract, authentication, or business logic changed.
 
@@ -24,15 +39,15 @@ This section supersedes older current-state summaries below while preserving the
 
 ## Current authoritative status — Left Navigation — 2026-09-01
 
-| Field | Value |
-| --- | --- |
-| Current stage | Post-acceptance maintenance — Left Navigation Visual Redesign |
-| Gate status | **PASS** |
+| Field                 | Value                                                                                                                                              |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Current stage         | Post-acceptance maintenance — Left Navigation Visual Redesign                                                                                      |
+| Gate status           | **PASS**                                                                                                                                           |
 | Completed maintenance | Left alignment, larger targets/icons/type, active and hover treatments, keyboard focus, responsive drawer icon parity, offline-safe icon rendering |
-| Current blockers | None |
-| Current limitations | One pre-existing non-failing React `act(...)` warning in an integrated frontend test |
-| Next allowed action | Handoff / normal maintenance |
-| User approval status | Maintenance explicitly requested and complete |
+| Current blockers      | None                                                                                                                                               |
+| Current limitations   | One pre-existing non-failing React `act(...)` warning in an integrated frontend test                                                               |
+| Next allowed action   | Handoff / normal maintenance                                                                                                                       |
+| User approval status  | Maintenance explicitly requested and complete                                                                                                      |
 
 Frontend 61/61 tests pass and every independent coverage metric exceeds 95%. Browser verification confirms exact navigation geometry and interaction states at 1440px, 768px, and 390px with zero browser errors and no page overflow (EVID-525–EVID-529). No route, authentication, backend, business rule, database schema, or application layout changed.
 
@@ -40,15 +55,15 @@ This section supersedes older current-state summaries below while preserving the
 
 ## Current authoritative status — 2026-09-01
 
-| Field | Value |
-| --- | --- |
-| Current stage | Post-acceptance maintenance — Learning Consistency Logic + UI Redesign |
-| Gate status | **PASS** |
+| Field                 | Value                                                                                                                                      |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Current stage         | Post-acceptance maintenance — Learning Consistency Logic + UI Redesign                                                                     |
+| Gate status           | **PASS**                                                                                                                                   |
 | Completed maintenance | Current-week session aggregation, unique local active days, future-day exclusion, accessible seven-day UI, responsive/browser verification |
-| Current blockers | None |
-| Current limitations | Node 26 frontend tests require `NODE_OPTIONS=--no-experimental-webstorage`; product runtime is unaffected |
-| Next allowed action | Handoff / normal maintenance |
-| User approval status | Maintenance explicitly requested and complete |
+| Current blockers      | None                                                                                                                                       |
+| Current limitations   | Node 26 frontend tests require `NODE_OPTIONS=--no-experimental-webstorage`; product runtime is unaffected                                  |
+| Next allowed action   | Handoff / normal maintenance                                                                                                               |
+| User approval status  | Maintenance explicitly requested and complete                                                                                              |
 
 The authoritative current-week browser result for Tuesday, September 1, 2026 is Monday Aug 31 `No activity`, Tuesday Sep 1 `Today · Studied`, and Wednesday Sep 2 through Sunday Sep 6 `Upcoming`. The displayed 50% equals 1 unique active day out of 2 elapsed days. Frontend 61/61 and backend 98/98 tests pass under their coverage commands; every independent coverage metric exceeds 95%. Responsive browser verification passes at 1440px, 768px, and 390px with no page overflow and zero browser errors (EVID-517–EVID-524).
 
@@ -61,15 +76,15 @@ Vocabulary visual refinement remains **PASS** with the existing page structure a
 Folder Detail UI redesign is **PASS** with representative browser verification complete.
 Dashboard visual redesign is **PASS** with representative browser verification complete.
 
-| Field | Value |
-| --- | --- |
-| Current stage | Final Acceptance |
-| Gate status | **PASS** — Authentication and Routing Remediation and browser acceptance complete |
+| Field                 | Value                                                                                                                                         |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Current stage         | Final Acceptance                                                                                                                              |
+| Gate status           | **PASS** — Authentication and Routing Remediation and browser acceptance complete                                                             |
 | Completed remediation | Frontend coverage, reachable pronunciation, flashcard controls, dashboard metric grouping, React state-update defect, Node 26 Windows startup |
-| Current blockers | None |
-| Current limitation | None for the completed acceptance scope |
-| Next allowed action | Handoff |
-| User approval status | Final Acceptance accepted; handoff **READY** |
+| Current blockers      | None                                                                                                                                          |
+| Current limitation    | None for the completed acceptance scope                                                                                                       |
+| Next allowed action   | Handoff                                                                                                                                       |
+| User approval status  | Final Acceptance accepted; handoff **READY**                                                                                                  |
 
 Testing Verification is **PASS**: frontend 99.57/95.41/100/99.57 and backend 95.01/95.00/97.22/95.01 for statements/branches/functions/lines. The sequential full suite passes 127/127. EVID-512 is retained as historical partial evidence; EVID-517–EVID-535 provide the completed browser verification.
 
@@ -94,7 +109,7 @@ Specification APPROVED; Planning APPROVED; Task Decomposition APPROVED; Code Gen
 | Version      | 2.6                                                                                                           |
 | Last updated | 2026-08-27                                                                                                    |
 | Depends on   | [Planning verification](02-plan/verification.md), [Tasks](03-tasks/tasks.md), [Traceability](traceability.md) |
-| Next review  | Final Acceptance                                                                                               |
+| Next review  | Final Acceptance                                                                                              |
 
 > **Executive summary**
 >
@@ -104,26 +119,26 @@ Specification APPROVED; Planning APPROVED; Task Decomposition APPROVED; Code Gen
 
 ## Current gate
 
-| Field               | Value                                                 |
-| ------------------- | ----------------------------------------------------- |
-| Current stage       | Final Acceptance / Handoff                            |
-| Gate status         | ✅ PASS; browser workflow evidence complete            |
-| Next allowed action | Handoff / normal maintenance                           |
-| Primary blocker     | None                                                   |
+| Field               | Value                                       |
+| ------------------- | ------------------------------------------- |
+| Current stage       | Final Acceptance / Handoff                  |
+| Gate status         | ✅ PASS; browser workflow evidence complete |
+| Next allowed action | Handoff / normal maintenance                |
+| Primary blocker     | None                                        |
 
 ## Stage status
 
-| Stage                        | Status         | Approval                                             |
-| ---------------------------- | -------------- | ---------------------------------------------------- |
-| Bootstrap                    | ✅ PASS        | Previously approved                                  |
-| Specification                | ✅ PASS        | Approved by current Planning request                 |
-| Specification Verification   | ✅ PASS        | Approved by current Planning request                 |
-| Planning                     | ✅ PASS        | Approved by current Task Decomposition request       |
-| Planning Verification        | ✅ PASS        | Approved by current Task Decomposition request       |
-| Task Decomposition           | ✅ PASS        | Approved                                             |
-| Task Verification            | ✅ PASS        | Approved                                             |
-| Code Generation              | ✅ COMPLETE | TASK-001–TASK-022 PASS |
-| Code Review and later stages | ✅ COMPLETE | Review, testing, and acceptance passed               |
+| Stage                        | Status      | Approval                                       |
+| ---------------------------- | ----------- | ---------------------------------------------- |
+| Bootstrap                    | ✅ PASS     | Previously approved                            |
+| Specification                | ✅ PASS     | Approved by current Planning request           |
+| Specification Verification   | ✅ PASS     | Approved by current Planning request           |
+| Planning                     | ✅ PASS     | Approved by current Task Decomposition request |
+| Planning Verification        | ✅ PASS     | Approved by current Task Decomposition request |
+| Task Decomposition           | ✅ PASS     | Approved                                       |
+| Task Verification            | ✅ PASS     | Approved                                       |
+| Code Generation              | ✅ COMPLETE | TASK-001–TASK-022 PASS                         |
+| Code Review and later stages | ✅ COMPLETE | Review, testing, and acceptance passed         |
 
 ## Approval boundary
 
@@ -156,14 +171,14 @@ Specification APPROVED; Planning APPROVED; Task Decomposition APPROVED; Code Gen
 
 ## Task progress
 
-| Task range        | Status         | Evidence                                                            |
-| ----------------- | -------------- | ------------------------------------------------------------------- |
-| TASK-001          | ✅ PASS        | EVID-401–EVID-410                                                   |
-| TASK-002          | ✅ PASS        | EVID-411–EVID-418                                                   |
-| TASK-003          | ✅ PASS        | EVID-419–EVID-428                                                   |
-| TASK-004          | ✅ PASS        | EVID-429–EVID-438                                                   |
-| TASK-005          | ✅ PASS        | EVID-439–EVID-448                                                   |
-| TASK-006          | ✅ PASS        | EVID-451–EVID-470; all required checks and coverage thresholds pass |
-| TASK-007          | ✅ PASS        | EVID-471–EVID-477; generation, signing, tests, and coverage pass    |
-| TASK-008          | ✅ PASS        | Completed-session persistence and retrieval verified                  |
-| TASK-009–TASK-022 | ✅ PASS        | Verified implementation and final acceptance evidence                |
+| Task range        | Status  | Evidence                                                            |
+| ----------------- | ------- | ------------------------------------------------------------------- |
+| TASK-001          | ✅ PASS | EVID-401–EVID-410                                                   |
+| TASK-002          | ✅ PASS | EVID-411–EVID-418                                                   |
+| TASK-003          | ✅ PASS | EVID-419–EVID-428                                                   |
+| TASK-004          | ✅ PASS | EVID-429–EVID-438                                                   |
+| TASK-005          | ✅ PASS | EVID-439–EVID-448                                                   |
+| TASK-006          | ✅ PASS | EVID-451–EVID-470; all required checks and coverage thresholds pass |
+| TASK-007          | ✅ PASS | EVID-471–EVID-477; generation, signing, tests, and coverage pass    |
+| TASK-008          | ✅ PASS | Completed-session persistence and retrieval verified                |
+| TASK-009–TASK-022 | ✅ PASS | Verified implementation and final acceptance evidence               |

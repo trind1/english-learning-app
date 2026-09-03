@@ -21,9 +21,11 @@ import { DashboardService } from "./modules/dashboard/dashboard-service";
 import { PrismaDashboardRepository } from "./modules/dashboard/prisma-dashboard-repository";
 import { createAiRouter } from "./modules/ai/ai-router";
 import { AiService } from "./modules/ai/ai-service";
+import { createAiProvider } from "./modules/ai/openai-provider";
 
 export const createApiApp = (
   config: Pick<ApiConfig, "webOrigin"> &
+    Partial<Pick<ApiConfig, "ai">> &
     Partial<Pick<ApiConfig, "testTokenSecret">>,
   client: PrismaClient,
   serveWeb = false,
@@ -31,6 +33,7 @@ export const createApiApp = (
   createHttpApp(config, (app) => {
     const folderService = new FolderService(new PrismaFolderRepository(client));
     app.use("/api/v1/folders", createFolderRouter(folderService));
+    const aiProvider = config.ai ? createAiProvider(config.ai) : undefined;
     app.use(
       "/api/v1/dashboard",
       createDashboardRouter(
@@ -42,26 +45,14 @@ export const createApiApp = (
       createAiRouter(
         new AiService(
           {
-            findByIds: async (ids) =>
+            findByIds: async (folderId, ids) =>
               client.vocabulary.findMany({
-                where: { id: { in: [...ids] } },
-                select: { id: true, word: true },
+                where: { folderId, id: { in: [...ids] } },
+                select: { id: true, word: true, meaning: true },
               }),
           },
-          // Local development uses a deterministic provider so the complete
-          // learning flow is verifiable without external credentials.
-          process.env.NODE_ENV === "production"
-            ? undefined
-            : {
-                generate: async (
-                  words: readonly string[],
-                  _signal: AbortSignal,
-                ) => (
-                  void _signal,
-                  `A practice story featuring ${words.join(", ")}.`
-                ),
-              },
-          10_000,
+          aiProvider,
+          config.ai?.timeoutMs ?? 10_000,
         ),
       ),
     );

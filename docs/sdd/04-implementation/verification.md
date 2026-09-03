@@ -1,5 +1,28 @@
 # TASK-001 through TASK-009 Implementation Verification
 
+## Real AI Story Generator verification — 2026-09-03
+
+STATUS: **PASS WITH EXTERNAL AVAILABILITY NOTE**. Automated, coverage, static, security, provider-selection, real Gemini integration/story, and application browser-flow gates pass. The latest browser run accurately remains HTTP 503; under the user-approved training-project policy, this transient external condition does not invalidate EVID-543 or block acceptance.
+
+| Evidence | Command or source                                                                                                                               | Exit code | Result                                                                                                                                                                                                                                        |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| EVID-536 | Focused AI backend/frontend tests                                                                                                               |         0 | 14 backend AI tests and 17 focused frontend/integration tests pass, covering selection boundaries, folder scope, provider success/failure/timeout/malformed response, one retry, safe errors, loading, result, local label, and highlighting. |
+| EVID-537 | `npm test`                                                                                                                                      |         0 | 112/112 backend and 61/61 frontend tests pass.                                                                                                                                                                                                |
+| EVID-538 | `npm run coverage:web`; `npm run coverage:api`                                                                                                  |         0 | Frontend 99.82/95.18/96.45/99.82; backend 98.14/95.95/98.71/98.14 for statements/branches/functions/lines. AI backend module is 100/97.95/100/100.                                                                                            |
+| EVID-539 | `npm run typecheck`; `npm run lint`; `npm run format:check`; `npm run build`; `npm ls --all`; `npm audit --audit-level=low`; `git diff --check` |         0 | All pass. A compatible `qs@6.16.0` override remediated three newly reported moderate transitive advisories; final audit reports zero vulnerabilities.                                                                                         |
+| EVID-540 | `AI_ENABLED=true AI_PROVIDER=local npm run dev`; `npm run browser:acceptance`                                                                   |         0 | Folder vocabulary, AI request/result/highlight, and the broader learning flow pass at 1440/768/390 with no overflow and zero browser errors. The result is visibly labelled `Local preview`.                                                  |
+
+| EVID-541 | Real OpenAI browser attempt plus sanitized backend diagnostic | 1 | The browser selected three real folder words and reached the backend, then displayed only the safe retry message. A backend-only diagnostic confirmed HTTP 429 `insufficient_quota`; no key, raw provider response, or stack trace reached the browser. |
+
+| EVID-542 | Redacted runtime configuration and provider-selection diagnostic | 0 | `AI_PROVIDER=gemini` selected `GeminiProvider`; neither `LocalAiProvider` nor `OpenAiProvider` was selected. The shared backend-only API key was present without being printed. |
+| EVID-543 | Redacted real `AiService` → `GeminiProvider` generation | 0 | Primary `gemini-3.6-flash` returned HTTP 503; fallback `gemini-3.5-flash-lite` returned HTTP 200. Gemini generated a real 152-word story containing `apple`, `journey`, and `courage`; normalized source was `gemini`. |
+| EVID-544 | Focused AI tests; `npm run coverage:api`; `npm run typecheck`; `npm run lint`; `npm run format:check`; `git diff --check` | 0 | Focused tests pass, 122/122 backend tests pass, and backend coverage is 98.05/95.31/97.61/98.05 for statements/branches/functions/lines. Static checks pass. Tests cover bounded primary/fallback 503 retries, transient network retry, non-retryable 401/malformed response, safe failure, and vocabulary preservation. |
+| EVID-545 | Final `npm run browser:acceptance` after bounded resilience implementation | 1 | The browser selected three real words and used `GeminiProvider`, but transient Gemini HTTP 503 availability persisted through the bounded sequence. The UI displayed only the safe normalized error; no secret or raw provider detail was exposed. Story rendering/highlighting was not claimed as passing in this run. |
+
+ACCEPTANCE POLICY DECISION: For this training project, final browser acceptance may pass with external-availability evidence when a prior real request returned HTTP 200 with verified vocabulary, credentials remained secure, the browser reaches `GeminiProvider`, safe failure handling works, and no application defect is known. EVID-543 satisfies real-provider success; EVID-545 preserves the latest transient HTTP 503 without claiming that request succeeded.
+
+NEXT_ALLOWED_ACTION: Handoff / normal maintenance. The implementation is frozen; no code change is required.
+
 ## Focus-mode back-navigation verification — 2026-09-03
 
 STATUS: **PASS**. Flashcards and Multiple Choice use the same Back to Folder visual treatment as Vocabulary/Folder. The navigation control retained its accessible name and passed 13 focused application-flow tests, typecheck, lint, formatting, build, and whitespace validation.
@@ -16,14 +39,14 @@ STATUS: **PASS**
 
 Working directory: `D:\Work\english-learning-app`
 
-| Evidence | Command or source | Exit code | Result |
-| --- | --- | ---: | --- |
-| EVID-530 | `npm.cmd run test:web` | 0 | 16 files and 61/61 frontend tests pass. Integrated coverage verifies the exact back label, separated folder heading, grouped study modes, management focus actions, and all existing learning journeys. |
-| EVID-531 | `npm.cmd run coverage:web` | 0 | 61/61 tests pass; 99.83% statements, 95.11% branches, 96.40% functions, and 99.83% lines. Every configured 95% threshold passes. |
-| EVID-532 | `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `git diff --check` | 0 | All final static checks pass. Vite emits the production bundle and the diff has no whitespace errors. |
-| EVID-533 | `npm.cmd run browser:acceptance` against `http://localhost:5173` | 0 | The real persistent workflow passes Back, Add, CSV, pronunciation, Flashcards, Multiple Choice, AI, and dashboard continuation with zero browser errors. |
-| EVID-534 | Instrumented responsive measurements and screenshot inspection | 0 | At 1440/768/390 the back control is 163×44px and excludes the dynamic name. The long heading stays within the viewport, study and management controls do not overlap, and document widths are 1425≤1440, 753≤768, and 390=390. |
-| EVID-535 | Initial focused, coverage, and browser attempts | 1, then remediated | The first focused command used paths relative to the wrong workspace; Node 26 storage shadowed jsdom; initial function coverage was 94.96%; early browser assertions exposed semantic spacing and an asynchronous card wait. Each issue was corrected and the final commands passed. |
+| Evidence | Command or source                                                                                                |          Exit code | Result                                                                                                                                                                                                                                                                               |
+| -------- | ---------------------------------------------------------------------------------------------------------------- | -----------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| EVID-530 | `npm.cmd run test:web`                                                                                           |                  0 | 16 files and 61/61 frontend tests pass. Integrated coverage verifies the exact back label, separated folder heading, grouped study modes, management focus actions, and all existing learning journeys.                                                                              |
+| EVID-531 | `npm.cmd run coverage:web`                                                                                       |                  0 | 61/61 tests pass; 99.83% statements, 95.11% branches, 96.40% functions, and 99.83% lines. Every configured 95% threshold passes.                                                                                                                                                     |
+| EVID-532 | `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `git diff --check` |                  0 | All final static checks pass. Vite emits the production bundle and the diff has no whitespace errors.                                                                                                                                                                                |
+| EVID-533 | `npm.cmd run browser:acceptance` against `http://localhost:5173`                                                 |                  0 | The real persistent workflow passes Back, Add, CSV, pronunciation, Flashcards, Multiple Choice, AI, and dashboard continuation with zero browser errors.                                                                                                                             |
+| EVID-534 | Instrumented responsive measurements and screenshot inspection                                                   |                  0 | At 1440/768/390 the back control is 163×44px and excludes the dynamic name. The long heading stays within the viewport, study and management controls do not overlap, and document widths are 1425≤1440, 753≤768, and 390=390.                                                       |
+| EVID-535 | Initial focused, coverage, and browser attempts                                                                  | 1, then remediated | The first focused command used paths relative to the wrong workspace; Node 26 storage shadowed jsdom; initial function coverage was 94.96%; early browser assertions exposed semantic spacing and an asynchronous card wait. Each issue was corrected and the final commands passed. |
 
 FUNCTIONAL VERIFICATION: `Back to Folders` returned to the folder library and reopened the generated folder. Add Vocabulary focused and submitted the existing form. Import CSV focused the existing file input and reported one import plus one duplicate skip. Pronunciation, Flashcards, Multiple Choice/results, and AI generated text all passed.
 
@@ -41,13 +64,13 @@ STATUS: **PASS**
 
 Working directory: `D:\Work\english-learning-app`
 
-| Evidence | Command or source | Exit code | Result |
-| --- | --- | ---: | --- |
-| EVID-525 | `$env:NODE_OPTIONS='--no-experimental-webstorage'; npm.cmd run test --workspace @english-learning/web -- --maxWorkers=1 --minWorkers=1` | 0 | 16 files and 61 tests pass. Integrated assertions verify four primary icons and active-page semantics on desktop and in the mobile drawer. |
-| EVID-526 | `$env:NODE_OPTIONS='--no-experimental-webstorage'; npm.cmd run coverage --workspace @english-learning/web -- --maxWorkers=1 --minWorkers=1` | 0 | 61/61 tests pass; 99.83% statements, 95.02% branches, 96.35% functions, and 99.83% lines. |
-| EVID-527 | `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `git diff --check` | 0 | All checks pass; Vite production assets are emitted. |
-| EVID-528 | `npm.cmd run browser:acceptance -- http://localhost:5173` plus instrumented layout/state assertions | 0 | 1440px desktop and 768px/390px drawers pass. Four items are 52px tall; icons are 24px; labels are 15px; all left coordinates match; hover changes background; focus outline is 3px; active accent is 3px; document overflow and browser errors are zero. |
-| EVID-529 | Initial visual and instrumented browser attempts | 0, then 1, then remediated | Visual inspection found the external icon font unavailable, so local masks were added. The first instrumented rerun detected two mis-scoped and two missing mobile icon classes. The narrowed final assignments passed. |
+| Evidence | Command or source                                                                                                                           |                  Exit code | Result                                                                                                                                                                                                                                                   |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| EVID-525 | `$env:NODE_OPTIONS='--no-experimental-webstorage'; npm.cmd run test --workspace @english-learning/web -- --maxWorkers=1 --minWorkers=1`     |                          0 | 16 files and 61 tests pass. Integrated assertions verify four primary icons and active-page semantics on desktop and in the mobile drawer.                                                                                                               |
+| EVID-526 | `$env:NODE_OPTIONS='--no-experimental-webstorage'; npm.cmd run coverage --workspace @english-learning/web -- --maxWorkers=1 --minWorkers=1` |                          0 | 61/61 tests pass; 99.83% statements, 95.02% branches, 96.35% functions, and 99.83% lines.                                                                                                                                                                |
+| EVID-527 | `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `git diff --check`                            |                          0 | All checks pass; Vite production assets are emitted.                                                                                                                                                                                                     |
+| EVID-528 | `npm.cmd run browser:acceptance -- http://localhost:5173` plus instrumented layout/state assertions                                         |                          0 | 1440px desktop and 768px/390px drawers pass. Four items are 52px tall; icons are 24px; labels are 15px; all left coordinates match; hover changes background; focus outline is 3px; active accent is 3px; document overflow and browser errors are zero. |
+| EVID-529 | Initial visual and instrumented browser attempts                                                                                            | 0, then 1, then remediated | Visual inspection found the external icon font unavailable, so local masks were added. The first instrumented rerun detected two mis-scoped and two missing mobile icon classes. The narrowed final assignments passed.                                  |
 
 NAVIGATION VERIFICATION: Dashboard, Vocabulary, and Practice update `aria-current` and the active visual state. Progress remains the existing non-routing placeholder and does not change the current path. No route or navigation callback changed.
 
@@ -65,16 +88,16 @@ STATUS: **PASS**
 
 Working directory: `D:\Work\english-learning-app`
 
-| Evidence | Command or source | Exit code | Result |
-| --- | --- | ---: | --- |
-| EVID-517 | Source inspection of `Dashboard.tsx`, dashboard API/repository/service, Prisma schema, session persistence, approved specification, and API contract | 0 | Confirmed the old chart was fabricated and unrelated to session dates; persisted completed test sessions are the only approved qualifying activity. |
-| EVID-518 | Focused dashboard API tests and current-week/frontend dashboard tests | 0 | API 5/5 and web 9/9 pass. Deterministic coverage includes Monday start, seven dates, today, inactive, active, upcoming, future exclusion, same-day deduplication, empty activity, month/year boundaries, local-date conversion, percentage, and safe minimum denominator. |
-| EVID-519 | `$env:NODE_OPTIONS='--no-experimental-webstorage'; npm.cmd run coverage --workspace @english-learning/web -- --maxWorkers=1 --minWorkers=1` | 0 | 16 files and 61 tests pass; 99.86% statements, 95.10% branches, 96.35% functions, and 99.86% lines. |
-| EVID-520 | `npm.cmd run coverage:api` | 0 | 12 files and 98 tests pass; 97.39% statements, 95.08% branches, 98.61% functions, and 97.39% lines. Dashboard module coverage is 100%. |
-| EVID-521 | `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `git diff --check` | 0 | All static checks pass and Vite emits the production build. |
-| EVID-522 | Isolated API/web servers on 3001/5174 plus `npm.cmd run browser:acceptance -- http://localhost:5174` | 0 | Persisted workflow passes. Current week is Aug 31–Sep 6; Tuesday Sep 1 is today and active; Monday is inactive; five future days are upcoming; 1/2 equals the displayed 50%; browser errors are 0. |
-| EVID-523 | Responsive browser measurements and screenshot inspection | 0 | 1440px, 768px, and 390px pass. Card and percentage remain within each viewport. At 390px the 308px week viewport deliberately scrolls its 668px strip; document width remains exactly 390px. |
-| EVID-524 | Initial full frontend/coverage and browser attempts | 1, then remediated | Node 26 experimental web storage shadowed jsdom until disabled for tests; old app assertions expected a unique `0%`; the first isolated browser server used the wrong Vite proxy environment variable. Each issue was diagnosed and the final commands passed. |
+| Evidence | Command or source                                                                                                                                    |          Exit code | Result                                                                                                                                                                                                                                                                    |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -----------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| EVID-517 | Source inspection of `Dashboard.tsx`, dashboard API/repository/service, Prisma schema, session persistence, approved specification, and API contract |                  0 | Confirmed the old chart was fabricated and unrelated to session dates; persisted completed test sessions are the only approved qualifying activity.                                                                                                                       |
+| EVID-518 | Focused dashboard API tests and current-week/frontend dashboard tests                                                                                |                  0 | API 5/5 and web 9/9 pass. Deterministic coverage includes Monday start, seven dates, today, inactive, active, upcoming, future exclusion, same-day deduplication, empty activity, month/year boundaries, local-date conversion, percentage, and safe minimum denominator. |
+| EVID-519 | `$env:NODE_OPTIONS='--no-experimental-webstorage'; npm.cmd run coverage --workspace @english-learning/web -- --maxWorkers=1 --minWorkers=1`          |                  0 | 16 files and 61 tests pass; 99.86% statements, 95.10% branches, 96.35% functions, and 99.86% lines.                                                                                                                                                                       |
+| EVID-520 | `npm.cmd run coverage:api`                                                                                                                           |                  0 | 12 files and 98 tests pass; 97.39% statements, 95.08% branches, 98.61% functions, and 97.39% lines. Dashboard module coverage is 100%.                                                                                                                                    |
+| EVID-521 | `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `git diff --check`                                     |                  0 | All static checks pass and Vite emits the production build.                                                                                                                                                                                                               |
+| EVID-522 | Isolated API/web servers on 3001/5174 plus `npm.cmd run browser:acceptance -- http://localhost:5174`                                                 |                  0 | Persisted workflow passes. Current week is Aug 31–Sep 6; Tuesday Sep 1 is today and active; Monday is inactive; five future days are upcoming; 1/2 equals the displayed 50%; browser errors are 0.                                                                        |
+| EVID-523 | Responsive browser measurements and screenshot inspection                                                                                            |                  0 | 1440px, 768px, and 390px pass. Card and percentage remain within each viewport. At 390px the 308px week viewport deliberately scrolls its 668px strip; document width remains exactly 390px.                                                                              |
+| EVID-524 | Initial full frontend/coverage and browser attempts                                                                                                  | 1, then remediated | Node 26 experimental web storage shadowed jsdom until disabled for tests; old app assertions expected a unique `0%`; the first isolated browser server used the wrong Vite proxy environment variable. Each issue was diagnosed and the final commands passed.            |
 
 DATA VERIFICATION: Browser evidence used the real ignored SQLite development database. It contained persisted completed sessions only. After the workflow completed a quiz on Tuesday, the API returned real ISO `completedSessionDates`; the frontend converted them to local calendar days and produced one unique active elapsed day.
 
@@ -88,19 +111,19 @@ USER_APPROVAL_REQUIRED: No.
 
 STATUS: **PASS** — Folder Detail redesign accepted
 
-| Evidence | Command or source | Exit code | Result |
-| --- | --- | ---: | --- |
-| EVID-503 | Initial `npm.cmd run coverage:web` | 1 | Baseline failed at 89.81% statements, 89.71% branches, 65.21% functions, and 89.81% lines. |
-| EVID-504 | Final `npm.cmd run coverage:web` | 0 | 32 tests pass; 99.57% statements, 95.41% branches, 100% functions, 99.57% lines. |
-| EVID-505 | Final `npm.cmd run test:web` | 0 | 11 files and 32 tests pass without React `act` warnings. |
-| EVID-506 | Sequential `npm.cmd run coverage:api` | 0 | 12 files and 95 tests pass; 95.01% statements, 95.00% branches, 97.22% functions, 95.01% lines. |
-| EVID-507 | Sequential `npm.cmd test` | 0 | Backend 95/95 and frontend 32/32 pass; 127 total tests. A prior parallel run timed out one migration hook and is retained as failed attempt evidence. |
-| EVID-508 | `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `git diff --check` | 0 | All pass; production assets emitted. |
-| EVID-509 | `npm.cmd ls --all` | 0 | Installed dependency tree resolves; platform-specific unmet optional packages are expected. |
-| EVID-510 | `npm.cmd audit --audit-level=low` inside and outside sandbox | 1 | Registry request failed; escalated attempt reported `ENOTFOUND registry.npmjs.org`. No vulnerability result was produced. |
-| EVID-511 | Three `npm.cmd run dev` attempts | 1, 1, then running | First two exposed Node 26/Windows `tsx` `uv_os_get_passwd` ENOMEM; the preload shim allowed API port 3000 and Vite port 5175 to start. Processes were stopped after verification. |
-| EVID-512 | Headless Chrome workflow attempts and user authorization boundary | 1 / denied | Chrome rendered the real dashboard and produced a desktop screenshot. Two script defects were diagnosed; authorization for the corrected rerun was denied. No complete workflow or mobile evidence exists. |
-| EVID-513 | `npm.cmd run setup` | 0 | Prisma Client generated; the single committed migration was found; no pending migration existed; setup completed. |
+| Evidence | Command or source                                                                                                |          Exit code | Result                                                                                                                                                                                                     |
+| -------- | ---------------------------------------------------------------------------------------------------------------- | -----------------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| EVID-503 | Initial `npm.cmd run coverage:web`                                                                               |                  1 | Baseline failed at 89.81% statements, 89.71% branches, 65.21% functions, and 89.81% lines.                                                                                                                 |
+| EVID-504 | Final `npm.cmd run coverage:web`                                                                                 |                  0 | 32 tests pass; 99.57% statements, 95.41% branches, 100% functions, 99.57% lines.                                                                                                                           |
+| EVID-505 | Final `npm.cmd run test:web`                                                                                     |                  0 | 11 files and 32 tests pass without React `act` warnings.                                                                                                                                                   |
+| EVID-506 | Sequential `npm.cmd run coverage:api`                                                                            |                  0 | 12 files and 95 tests pass; 95.01% statements, 95.00% branches, 97.22% functions, 95.01% lines.                                                                                                            |
+| EVID-507 | Sequential `npm.cmd test`                                                                                        |                  0 | Backend 95/95 and frontend 32/32 pass; 127 total tests. A prior parallel run timed out one migration hook and is retained as failed attempt evidence.                                                      |
+| EVID-508 | `npm.cmd run typecheck`; `npm.cmd run lint`; `npm.cmd run format:check`; `npm.cmd run build`; `git diff --check` |                  0 | All pass; production assets emitted.                                                                                                                                                                       |
+| EVID-509 | `npm.cmd ls --all`                                                                                               |                  0 | Installed dependency tree resolves; platform-specific unmet optional packages are expected.                                                                                                                |
+| EVID-510 | `npm.cmd audit --audit-level=low` inside and outside sandbox                                                     |                  1 | Registry request failed; escalated attempt reported `ENOTFOUND registry.npmjs.org`. No vulnerability result was produced.                                                                                  |
+| EVID-511 | Three `npm.cmd run dev` attempts                                                                                 | 1, 1, then running | First two exposed Node 26/Windows `tsx` `uv_os_get_passwd` ENOMEM; the preload shim allowed API port 3000 and Vite port 5175 to start. Processes were stopped after verification.                          |
+| EVID-512 | Headless Chrome workflow attempts and user authorization boundary                                                |         1 / denied | Chrome rendered the real dashboard and produced a desktop screenshot. Two script defects were diagnosed; authorization for the corrected rerun was denied. No complete workflow or mobile evidence exists. |
+| EVID-513 | `npm.cmd run setup`                                                                                              |                  0 | Prisma Client generated; the single committed migration was found; no pending migration existed; setup completed.                                                                                          |
 
 Limitations: EVID-512 does not verify the full browser journey. The desktop screenshot predates the dashboard metric-grouping correction and is retained as failed-review evidence. EVID-510 is not a successful current security audit; historical EVID-493 remains applicable only because `package-lock.json` is unchanged.
 
@@ -114,18 +137,18 @@ STATUS: **FAIL**
 
 Working directory: `D:\Work\english-learning-app`
 
-| Evidence | Command | Exit | Result |
-| --- | --- | ---: | --- |
-| EVID-493 | `npm.cmd install` | 0 | Installed dependencies; zero audit vulnerabilities. |
-| EVID-494 | Prisma generate and migrate deploy commands | 0 | Existing client generated and existing migration applied after creating the required empty SQLite file. |
-| EVID-495 | `npm.cmd run test:web` | 0 | 11 files and 28 tests passed. One React `act` warning remains. |
-| EVID-496 | `npm.cmd run coverage:api` | 0 | All four independent backend metrics meet 95%. |
-| EVID-497 | `npm.cmd run coverage:web` | 1 | Branches 89.71% and functions 65.21%; gate failed. |
-| EVID-498 | `npm.cmd run lint`; `npm.cmd run typecheck`; `npm.cmd run build`; `git diff --check` | 0 | All passed. |
-| EVID-501 | `npm.cmd run format:check` | 1 | Repository-wide baseline reports 86 files needing Prettier formatting; changed frontend files were formatted directly. |
-| EVID-499 | `npm.cmd run dev` plus HTTP workflow checks | 0 | API and frontend served; persisted folder/vocabulary/quiz/dashboard flow passed. |
-| EVID-500 | Interactive browser and responsive checks | NOT RUN | No browser automation or interactive browser capability was available. |
-| EVID-502 | `npm.cmd run setup`; `npm.cmd run lint`; `npm.cmd run typecheck`; `git diff --check`; `npm.cmd run dev` | 0 | Cross-platform setup passed on PowerShell; API listened on 3000, Vite on 5173, and both ports were free after clean shutdown. |
+| Evidence | Command                                                                                                 |    Exit | Result                                                                                                                        |
+| -------- | ------------------------------------------------------------------------------------------------------- | ------: | ----------------------------------------------------------------------------------------------------------------------------- |
+| EVID-493 | `npm.cmd install`                                                                                       |       0 | Installed dependencies; zero audit vulnerabilities.                                                                           |
+| EVID-494 | Prisma generate and migrate deploy commands                                                             |       0 | Existing client generated and existing migration applied after creating the required empty SQLite file.                       |
+| EVID-495 | `npm.cmd run test:web`                                                                                  |       0 | 11 files and 28 tests passed. One React `act` warning remains.                                                                |
+| EVID-496 | `npm.cmd run coverage:api`                                                                              |       0 | All four independent backend metrics meet 95%.                                                                                |
+| EVID-497 | `npm.cmd run coverage:web`                                                                              |       1 | Branches 89.71% and functions 65.21%; gate failed.                                                                            |
+| EVID-498 | `npm.cmd run lint`; `npm.cmd run typecheck`; `npm.cmd run build`; `git diff --check`                    |       0 | All passed.                                                                                                                   |
+| EVID-501 | `npm.cmd run format:check`                                                                              |       1 | Repository-wide baseline reports 86 files needing Prettier formatting; changed frontend files were formatted directly.        |
+| EVID-499 | `npm.cmd run dev` plus HTTP workflow checks                                                             |       0 | API and frontend served; persisted folder/vocabulary/quiz/dashboard flow passed.                                              |
+| EVID-500 | Interactive browser and responsive checks                                                               | NOT RUN | No browser automation or interactive browser capability was available.                                                        |
+| EVID-502 | `npm.cmd run setup`; `npm.cmd run lint`; `npm.cmd run typecheck`; `git diff --check`; `npm.cmd run dev` |       0 | Cross-platform setup passed on PowerShell; API listened on 3000, Vite on 5173, and both ports were free after clean shutdown. |
 
 Limitations: CSV and speech have passing component tests, but their real-browser behavior was not observed. The optional AI provider was intentionally disabled by local configuration. No raw database edits or schema changes were made.
 
@@ -142,14 +165,14 @@ Limitations: CSV and speech have passing component tests, but their real-browser
 - **INFORMATIONAL:** React test runs emit non-failing `act(...)` warnings; behavior and coverage gates remain passing.
 - **INFORMATIONAL:** Optional AI provider adapter is intentionally disabled by default per approved optional-feature boundary.
 
-| Field                       | Value                                                  |
-| --------------------------- | ------------------------------------------------------ |
-| Stage                       | Code Generation                                        |
+| Field                       | Value                                                 |
+| --------------------------- | ----------------------------------------------------- |
+| Stage                       | Code Generation                                       |
 | Current task                | TASK-009 — Dashboard aggregation backend              |
-| Task decision               | TASK-001–TASK-022 PASS                                 |
-| Overall Implementation gate | ✅ PASS; implementation complete                       |
-| Working directory           | `/home/trind1/hoi_nhap_ky_thuat/english-learning-app`  |
-| Verified                    | 2026-08-27                                             |
+| Task decision               | TASK-001–TASK-022 PASS                                |
+| Overall Implementation gate | ✅ PASS; implementation complete                      |
+| Working directory           | `/home/trind1/hoi_nhap_ky_thuat/english-learning-app` |
+| Verified                    | 2026-08-27                                            |
 
 ## Verification conclusion
 
@@ -179,15 +202,15 @@ TEST-008 has 11 deterministic executable cases. Functional tests pass and backen
 
 ### TASK-008 final evidence
 
-| Evidence | Command/result |
-|---|---|
-| EVID-482 | `npm ci --ignore-scripts --dry-run` — exit 0; lockfile accepted. |
-| EVID-483 | Focused TEST-008 and TASK-007/TASK-006/TASK-005 regressions — exit 0; 9, 7, 17, and 20 tests passed respectively. |
-| EVID-484 | `npm test` — exit 0; 90 backend and 4 frontend tests passed. |
-| EVID-485 | `npm run coverage:api` — exit 0; 97.78/95.33/98.43/97.78. `npm run coverage:web` — exit 0; 100/100/100/100. |
+| Evidence | Command/result                                                                                                          |
+| -------- | ----------------------------------------------------------------------------------------------------------------------- |
+| EVID-482 | `npm ci --ignore-scripts --dry-run` — exit 0; lockfile accepted.                                                        |
+| EVID-483 | Focused TEST-008 and TASK-007/TASK-006/TASK-005 regressions — exit 0; 9, 7, 17, and 20 tests passed respectively.       |
+| EVID-484 | `npm test` — exit 0; 90 backend and 4 frontend tests passed.                                                            |
+| EVID-485 | `npm run coverage:api` — exit 0; 97.78/95.33/98.43/97.78. `npm run coverage:web` — exit 0; 100/100/100/100.             |
 | EVID-486 | Deliberate API and web threshold probes — exit 1 each as expected when thresholds were raised beyond measured coverage. |
-| EVID-487 | Typecheck, lint, formatting, `npm ls --all`, audit, and `git diff --check` — exit 0; audit reported 0 vulnerabilities. |
-| EVID-488 | Temporary database artifact scan after cleanup — no `test-database-*` directories remained. |
+| EVID-487 | Typecheck, lint, formatting, `npm ls --all`, audit, and `git diff --check` — exit 0; audit reported 0 vulnerabilities.  |
+| EVID-488 | Temporary database artifact scan after cleanup — no `test-database-*` directories remained.                             |
 
 ## TASK-007 pre-implementation gate
 
@@ -632,26 +655,31 @@ TASK-006 implementation and tests were created. Historical coverage failures wer
 
 ## Post-acceptance UI/UX maintenance verification
 
-| Evidence ID | Result |
-| --- | --- |
-| EVID-489 | Frontend regression passed: 11 files and 29 tests. |
-| EVID-490 | Frontend coverage passed: 99.02% statements, 95.13% branches, 97.67% functions, and 99.02% lines. |
-| EVID-491 | Typecheck, lint, formatting, and `git diff --check` passed. |
-| EVID-492 | Production frontend build passed; Vite emitted the HTML, CSS, and JavaScript assets. |
+| Evidence ID | Result                                                                                            |
+| ----------- | ------------------------------------------------------------------------------------------------- |
+| EVID-489    | Frontend regression passed: 11 files and 29 tests.                                                |
+| EVID-490    | Frontend coverage passed: 99.02% statements, 95.13% branches, 97.67% functions, and 99.02% lines. |
+| EVID-491    | Typecheck, lint, formatting, and `git diff --check` passed.                                       |
+| EVID-492    | Production frontend build passed; Vite emitted the HTML, CSS, and JavaScript assets.              |
+
 ### Runtime bootstrap remediation — 2026-08-28
 
 The Vite HTML shell and React entrypoint were inspected. The initial blank-page screenshots were reproduced only after the short-lived `npm run dev` command had terminated its child processes; the browser then received an empty shell. With `npm run dev` kept alive in a terminal session, HTTP 200, React content in `#root`, and visible dashboard renders were confirmed at 1440px and 390px. No bootstrap code change was required. UI remediation tasks remain pending full page-by-page visual verification.
+
 ## Vocabulary UI redesign verification — 2026-08-28
 
 STATUS: **PASS**
 
 Representative browser verification passed at 1440px desktop, 768px tablet, and 390px mobile. The Vocabulary page rendered without horizontal overflow or blocking browser errors; vocabulary management, CSV import, pronunciation, and study navigation remained functional.
+
 ## Vocabulary visual redesign refinement — 2026-08-28
 
 STATUS: **PASS**. The existing Vocabulary information architecture was preserved while refining surfaces, spacing, typography, list-row hierarchy, states, and responsive presentation. Browser acceptance passed at 1440px, 768px, and 390px with no overflow and zero browser errors.
+
 ## Folder detail visual redesign — 2026-08-28
 
 STATUS: **PASS**. Folder detail retains all existing controls while presenting a stronger topic header, study actions, vocabulary content, and responsive layout. Browser workflow passed at 1440px, 768px, and 390px with zero errors.
+
 ## Dashboard visual redesign — 2026-08-28
 
 STATUS: **PASS**. Dashboard hierarchy, metric cards, progress area, actions, and responsive card styling were refined without changing data logic or section order. Browser verification passed at 1440px, 768px, and 390px with zero errors and no overflow.

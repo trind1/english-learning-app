@@ -4,7 +4,12 @@ export const createAiRouter = (service: AiService) => {
   const router = Router();
   router.post("/text", async (req, res, next) => {
     try {
-      res.json({ data: await service.generate(req.body?.vocabularyIds) });
+      res.json({
+        data: await service.generate(
+          req.body?.folderId,
+          req.body?.vocabularyIds,
+        ),
+      });
     } catch (e) {
       next(e);
     }
