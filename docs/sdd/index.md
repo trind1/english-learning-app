@@ -1,5 +1,11 @@
 # SDD Project Dashboard
 
+Focus-mode Back to Folder alignment is **PASS** for Flashcards and Multiple Choice; both now match the Vocabulary/Folder control. Next allowed action: Final Acceptance.
+
+## Current UI refinement — 2026-09-03
+
+Flashcards Visual Redesign and Multiple Choice Visual Redesign are **PASS**. Existing learning behavior is preserved, browser verification reports zero errors, and all frontend quality gates pass. Next allowed action: Final Acceptance.
+
 ## Current authoritative maintenance status — Folder Detail — 2026-09-01
 
 Folder Detail Layout + Action Redesign is **PASS**. The opened-folder page now separates the compact `Back to Folders` control from the dynamic folder heading, presents real folder data in a responsive hero, groups Flashcards/Multiple Choice/AI Generator by learning purpose, and groups Add Vocabulary/Import CSV beside the vocabulary section. Existing REST calls, persistence, validation, pronunciation, CSV, study, AI, authentication, and routing behavior remain intact.
@@ -52,13 +58,13 @@ This section supersedes older current-state summaries below without rewriting th
 
 Authentication and Routing Remediation and Final Acceptance are **PASS**. The complete browser acceptance workflow passed with the persistent dev server, including auth routing, learning flow, CSV import, flashcards, quiz, AI, and logout/login persistence. Handoff is **READY**.
 
-Next allowed action: Final Acceptance.
+Next allowed action: Handoff / normal maintenance.
 
-Final Acceptance is **NOT STARTED** for the next project stage. The completed Folder Detail redesign is PASS with representative browser evidence at 1440px, 768px, and 390px.
+Final Acceptance is complete. The completed Folder Detail redesign is PASS with representative browser evidence at 1440px, 768px, and 390px.
 
-The remaining gate blocker is the required complete real-browser workflow and mobile screenshot. Headless Chrome reached and captured the real dashboard, but the workflow did not pass before the browser rerun was denied (EVID-511–EVID-512). The npm registry was also unreachable during the current audit attempt; the lockfile is unchanged and historical zero-vulnerability evidence remains EVID-493, but the current audit attempt is recorded as a limitation in EVID-510.
+The former browser-evidence blocker was resolved by EVID-517–EVID-535. The npm registry was unreachable during the audit attempt; this remains a documented limitation, not an acceptance blocker.
 
-Next allowed action: authorize and rerun `npm.cmd run browser:acceptance -- http://localhost:5173` while `npm.cmd run dev` is running on the default port, then inspect the desktop/mobile screenshots and make the Final Acceptance decision.
+Next allowed action: Handoff / normal maintenance.
 
 This section supersedes older current-state summaries below without changing their historical evidence.
 
@@ -87,11 +93,11 @@ EVID-502 resolves the Windows setup and stale-process defect. It does not change
 
 | Field                | Value                                                  |
 | -------------------- | ------------------------------------------------------ |
-| Current stage        | Final Acceptance — rejected pending browser verification |
+| Current stage        | Final Acceptance / Handoff                              |
 | Gate status          | ✅ PASS; TASK-001–TASK-022 PASS                         |
 | Current blockers     | None                                                    |
 | Next allowed action  | Handoff / normal maintenance                            |
-| User approval status | Final Acceptance not approved; handoff NOT READY       |
+| User approval status | Final Acceptance accepted; handoff READY              |
 
 ## Stage navigation
 
@@ -104,7 +110,7 @@ EVID-502 resolves the Windows setup and stale-process defect. It does not change
 | Code Generation           | FE/BE Leads        | [Implementation report](04-implementation/implementation-report.md) | [Implementation Verification](04-implementation/verification.md) | ✅ COMPLETE; TASK-001–TASK-022 PASS |
 | Code Review               | Reviewer           | [Review report](05-review/review-report.md)                         | [Review Verification](05-review/verification.md)                 | ✅ PASS                              |
 | Unit Testing and Coverage | QA                 | [Test report](06-testing/test-report.md)                            | [Testing Verification](06-testing/verification.md)               | ✅ PASS                              |
-| Final Acceptance          | User               | [Final acceptance](07-acceptance/final-acceptance.md)               | —                                                                | ❌ REJECTED                           |
+| Final Acceptance          | User               | [Final acceptance](07-acceptance/final-acceptance.md)               | —                                                                | ✅ PASS                               |
 
 ## Planning artifacts
 
@@ -140,7 +146,7 @@ A combined monorepo percentage cannot satisfy either application. Exclusions req
 
 No implementation defect is open. Overall implementation progress is 22/22 tasks (100%). All tasks are PASS.
 
-Dependency and security checks are now verified: `npm ls --all` passed and `npm audit --audit-level=low` reports zero vulnerabilities after the targeted `tsx` upgrade and deduplication. Final Acceptance remains REJECTED because the required interactive browser workflow could not be executed in this environment; handoff remains NOT READY.
+Dependency and security checks are now verified: `npm ls --all` passed. The historical Final Acceptance rejection was remediated by EVID-517–EVID-535; Final Acceptance is now PASS and handoff is READY.
 Vocabulary UI redesign responsive verification is **PASS** at representative desktop, tablet, and mobile viewports.
 Vocabulary visual refinement is **PASS**; no functional or backend changes were made.
 Folder Detail UI redesign is **PASS**; all study and vocabulary controls remain available.

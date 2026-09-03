@@ -74,7 +74,7 @@ export const TestSession = ({
     return (
       <section
         aria-label="Test results"
-        className="card"
+        className="card quiz-results-card"
         style={{
           maxWidth: "640px",
           margin: "0 auto",
@@ -218,6 +218,7 @@ export const TestSession = ({
   return (
     <section
       aria-label="Multiple-choice test"
+      className="learning-session quiz-session"
       style={{
         maxWidth: "680px",
         margin: "0 auto",
@@ -227,7 +228,7 @@ export const TestSession = ({
       }}
     >
       {/* Progress Header */}
-      <div>
+      <div className="quiz-progress-header">
         <div
           style={{
             display: "flex",
@@ -267,7 +268,7 @@ export const TestSession = ({
 
       {/* Quiz Card */}
       <div
-        className="card"
+        className="card quiz-question-card"
         style={{
           padding: "32px 24px",
           backgroundColor: "var(--surface-white)",

@@ -411,6 +411,10 @@ try {
 
   await clickButton("Flashcards");
   await waitFor(hasText("Reveal meaning"), "flashcards");
+  const flashcardsDesktop = await capture("flashcards-desktop", 1440, 900);
+  const flashcardsTablet = await capture("flashcards-tablet", 768, 900);
+  const flashcardsMobile = await capture("flashcards-mobile", 390, 800);
+  await capture("flashcards-desktop", 1440, 900);
   await clickButton("Reveal meaning");
   await clickButton("Next");
   await clickButton("Previous");
@@ -426,6 +430,10 @@ try {
     `Boolean(document.querySelector('section[aria-label="Multiple-choice test"]'))`,
     "quiz",
   );
+  const quizDesktop = await capture("quiz-desktop", 1440, 900);
+  const quizTablet = await capture("quiz-tablet", 768, 900);
+  const quizMobile = await capture("quiz-mobile", 390, 800);
+  await capture("quiz-desktop", 1440, 900);
   for (let question = 0; question < 10; question += 1) {
     const finished = await evaluate(
       `Boolean(document.querySelector('section[aria-label="Test results"]'))`,
@@ -448,6 +456,10 @@ try {
     );
     throw new Error(`${error.message}: ${JSON.stringify(state)}`);
   }
+  const quizResultsDesktop = await capture("quiz-results-desktop", 1440, 900);
+  const quizResultsTablet = await capture("quiz-results-tablet", 768, 900);
+  const quizResultsMobile = await capture("quiz-results-mobile", 390, 800);
+  await capture("quiz-results-desktop", 1440, 900);
   await clickButton("Back to folder");
   await waitFor(hasText(folderName), "folder after quiz");
 
@@ -591,6 +603,19 @@ try {
         ai: true,
         flashcards: true,
         quiz: true,
+        flashcardsViewports: {
+          desktop: flashcardsDesktop,
+          tablet: flashcardsTablet,
+          mobile: flashcardsMobile,
+        },
+        quizViewports: {
+          desktop: quizDesktop,
+          tablet: quizTablet,
+          mobile: quizMobile,
+          resultsDesktop: quizResultsDesktop,
+          resultsTablet: quizResultsTablet,
+          resultsMobile: quizResultsMobile,
+        },
         folderDetail: {
           desktop: { capture: folderDesktop, detail: folderDesktopDetail },
           tablet: { capture: folderTablet, detail: folderTabletDetail },

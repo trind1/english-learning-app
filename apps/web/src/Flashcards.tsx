@@ -70,6 +70,7 @@ export const Flashcards = ({
   return (
     <section
       aria-label="Flashcards"
+      className="learning-session flashcard-session"
       style={{
         display: "flex",
         flexDirection: "column",
@@ -81,6 +82,7 @@ export const Flashcards = ({
     >
       {/* Top Focus Header Bar */}
       <div
+        className="learning-session-header"
         style={{
           width: "100%",
           display: "flex",
@@ -156,26 +158,13 @@ export const Flashcards = ({
           </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span
-            style={{
-              padding: "4px 10px",
-              borderRadius: "12px",
-              backgroundColor: "rgba(0, 88, 190, 0.1)",
-              color: "var(--primary)",
-              fontWeight: 700,
-              fontSize: "13px",
-            }}
-          >
-            Score: {progressPercent * 10}
-          </span>
-        </div>
+        <span className="session-count-label">{cards.length} cards</span>
       </div>
 
       {/* 3D Flashcard */}
       <div
         className="perspective-1000"
-        style={{ width: "100%", maxWidth: "640px", minHeight: "360px" }}
+        style={{ width: "100%", maxWidth: "680px", minHeight: "390px" }}
       >
         <div
           className={`flashcard-3d-card ${revealed ? "rotate-y-180" : ""}`}
@@ -193,7 +182,7 @@ export const Flashcards = ({
               ? "Flip flashcard to hide meaning"
               : "Flip flashcard to show meaning"
           }
-          style={{ minHeight: "360px" }}
+          style={{ minHeight: "390px" }}
         >
           {/* Front (Side A) */}
           <div className="flashcard-face">
@@ -267,17 +256,7 @@ export const Flashcards = ({
                   {card.meaning}
                 </p>
               </div>
-              <div
-                style={{
-                  backgroundColor: "var(--surface-container-low)",
-                  padding: "16px",
-                  borderRadius: "12px",
-                  fontStyle: "italic",
-                  color: "var(--on-surface-variant)",
-                }}
-              >
-                "{card.word} in context is key to natural fluency."
-              </div>
+              <p className="flashcard-back-word">{card.word}</p>
             </div>
             <div
               style={{
@@ -322,64 +301,30 @@ export const Flashcards = ({
             Reveal meaning
           </button>
         ) : (
-          <div style={{ display: "flex", gap: "12px", width: "100%" }}>
+          <div className="flashcard-rating-group">
             <button
               type="button"
               onClick={() => move(index + 1)}
-              style={{
-                flex: 1,
-                backgroundColor: "var(--error-container)",
-                color: "var(--on-error-container)",
-                padding: "12px",
-                borderRadius: "12px",
-                fontWeight: 600,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "2px",
-              }}
+              className="flashcard-rating hard"
             >
               <span>Hard</span>
-              <span style={{ fontSize: "11px", opacity: 0.8 }}>&lt; 1m</span>
+              <span>Need more practice</span>
             </button>
             <button
               type="button"
               onClick={() => move(index + 1)}
-              style={{
-                flex: 1,
-                backgroundColor: "var(--surface-container-high)",
-                color: "var(--on-surface)",
-                border: "1px solid var(--outline-variant)",
-                padding: "12px",
-                borderRadius: "12px",
-                fontWeight: 600,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "2px",
-              }}
+              className="flashcard-rating good"
             >
               <span>Good</span>
-              <span style={{ fontSize: "11px", opacity: 0.8 }}>10m</span>
+              <span>Remembered it</span>
             </button>
             <button
               type="button"
               onClick={() => move(index + 1)}
-              style={{
-                flex: 1,
-                backgroundColor: "var(--secondary)",
-                color: "var(--on-secondary)",
-                padding: "12px",
-                borderRadius: "12px",
-                fontWeight: 600,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "2px",
-              }}
+              className="flashcard-rating easy"
             >
               <span>Easy</span>
-              <span style={{ fontSize: "11px", opacity: 0.8 }}>4d</span>
+              <span>Very confident</span>
             </button>
           </div>
         )}

@@ -1,5 +1,33 @@
 # Code Generation Implementation Report
 
+## Focus-mode back-navigation refinement — 2026-09-03
+
+STAGE: UI refinement
+
+STATUS: PASS
+
+FILES_MODIFIED: `apps/web/src/App.tsx`, `apps/web/src/styles.css`.
+
+VERIFICATION_RESULTS: Flashcards and Multiple Choice now reuse the same visual classes, arrow treatment, dimensions, colors, and interaction states as the Vocabulary/Folder Back to Folder control. Existing folder navigation behavior is unchanged. Focused frontend tests, typecheck, lint, formatting, build, and whitespace validation passed.
+
+NEXT_ALLOWED_ACTION: Final Acceptance.
+
+USER_APPROVAL_REQUIRED: Yes, for Final Acceptance.
+
+## Flashcards and Multiple Choice visual redesign — 2026-09-03
+
+STAGE: UI refinement
+
+STATUS: PASS
+
+FILES_MODIFIED: `apps/web/src/Flashcards.tsx`, `apps/web/src/TestSession.tsx`, `apps/web/src/styles.css`, `apps/web/test/flashcards.test.tsx`.
+
+VERIFICATION_RESULTS: Flashcards and Multiple Choice now share a focused learning-session visual system while retaining their existing navigation, pronunciation, rating, answer, score, and persistence behavior. The fake flashcard score, scheduling intervals, and generated context claim were removed. The real-browser learning workflow passed at representative desktop, tablet, and mobile viewports with zero browser errors.
+
+NEXT_ALLOWED_ACTION: Final Acceptance.
+
+USER_APPROVAL_REQUIRED: Yes, for Final Acceptance.
+
 ## Folder Detail layout and action redesign — 2026-09-01
 
 STAGE: Folder Detail Layout + Action Redesign

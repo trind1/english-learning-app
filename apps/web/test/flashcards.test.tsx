@@ -33,8 +33,12 @@ describe("TEST-016 flashcards", () => {
       populatedView.getByRole("button", { name: "Reveal meaning" }),
     ).toBeInTheDocument();
 
-    // Click to flip
-    fireEvent.click(populatedView.getByText("hello"));
+    // Click the semantic card control to flip either visible face.
+    fireEvent.click(
+      populatedView.getByRole("button", {
+        name: "Flip flashcard to show meaning",
+      }),
+    );
     expect(populatedView.getByText("greeting")).toBeInTheDocument();
     fireEvent.keyDown(
       populatedView.getByRole("button", {

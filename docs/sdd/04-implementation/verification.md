@@ -1,5 +1,15 @@
 # TASK-001 through TASK-009 Implementation Verification
 
+## Focus-mode back-navigation verification — 2026-09-03
+
+STATUS: **PASS**. Flashcards and Multiple Choice use the same Back to Folder visual treatment as Vocabulary/Folder. The navigation control retained its accessible name and passed 13 focused application-flow tests, typecheck, lint, formatting, build, and whitespace validation.
+
+## Flashcards and Multiple Choice visual verification — 2026-09-03
+
+STATUS: **PASS**
+
+`npm test` passed with 98 backend and 61 frontend tests. `npm run coverage:web` passed at 99.83% statements, 95.11% branches, 96.40% functions, and 99.83% lines. Typecheck, lint, formatting, build, and `git diff --check` passed. The real-browser workflow verified flashcard reveal/rating/navigation and multiple-choice selection/submission/results without horizontal overflow or browser errors.
+
 ## Folder Detail maintenance verification — 2026-09-01
 
 STATUS: **PASS**

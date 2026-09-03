@@ -50,7 +50,7 @@ Gate: **PASS**. Next allowed action: handoff / normal maintenance. Evidence: EVI
 | Integrated navigation/API journeys and error branches | FR-001–FR-016, NFR-011–NFR-017 | TASK-011–TASK-021 | TEST-011, TEST-021, EVID-504–EVID-507 | PASS |
 | Dashboard metric label/value grouping | FR-012, AC-009, NFR-011–NFR-013 | TASK-018, TASK-021 | TEST-018, EVID-505, EVID-507–EVID-508 | PASS |
 | Node 26 Windows runtime compatibility | NFR-016–NFR-017 | TASK-001, TASK-021 | EVID-511 | PASS |
-| Full real-browser and responsive workflow | AC-022 and Final Acceptance runtime workflow | TASK-021–TASK-022 | EVID-512 | BLOCKED |
+| Full real-browser and responsive workflow | AC-022 and Final Acceptance runtime workflow | TASK-021–TASK-022 | EVID-512, EVID-517–EVID-535 | PASS |
 
 No database schema, migration, REST contract, or approved requirement changed. The local SQLite data remains in the ignored `apps/api/prisma/dev.db` file configured by `DATABASE_URL`; the committed migration remains unchanged.
 
@@ -290,6 +290,12 @@ Post-acceptance UI/UX maintenance preserved the approved behavior and improved t
 | OQ-007        | Sessions/dashboard                | ✅ Resolved → BR-025–BR-026 |
 | OQ-008        | AI provider/storage               | ✅ Resolved → BR-027–BR-028 |
 # Current authoritative acceptance state (2026-08-28)
+
+Focus-mode Back to Folder alignment preserves existing Flashcards and Multiple Choice navigation and accessibility behavior while matching the Vocabulary/Folder control; focused verification PASS.
+
+## Learning-session UI refinement — 2026-09-03
+
+Flashcards and Multiple Choice visual redesigns are PASS and remain traced to the existing flashcard, pronunciation, quiz, scoring, session-persistence, responsive, and accessibility requirements. No backend contract or business-rule changes were made.
 
 Authentication and Routing Remediation tasks AUTH-REM-001 through AUTH-REM-008 are PASS. Final Acceptance is ACCEPTED after the persistent real-browser workflow and quality gates passed. Handoff is READY; no current blockers remain.
 Vocabulary UI redesign verification (1440/768/390 representative viewports) PASS; functional interactions and browser console checks passed.

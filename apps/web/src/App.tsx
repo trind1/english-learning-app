@@ -286,19 +286,8 @@ export const App = () => {
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <main id="main" style={{ flex: 1, padding: "24px 16px" }}>
-          <button
-            className="btn-ghost"
-            aria-label="Back to Folder"
-            style={{
-              marginBottom: "16px",
-              color: "var(--primary)",
-              fontWeight: 600,
-            }}
-            onClick={() => navigate("folder")}
-          >
-            ← Back to Folder
-          </button>
+        <main id="main" className="focus-main">
+          <FocusBackButton onClick={() => navigate("folder")} />
           <PageHeader eyebrow="Study" title="Flashcards" text={folder.name} />
           <Flashcards items={words} onClose={() => navigate("folder")} />
         </main>
@@ -312,19 +301,8 @@ export const App = () => {
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <main id="main" style={{ flex: 1, padding: "24px 16px" }}>
-          <button
-            className="btn-ghost"
-            aria-label="Back to Folder"
-            style={{
-              marginBottom: "16px",
-              color: "var(--primary)",
-              fontWeight: 600,
-            }}
-            onClick={() => navigate("folder")}
-          >
-            ← Back to Folder
-          </button>
+        <main id="main" className="focus-main">
+          <FocusBackButton onClick={() => navigate("folder")} />
           <PageHeader
             eyebrow="Quiz"
             title="Test your knowledge"
@@ -1071,4 +1049,18 @@ const PageHeader = ({
     </div>
     {action}
   </section>
+);
+
+const FocusBackButton = ({ onClick }: { onClick: () => void }) => (
+  <button
+    className="btn-ghost folder-back-button focus-mode-back-button"
+    type="button"
+    aria-label="Back to Folder"
+    onClick={onClick}
+  >
+    <span className="folder-back-arrow" aria-hidden="true">
+      ←
+    </span>{" "}
+    Back to Folder
+  </button>
 );

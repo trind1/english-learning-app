@@ -743,6 +743,12 @@ textarea:focus {
   flex-direction: column;
   background-color: var(--background);
 }
+
+.focus-main {
+  flex: 1;
+  min-width: 0;
+  padding: calc(1.5rem + env(safe-area-inset-top)) 1rem 2.5rem;
+}
 .focus-header {
   width: 100%;
   height: 64px;
@@ -756,7 +762,6 @@ textarea:focus {
   top: 0;
   z-index: 30;
 }
-
 /* Auth Pages (Login & Register) */
 .auth-page-wrapper {
   min-height: 100vh;
@@ -1226,6 +1231,147 @@ textarea:focus {
   );
 }
 
+/* Focused learning sessions */
+.learning-session {
+  position: relative;
+  isolation: isolate;
+}
+.learning-session::before {
+  content: "";
+  position: fixed;
+  inset: 64px 0 0;
+  z-index: -1;
+  background: radial-gradient(
+      circle at 50% 0,
+      rgba(37, 99, 235, 0.12),
+      transparent 34rem
+    ),
+    linear-gradient(180deg, #f6f9ff, #f8fafc);
+}
+.learning-session-header,
+.quiz-progress-header {
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  box-shadow: 0 12px 32px rgba(30, 64, 175, 0.08) !important;
+}
+.session-count-label {
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: #eaf2ff;
+  color: #1d4ed8;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+.flashcard-3d-card:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.35);
+  outline-offset: 6px;
+}
+.flashcard-face {
+  border: 1px solid rgba(96, 125, 178, 0.3);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.98),
+    rgba(239, 246, 255, 0.96)
+  );
+  box-shadow: 0 28px 60px rgba(30, 64, 175, 0.15);
+}
+.flashcard-face h3 {
+  font-size: clamp(2.75rem, 8vw, 5rem);
+  letter-spacing: -0.055em;
+}
+.flashcard-back-word {
+  margin: 0;
+  color: #64748b;
+  font-size: 1rem;
+  font-weight: 700;
+}
+.flashcard-rating-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  width: 100%;
+}
+.flashcard-rating {
+  display: flex;
+  min-height: 4.75rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  border: 1px solid transparent;
+  border-radius: 1rem;
+  font-weight: 800;
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease;
+}
+.flashcard-rating span:last-child {
+  font-size: 0.72rem;
+  font-weight: 600;
+  opacity: 0.78;
+}
+.flashcard-rating:hover,
+.flashcard-rating:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
+}
+.flashcard-rating.hard {
+  background: #fff1f2;
+  border-color: #fecdd3;
+  color: #9f1239;
+}
+.flashcard-rating.good {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+.flashcard-rating.easy {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #047857;
+}
+.quiz-progress-header {
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.88);
+}
+.quiz-question-card {
+  border: 1px solid rgba(96, 125, 178, 0.3) !important;
+  border-radius: 1.5rem !important;
+  box-shadow: 0 24px 50px rgba(30, 64, 175, 0.13) !important;
+}
+.quiz-question-card h2 {
+  font-size: clamp(2.25rem, 7vw, 4rem);
+  letter-spacing: -0.05em;
+}
+.quiz-option-card {
+  min-height: 5rem;
+  border-color: #d8e2f2;
+  background: linear-gradient(145deg, #fff, #f8fbff);
+}
+.quiz-option-card:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.3);
+  outline-offset: 2px;
+}
+.option-letter-badge {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 0.75rem;
+  background: #eaf2ff;
+  color: #1d4ed8;
+  font-weight: 800;
+}
+.quiz-option-card.selected .option-letter-badge {
+  background: #2563eb;
+  color: #fff;
+}
+.quiz-results-card {
+  border-radius: 1.5rem !important;
+  box-shadow: 0 24px 50px rgba(30, 64, 175, 0.13) !important;
+}
+
 /* Multiple Choice Quiz Bento */
 .quiz-bento-grid {
   display: grid;
@@ -1427,6 +1573,25 @@ textarea:focus {
 }
 
 @media (max-width: 480px) {
+  .learning-session-header {
+    align-items: flex-start !important;
+    padding: 0.75rem !important;
+  }
+  .learning-session-header > div:nth-child(2) {
+    margin: 0 0.5rem !important;
+  }
+  .session-count-label {
+    display: none;
+  }
+  .flashcard-face {
+    padding: 1.5rem;
+  }
+  .flashcard-rating-group {
+    grid-template-columns: 1fr;
+  }
+  .flashcard-rating {
+    min-height: 3.9rem;
+  }
   .consistency-header h3 {
     font-size: 1.2rem;
   }
@@ -1464,6 +1629,15 @@ textarea:focus {
 }
 .folder-back-button:active {
   transform: translateY(1px);
+}
+.focus-mode-back-button {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 1rem;
+  box-shadow: 0 2px 5px rgba(51, 65, 85, 0.12);
+}
+.focus-mode-back-button:active {
+  transform: none;
 }
 .folder-back-arrow {
   font-size: 1.15rem;

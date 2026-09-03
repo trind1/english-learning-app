@@ -1,5 +1,11 @@
 # SDD Project Status
 
+Focus-mode Back to Folder visual alignment is **PASS**. Flashcards and Multiple Choice match the Vocabulary/Folder control, navigation logic is preserved, and focused automated checks pass. Current blockers: none. Next allowed action: Final Acceptance with explicit user approval.
+
+## Current authoritative status — 2026-09-03
+
+Flashcards Visual Redesign and Multiple Choice Visual Redesign are **PASS**. All required controls and real learning data are preserved. Automated regression, frontend coverage, static checks, build, and real-browser verification pass. Current blockers: none. Next allowed action: Final Acceptance with explicit user approval.
+
 ## Current authoritative status — Folder Detail — 2026-09-01
 
 | Field | Value |
@@ -65,7 +71,7 @@ Dashboard visual redesign is **PASS** with representative browser verification c
 | Next allowed action | Handoff |
 | User approval status | Final Acceptance accepted; handoff **READY** |
 
-Testing Verification is **PASS**: frontend 99.57/95.41/100/99.57 and backend 95.01/95.00/97.22/95.01 for statements/branches/functions/lines. The sequential full suite passes 127/127. Implementation remediation is verified by EVID-503–EVID-509. Browser evidence EVID-512 is incomplete, so it cannot satisfy Final Acceptance.
+Testing Verification is **PASS**: frontend 99.57/95.41/100/99.57 and backend 95.01/95.00/97.22/95.01 for statements/branches/functions/lines. The sequential full suite passes 127/127. EVID-512 is retained as historical partial evidence; EVID-517–EVID-535 provide the completed browser verification.
 
 The [UI/UX review](05-review/ui-review.md) is complete. Folder Detail UI redesign and representative browser verification are PASS.
 
@@ -77,7 +83,7 @@ Windows setup remediation EVID-502 is PASS: `npm.cmd run setup` is now cross-pla
 
 ## Final gate synchronization
 
-Specification APPROVED; Planning APPROVED; Task Decomposition APPROVED; Code Generation COMPLETE; Implementation Review PASS; Implementation Verification PASS; Final Acceptance REJECTED pending browser workflow verification. TASK-001 through TASK-022 remain PASS (22/22, 100%). Handoff NOT READY.
+Specification APPROVED; Planning APPROVED; Task Decomposition APPROVED; Code Generation COMPLETE; Implementation Review PASS; Implementation Verification PASS; Final Acceptance PASS after browser workflow remediation. TASK-001 through TASK-022 remain PASS (22/22, 100%). Handoff READY.
 
 | Field        | Value                                                                                                         |
 | ------------ | ------------------------------------------------------------------------------------------------------------- |
@@ -101,9 +107,9 @@ Specification APPROVED; Planning APPROVED; Task Decomposition APPROVED; Code Gen
 | Field               | Value                                                 |
 | ------------------- | ----------------------------------------------------- |
 | Current stage       | Final Acceptance / Handoff                            |
-| Gate status         | ❌ REJECTED; browser workflow evidence missing         |
-| Next allowed action | Execute the required workflow in a real browser        |
-| Primary blocker     | No browser automation or interactive browser available |
+| Gate status         | ✅ PASS; browser workflow evidence complete            |
+| Next allowed action | Handoff / normal maintenance                           |
+| Primary blocker     | None                                                   |
 
 ## Stage status
 
